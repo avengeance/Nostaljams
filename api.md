@@ -214,4 +214,28 @@ user's information.
     }
     ```
 
-    
+## Songs
+### View all Songs
+### View Song by Song ID
+### View all Songs by Artist ID
+### Create new Song
+### Update Song
+### Delete Song
+
+## Comments
+### View Comments bu Song ID
+### Create new Comment
+### Update Comment
+### Delete Comment
+
+## Likes
+### View Likes by Song ID
+### View Likes by Artist ID
+### Create new Like
+
+## Playlists
+### View all Playlists
+### View Playlist by Playlist ID
+### Create new Playlist
+### Update Playlist
+### Delete Playlist
