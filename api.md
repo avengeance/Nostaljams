@@ -616,7 +616,33 @@ url: /api/users/:id/playlists/:id/delete
 
 ### View Likes by Song ID
 
-url: /api/songs/:id/likes
+Returns likes based on its Song ID.
+
+- Request
+  - Method: GET
+  - url: /api/songs/:id/likes
+  - Body: none
+- Successful Response
+  - Status Code: 200,
+  - Headers:
+    -Content-Type: application/json
+  - Body:
+    ```json
+    {
+      "SongLikes": 5
+    }
+    ```
+- Error response: Couldn't find likes with the specified Song ID.
+  - Status Code: 404
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+    ```json
+    {
+      "message": "Song could not be found",
+      "statusCode": 404
+    }
+    ```
 
 ### View Likes by Playlist ID
 
