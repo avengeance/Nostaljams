@@ -412,7 +412,6 @@ Creates and returns a new Song
 
     ```json
     {
-      "id": 1,
       "userId": 1,
       "name": "",
       "artists": "",
@@ -574,17 +573,199 @@ Deletes an existing Song
 
 url: /api/songs/:id/comments
 
+Returns all comments with a specified song id
+
+- Request
+  - Method: GET
+  - url: /api/songs/:id/comments
+  - Body: none
+- Successful Response
+  - Status Code: 200
+  - Headers:
+    - Content-Tpye: application/json
+  - Body:
+    ```json
+    {
+        "SongComments":{[
+            {
+                "id":1,
+                "userId": 3,
+                "songId": 1,
+                "comment":"",
+                "createdAt":,
+                "updatedAt":
+            },
+            {
+                "id":2,
+                "userId": 3,
+                "songId": 1,
+                "comment":"",
+                "createdAt":,
+                "updatedAt":
+            }
+        ]}
+    }
+    ```
+
 ### Create new Comment
 
-url: /api/songs/:id/comments/new
+Creates and returns a new comment for a song
+
+- Require Authentication: true
+- Request
+
+  - Method: POST
+  - URL: /api/songs/:id/comments/new
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+
+    ```json
+    {
+      "userId": 3,
+      "songId": 1,
+      "comment": ""
+    }
+    ```
+
+- Successful Response
+
+  - Status Code: 201
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+
+    ```json
+    {
+      "id": 1,
+      "userId": 3,
+      "songId": 1,
+      "comment": "",
+      "createdAt": "",
+      "updatedAt": ""
+    }
+    ```
+
+- Error Response: Body validation error
+
+  - Status Code: 400
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+
+    ```json
+    {
+      "message": "Validation Error",
+      "statusCode": 400,
+      "errors": {}
+    }
+    ```
 
 ### Update Comment
 
-url: /api/songs/:id/comments/:id
+Updates and returns an existing comment for a song
+
+- Require Authentication: true
+- Require proper authorization: Comment must belong to the current user
+- Request
+
+  - Method: PUT
+  - URL: /api/songs/:id/comments/:id
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+
+    ```json
+    {
+      "id": 1,
+      "userId": 3,
+      "songId": 1,
+      "comment": ""
+    }
+    ```
+
+- Successful Response
+
+  - Status Code: 201
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+
+    ```json
+    {
+      "id": 1,
+      "userId": 3,
+      "songId": 1,
+      "comment": "",
+      "createdAt": "",
+      "updatedAt": ""
+    }
+    ```
+
+- Error Response: Body validation error
+
+  - Status Code: 400
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+
+    ```json
+    {
+      "message": "Validation Error",
+      "statusCode": 400,
+      "errors": {}
+    }
+    ```
+
+- Error response: Couldn't find a Song/Comment with the specified id
+  - Status Code: 404
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+    ```json
+    {
+      "message": "Song/Comment couldn't be found",
+      "statusCode": 404
+    }
+    ```
 
 ### Delete Comment
 
-url: /api/songs/:id/comments/:id/delete
+Deletes an existing Comment
+
+- Require Authentication: true
+- Require proper authorization: Comment must belong to the current user
+- Request
+
+  - Method: DELETE
+  - URL: /api/songs/:id/comments/:id/delete
+  - Body: none
+
+- Successful Response
+
+  - Status Code: 200
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+
+    ```json
+    {
+      "message": "Successfully deleted",
+      "statusCode": 200
+    }
+    ```
+
+- Error response: Couldn't find a Song with the specified id
+  - Status Code: 404
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+    ```json
+    {
+      "message": "Comment couldn't be found",
+      "statusCode": 404
+    }
+    ```
 
 ---
 
