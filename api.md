@@ -244,36 +244,38 @@ Returns all songs
   - Body:
     ```json
     {
-        "Songs":[
-            {
-                "id":1,
-                "userId":1,
-                "name":"",
-                "artists" : "",
-                "description":"",
-                "audio_url":"",
-                "SongImage":{
-                    "id":1,
-                    "img_url":""
-                },
-                "SongCommentsCnt":5,
-                "SongLikesCnt":10
-            },
-            {
-                "id":2,
-                "userId":1,
-                "name":"",
-                "artists" : "",
-                "description":"",
-                "audio_url":"",
-                "SongImage":{
-                    "id":2,
-                    "img_url":""
-                },
-                "SongCommentsCnt":5,
-                "SongLikesCnt":10
-            }
-        ]
+      "Songs": [
+        {
+          "id": 1,
+          "userId": 1,
+          "name": "",
+          "artists": "",
+          "genre": "",
+          "description": "",
+          "audio_url": "",
+          "SongImage": {
+            "id": 1,
+            "img_url": ""
+          },
+          "SongCommentsCnt": 5,
+          "SongLikesCnt": 10
+        },
+        {
+          "id": 2,
+          "userId": 1,
+          "name": "",
+          "artists": "",
+          "genre": "",
+          "description": "",
+          "audio_url": "",
+          "SongImage": {
+            "id": 2,
+            "img_url": ""
+          },
+          "SongCommentsCnt": 5,
+          "SongLikesCnt": 10
+        }
+      ]
     }
     ```
 
@@ -296,6 +298,7 @@ Returns the details of a Song specified by its ID.
         "userId":1,
         "name":"",
         "artists" : "",
+        "genre":"",
         "description":"",
         "audio_url":"",
         "SongImages":{
@@ -328,14 +331,15 @@ Returns the details of a Song specified by its ID.
   - Body:
     ```json
     {
-      "message":"Song couldn't be found",
-      "statusCode":404
+      "message": "Song couldn't be found",
+      "statusCode": 404
     }
     ```
 
-
 ### View all Songs by User ID
+
 Returns all Songs created by specifed User ID.
+
 - Request
   - Method: GET
   - url: /api/users/:id/songs
@@ -346,40 +350,170 @@ Returns all Songs created by specifed User ID.
     - Content-Type: application/json
   - Body:
     ```json
-    {"UserSongs":[
-        "id":1,
-        "userId":1,
-        "name":"",
-        "artists" : "",
-        "description":"",
-        "audio_url":"",
-        "SongImages":{
-            "id":1,
-            "img_url":""
+    {
+      "UserSongs": [
+        {
+          "id": 1,
+          "userId": 1,
+          "name": "",
+          "artists": "",
+          "genre": "",
+          "description": "",
+          "audio_url": "",
+          "SongImage": {
+            "id": 1,
+            "img_url": ""
+          },
+          "SongCommentsCnt": 5,
+          "SongLikesCnt": 10
         },
-        "SongLikesCnt":10,
-        "SongCommentsCnt":2
-    ]}
+        {
+          "id": 2,
+          "userId": 1,
+          "name": "",
+          "artists": "",
+          "genre": "",
+          "description": "",
+          "audio_url": "",
+          "SongImage": {
+            "id": 2,
+            "img_url": ""
+          },
+          "SongCommentsCnt": 5,
+          "SongLikesCnt": 10
+        }
+      ]
+    }
     ```
-- Error response: Couldn't find a Song with the specified id
+- Error response: Couldn't find a User with the specified id
   - Status Code: 404
   - Headers:
     - Content-Type: application/json
   - Body:
     ```json
     {
-      "message":"Song couldn't be found",
-      "statusCode":404
+      "message": "User couldn't be found",
+      "statusCode": 404
     }
     ```
 
 ### Create new Song
 
-url: /api/songs/create
+Creates and returns a new Song
+
+- Require Authentication: true
+- Request
+
+  - Method: POST
+  - URL: /api/songs/create
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+
+    ```json
+    {
+      "id": 1,
+      "userId": 1,
+      "name": "",
+      "artists": "",
+      "genre": "",
+      "description": "",
+      "audio_url": ""
+    }
+    ```
+
+- Successful Response
+
+  - Status Code: 201
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+
+    ```json
+    {
+      "id": 1,
+      "userId": 1,
+      "name": "",
+      "artists": "",
+      "description": "",
+      "audio_url": "",
+      "createdAt": "",
+      "updatedAt": ""
+    }
+    ```
+
+- Error Response: Body validation error
+
+  - Status Code: 400
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+
+    ```json
+    {
+      "message": "Validation Error",
+      "statusCode": 400,
+      "errors": {}
+    }
+    ```
 
 ### Update Song
 
-url: /api/songs/:id
+- Require Authentication: true
+- Request
+
+  - Method: PUT
+  - URL: /api/songs/:id
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+
+    ```json
+    {
+      "id": 1,
+      "userId": 1,
+      "name": "",
+      "artists": "",
+      "genre": "",
+      "description": "",
+      "audio_url": ""
+    }
+    ```
+
+- Successful Response
+
+  - Status Code: 201
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+
+    ```json
+    {
+      "id": 1,
+      "userId": 1,
+      "name": "",
+      "artists": "",
+      "description": "",
+      "audio_url": "",
+      "createdAt": "",
+      "updatedAt": ""
+    }
+    ```
+
+- Error Response: Body validation error
+
+  - Status Code: 400
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+
+    ```json
+    {
+      "message": "Validation Error",
+      "statusCode": 400,
+      "errors": {}
+    }
+    ```
 
 ### Delete Song
 
