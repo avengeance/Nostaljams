@@ -620,12 +620,12 @@ Returns likes based on its Song ID.
 
 - Request
   - Method: GET
-  - url: /api/songs/:id/likes
+  - URL: /api/songs/:id/likes
   - Body: none
 - Successful Response
   - Status Code: 200,
   - Headers:
-    -Content-Type: application/json
+    - Content-Type: application/json
   - Body:
     ```json
     {
@@ -646,12 +646,115 @@ Returns likes based on its Song ID.
 
 ### View Likes by Playlist ID
 
-url: /api/playlists/:id/likes
+Returns likes based on its Playlist ID.
+
+- Request
+  - Method: GET
+  - URL: /api/playlists/:id/likes
+  - Body: none
+- Successful Response
+  - Status Code: 200,
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+    ```json
+    {
+      "PlaylistLikes": 5
+    }
+    ```
+- Error response: Couldn't find likes with the specified Playlist ID.
+  - Status Code: 404
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+    ```json
+    {
+      "message": "Playlist could not be found",
+      "statusCode": 404
+    }
+    ```
 
 ### Create new Like
 
-url: /api/songs/:id/likes/create
+Creates and returns a new Like for a Song
+
+- Require Authentication: true
+- Request
+
+  - Method: POST
+  - URL: /api/songs/:id/likes/create
+  - Headers:
+    -Content-Type: application/json
+  - Body:
+
+    ```json
+    {
+      "id": 1,
+      "songId": 1,
+      "userId": 1
+    }
+    ```
+
+  - Successful Response
+
+    - Status Code: 201
+    - Headers:
+      - Content-Type: application/json
+    - Body:
+
+      ```json
+      {
+        "id": 1,
+        "songId": 1,
+        "userId": 1
+      }
+      ```
+
+- Error response: Song with the specific ID is not found.
+  - Status Code: 404
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+    ```json
+    {
+      "message": "Song could not be found",
+      "statusCode": 404
+    }
+    ```
 
 ### Delete Like
 
-url: /api/songs/:id/likes/delete
+Deletes an existing Like for a specific song ID.
+
+- Require Authentication: true
+- Require proper authorization: Like must belong to the current user.
+- Request
+
+  - Method: DELETE
+  - URL: /api/songs/:id/likes/:id/delete
+  - Body: none
+
+- Successful Response
+
+  - Status Code: 200
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+    ```json
+    {
+      "message": "Successfully deleted",
+      "statusCode": 200
+    }
+    ```
+
+- Error response: Couldn't find a Song with the specified id
+  - Status Code: 404
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+    ```json
+    {
+      "message": "Song couldn't be found",
+      "statusCode": 404
+    }
+    ```
