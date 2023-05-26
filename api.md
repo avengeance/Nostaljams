@@ -460,6 +460,7 @@ Creates and returns a new Song
 ### Update Song
 
 - Require Authentication: true
+- Require proper authorization: Song must belong to the current user
 - Request
 
   - Method: PUT
@@ -515,9 +516,55 @@ Creates and returns a new Song
     }
     ```
 
+- Error response: Couldn't find a Song with the specified id
+  - Status Code: 404
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+    ```json
+    {
+      "message": "Song couldn't be found",
+      "statusCode": 404
+    }
+    ```
+
 ### Delete Song
 
-url: /api/songs/:id/delete
+Deletes an existing Song
+
+- Require Authentication: true
+- Require proper authorization: Song must belong to the current user
+- Request
+
+  - Method: DELETE
+  - URL: /api/songs/:id/delete
+  - Body: none
+
+- Successful Response
+
+  - Status Code: 200
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+
+    ```json
+    {
+      "message": "Successfully deleted",
+      "statusCode": 200
+    }
+    ```
+
+- Error response: Couldn't find a Song with the specified id
+  - Status Code: 404
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+    ```json
+    {
+      "message": "Song couldn't be found",
+      "statusCode": 404
+    }
+    ```
 
 ---
 
