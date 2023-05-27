@@ -1,9 +1,10 @@
 from .db import db, environment, SCHEMA, add_prefix_for_prod
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
-
+from datetime import datetime
 
 class User(db.Model, UserMixin):
+    # delete this comment
     __tablename__ = 'users'
 
     if environment == "production":
@@ -11,8 +12,20 @@ class User(db.Model, UserMixin):
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(40), nullable=False, unique=True)
+    first_name = db.Column(db.String(50), nullable=False)
+    last_name = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(255), nullable=False, unique=True)
     hashed_password = db.Column(db.String(255), nullable=False)
+    bio_info = db.Column(db.String(255))
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
+
+    songs = db.relationship('Song', back_populates='users', cascade='all, delete-orphan')
+    comments = db.relationship('Comment', back_populates='users', cascade='all, delete-orphan')
+    playlists = db.relationship('Playlist', back_populates='users', cascade='all, delete-orphan')
+    song_likes = db.relationship('SongLike', back_populates='users', cascade='all, delete-orphan')
+    playlist_likes = db.relationship('PlaylistLike', back_populates='users', cascade='all, delete-orphan')
+    user_images = db.relationship('UserImage', back_populates='users', cascade='all, delete-orphan')
 
     @property
     def password(self):
@@ -29,5 +42,8 @@ class User(db.Model, UserMixin):
         return {
             'id': self.id,
             'username': self.username,
-            'email': self.email
+            'firstName': self.first_name,
+            'lastName': self.last_name,
+            'email': self.email,
+            # 'bioInfo': self.bio_info
         }
