@@ -458,6 +458,8 @@ Creates and returns a new Song
 
 ### Update Song
 
+Updates song specified by ID.
+
 - Require Authentication: true
 - Require proper authorization: Song must belong to the current user
 - Request
@@ -571,9 +573,7 @@ Deletes an existing Song
 
 ### View Comments by Song ID
 
-url: /api/songs/:id/comments
-
-Returns all comments with a specified song id
+Returns all comments with a specified Song id
 
 - Request
   - Method: GET
@@ -773,23 +773,333 @@ Deletes an existing Comment
 
 ### View all Playlists by User ID, that created Playlist
 
-url: /api/users/:id/playlists
+Returns the details of a Playlist specified by its ID.
+
+- Request
+  - Method: GET
+  - url: /api/users/:id/playlists
+  - Body: none
+- Successful Response
+  - Status Code: 200,
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+    ```json
+    {
+      "userPlaylist":[
+        {
+          "id":1,
+          "name":"playlist1",
+          "description":"new playlist",
+          "userId":1,
+        },
+        {
+          "id":2,
+          "name":"playlist2",
+          "description":"new playlist",
+          "userId":1,
+        }
+      ]
+    }
+    ```
+- Error response: Couldn't find a User with the specified id
+  - Status Code: 404
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+    ```json
+    {
+      "message": "User couldn't be found",
+      "statusCode": 404
+    }
 
 ### View Playlist details by it's ID
 
-url: /api/users/:id/playlists/:id
+Returns the details of a Playlist specified by its ID.
+
+- Request
+  - Method: GET
+  - url: /api/users/:id/playlists/:id
+  - Body: none
+- Successful Response
+  - Status Code: 200,
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+    ```json
+    {
+      "userPlaylist":{
+        "id":1,
+        "name":"playlist1",
+        "description":"new playlist",
+        "userId":1,
+        "songs":[
+          {
+            "id":1,
+            "userId":1,
+            "name":"",
+            "artists" : "",
+            "genre":"",
+            "description":"",
+            "audio_url":"",
+            "SongImages":{
+                "id":1,
+                "img_url":""
+            },
+            "SongLikesCnt":10,
+            "SongComments":{[
+                {
+                    "id":1,
+                    "userId": 3,
+                    "comment":"",
+                    "createdAt":,
+                    "updatedAt":
+                },
+                {
+                    "id":1,
+                    "userId": 3,
+                    "comment":"",
+                    "createdAt":,
+                    "updatedAt":
+                }
+            ]}
+          },
+          {
+            "id":2,
+            "userId":1,
+            "name":"",
+            "artists" : "",
+            "genre":"",
+            "description":"",
+            "audio_url":"",
+            "SongImages":{
+                "id":1,
+                "img_url":""
+            },
+            "SongLikesCnt":10,
+            "SongComments":{[
+                {
+                    "id":1,
+                    "userId": 3,
+                    "comment":"",
+                    "createdAt":,
+                    "updatedAt":
+                },
+                {
+                    "id":1,
+                    "userId": 3,
+                    "comment":"",
+                    "createdAt":,
+                    "updatedAt":
+                }
+            ]}
+          }
+        ]
+      }
+    }
+    ```
+- Error response: Couldn't find a User with the specified id
+  - Status Code: 404
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+    ```json
+    {
+      "message": "User couldn't be found",
+      "statusCode": 404
+    }
+    
+- Error response: Couldn't find a Playlist with the specified id
+  - Status Code: 404
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+    ```json
+    {
+      "message": "Playlist couldn't be found",
+      "statusCode": 404
+    }
+    ```
 
 ### Create new Playlist
 
-url: /api/users/:id/playlists/new
+Creates and returns a new Playlist.
+
+- Require Authentication: true
+- Request
+
+  - Method: POST
+  - URL: /api/songs/create
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+
+    ```json
+    {
+      "name":"playlistName",
+      "description":"playlist description"
+      "userId":1
+    }
+    ```
+
+- Successful Response
+
+  - Status Code: 201
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+
+    ```json
+    {
+      "id":1
+      "name":"playlistName",
+      "description":"playlist description"
+      "userId":1,
+      "createdAt":,
+      "updatedAt":
+    }
+    ```
+- Error Response: Body validation error
+
+  - Status Code: 400
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+
+    ```json
+    {
+      "message": "Validation Error",
+      "statusCode": 400,
+      "errors": {}
+    }
+    ```
 
 ### Update Playlist
 
-url: /api/users/:id/playlists/:id
+Updates Playlist specified by ID.
+
+- Require Authentication: true
+- Require proper authorization: Song must belong to the current user
+- Request
+
+  - Method: PUT
+  - URL: /api/users/:id/playlists/:id
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+
+    ```json
+    {
+      "name":"playlistName",
+      "description":"playlist description"
+      "userId":1
+    }
+    ```
+
+- Successful Response
+
+  - Status Code: 201
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+
+    ```json
+    {
+      "id":1
+      "name":"playlistName",
+      "description":"playlist description"
+      "userId":1,
+      "createdAt":,
+      "updatedAt":
+    }
+    ```
+
+- Error Response: Body validation error
+
+  - Status Code: 400
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+
+    ```json
+    {
+      "message": "Validation Error",
+      "statusCode": 400,
+      "errors": {}
+    }
+    ```
+
+- Error response: Couldn't find a User with the specified id
+  - Status Code: 404
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+    ```json
+    {
+      "message": "User couldn't be found",
+      "statusCode": 404
+    }
+
+- Error response: Couldn't find a Playlist with the specified id
+  - Status Code: 404
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+    ```json
+    {
+      "message": "Playlist couldn't be found",
+      "statusCode": 404
+    }
+    ```
 
 ### Delete Playlist
 
-url: /api/users/:id/playlists/:id/delete
+Deletes an existing Playlist
+
+- Require Authentication: true
+- Require proper authorization: Song must belong to the current user
+- Request
+
+  - Method: DELETE
+  - URL: /api/users/:id/playlists/:id/delete
+  - Body: none
+
+- Successful Response
+
+  - Status Code: 200
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+
+    ```json
+    {
+      "message": "Successfully deleted",
+      "statusCode": 200
+    }
+    ```
+
+- Error response: Couldn't find a User with the specified id
+  - Status Code: 404
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+    ```json
+    {
+      "message": "User couldn't be found",
+      "statusCode": 404
+    }
+
+- Error response: Couldn't find a Playlist with the specified id
+  - Status Code: 404
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+    ```json
+    {
+      "message": "Playlist couldn't be found",
+      "statusCode": 404
+    }
+    ```
 
 ---
 
@@ -797,7 +1107,7 @@ url: /api/users/:id/playlists/:id/delete
 
 ### View Likes by Song ID
 
-Returns likes based on its Song ID.
+Returns likes based on specified Song ID.
 
 - Request
   - Method: GET
@@ -827,7 +1137,7 @@ Returns likes based on its Song ID.
 
 ### View Likes by Playlist ID
 
-Returns likes based on its Playlist ID.
+Returns likes based on specified Playlist ID.
 
 - Request
   - Method: GET
