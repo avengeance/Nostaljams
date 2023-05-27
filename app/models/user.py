@@ -4,6 +4,7 @@ from flask_login import UserMixin
 from datetime import datetime
 
 class User(db.Model, UserMixin):
+    # delete this comment
     __tablename__ = 'users'
 
     if environment == "production":
