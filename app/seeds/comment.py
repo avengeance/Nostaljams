@@ -127,7 +127,7 @@ def seed_comments():
 
     db.session.commit()
 
-def undo_songs():
+def undo_comments():
     if environment == "production":
         db.session.execute(f"TRUNCATE table {SCHEMA}.users RESTART IDENTITY CASCADE;")
     else:
