@@ -1,4 +1,5 @@
-from ..models import Song
+from ..models.db import db
+from ..models.song import Song
 from flask import Blueprint, redirect, url_for, render_template
 from flask_login import login_required, current_user, logout_user
 
@@ -6,8 +7,10 @@ bp = Blueprint('songs', __name__)
 
 # view all songs
 @bp.route('/', methods=['GET'])
-def fxn():
-    pass
+def get_all_songs():
+    songs = session.query(Song)
+
+
 
 #view song by song id
 @bp.route('/<int:id>', methods=['GET'])
