@@ -23,3 +23,33 @@ def user(id):
     """
     user = User.query.get(id)
     return user.to_dict()
+
+#view all user songs
+@user_routes.route('/<int:id>/songs', method=['GET'])
+def fxn():
+    pass
+
+#view all playlists by user
+@user_routes.route('/<int:id>/playlists', method=['GET'])
+def fxn():
+    pass
+
+#view all playlists by playlist id
+@user_routes.route('/<int:id>/playlists/<int:id>', method=['GET'])
+def fxn():
+    pass
+
+#create new playlist
+@user_routes.route('/<int:id>/playlists/new', method=['POST'])
+def fxn():
+    pass
+
+#update playlist
+@user_routes.route('/<int:id>/playlists/<int:id>', method=['PUT'])
+def fxn():
+    pass
+
+#delete playlist
+@user_routes.route('/<int:id>/playlists/<int:id>/delete', method=['DELETE'])
+def fxn():
+    pass
