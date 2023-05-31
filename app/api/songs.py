@@ -1,4 +1,4 @@
-from ..models import Song, SongImage, SongLike, Comment
+from ..models import Song, SongImage, SongLike, Comment, db
 from flask import Blueprint, redirect, url_for, render_template, jsonify
 from flask_login import login_required, current_user, logout_user
 
@@ -28,9 +28,9 @@ def song_detail(id):
             "artists": song['artists'],
             "genre": song['genre'],
             "description": song['description'],
-            "SongImage": image,
-            "SongLikesCnt": likes,
-            "SongComments": comments
+            "SongImage": image['img_url'],
+            "SongLikesCnt": likes['id'],
+            "SongComments": comments['comment']
         }
 
         # print("Song ID:", song['song_id'])
@@ -50,7 +50,7 @@ def song_detail(id):
         # err.response.status_code == 404:
         # print("Song does not exist")
         res = {
-            "message": "Song could not be found."
+            "message": "Song could not be found.",
             "statusCode": 404
         }
 
