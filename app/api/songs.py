@@ -63,7 +63,14 @@ def fxn():
 
 #update a song
 @bp.route('/<int:id>', methods=['PUT'])
-def fxn():
+@login_required
+def update_song(id):
+    # Check if the song being updated is by the owner
+    user = User.query.find({"userId": id})
+    # Create a variable for the update song form
+        #placeholder
+        # form = SongForm()
+    # Conditional if validates on submit
     pass
 
 #delete a song
