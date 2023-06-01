@@ -1,6 +1,6 @@
 from ..models.db import db
 from ..models.song import Song
-from flask import Blueprint, redirect, url_for, render_template
+from flask import Blueprint, redirect, url_for, render_template, jsonify
 from flask_login import login_required, current_user, logout_user
 
 bp = Blueprint('songs', __name__)
@@ -29,8 +29,23 @@ def fxn():
 
 #delete a song
 @bp.route('/<int:id>/delete', methods=['DELETE'])
-def fxn():
-    pass
+def delete_song():
+    song = Song.query.get(id)
+    if song and current_user.id == song.user_id:
+        db.session.delete(song)
+        db.session.commit()
+        res = {
+            "id": song.id,
+            "message": "Successfully deleted",
+            "statusCode": 200
+        }
+        return jsonify(res), 200
+    else:
+        res = {
+            "message": "Song couldn't be found",
+            "statusCode": 404
+        }
+        return jsonify(res), 404
 
 #view songs by comment id
 @bp.route('/<int:id>/comments', methods=['GET'])
