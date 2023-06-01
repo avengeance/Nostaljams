@@ -1,5 +1,9 @@
 from ..models.db import db
 from ..models.song import Song
+from ..models.images import SongImage
+from ..models.comment import Comment
+from ..models.likes import SongLike
+
 from flask import Blueprint, redirect, url_for, render_template, jsonify
 from flask_login import login_required, current_user, logout_user
 
@@ -14,8 +18,50 @@ def get_all_songs():
 
 #view song by song id
 @bp.route('/<int:id>', methods=['GET'])
-def fxn():
-    pass
+def song_detail(id):
+    # Retrieve the song details from the database
+    song = Song.query.find_one({"song_id": id})
+    # Check if the song exists in the database
+    if(song):
+    # Print the song details
+        image = SongImage.query.find_one({"song_id": id})
+        likes = SongLike.query.find_one({"song_id": id})
+        comments = Comment.query.find_one({"song_id": id})
+
+        res = {
+            "songId": song['song_id'],
+            "userId": song['userId'],
+            "name": song['name'],
+            "artists": song['artists'],
+            "genre": song['genre'],
+            "description": song['description'],
+            "SongImage": image['img_url'],
+            "SongLikesCnt": likes['id'],
+            "SongComments": comments['comment']
+        }
+
+        # print("Song ID:", song['song_id'])
+        # print("User ID:", song['userId'])
+        # print("Song Title:", song['name'])
+        # print("Artists:", song['artists'])
+        # print('Genre:', song['genre'])
+        # print('Description:', song['description'])
+        # print('Audio Url:', song['audio_url'])
+        # print('Song Image:', song['SongImages'])
+        # print('Song Likes', song['SongLikesCnt'])
+        # print('Song Comments', song['SongComments'])
+
+        return jsonify(res), 200
+
+    else:
+        # err.response.status_code == 404:
+        # print("Song does not exist")
+        res = {
+            "message": "Song could not be found.",
+            "statusCode": 404
+        }
+
+        return jsonify(res), 404
 
 #create new song
 @bp.route('/new', methods=['POST'])
