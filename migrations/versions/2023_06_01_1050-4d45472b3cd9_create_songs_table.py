@@ -1,8 +1,8 @@
-"""Creating tables
+"""Create_songs_table
 
-Revision ID: e9b5dcf4f824
-Revises: ffdc0a98111c
-Create Date: 2023-05-30 23:08:53.756802
+Revision ID: 4d45472b3cd9
+Revises: e0c6452f3388
+Create Date: 2023-06-01 10:50:58.391568
 
 """
 from alembic import op
@@ -13,8 +13,8 @@ environment = os.getenv("FLASK_ENV")
 SCHEMA = os.environ.get("SCHEMA")
 
 # revision identifiers, used by Alembic.
-revision = 'e9b5dcf4f824'
-down_revision = 'ffdc0a98111c'
+revision = '4d45472b3cd9'
+down_revision = 'e0c6452f3388'
 branch_labels = None
 depends_on = None
 
@@ -29,8 +29,8 @@ def upgrade():
     sa.Column('genre', sa.String(length=20)),
     sa.Column('description', sa.String(length=255)),
     sa.Column('audio_url', sa.String(length=255)),
-    sa.PrimaryKeyConstraint('id'),
-    sa.ForeignKeyConstraint(['user_id'], ['users.id'] )
+    sa.ForeignKeyConstraint(['user_id'], ['users.id'] ),
+    sa.PrimaryKeyConstraint('id')
     )
 
     if environment == "production":

@@ -15,6 +15,7 @@ app = Flask(__name__, static_folder='../react-app/build', static_url_path='/')
 
 alembic = Alembic()
 alembic.init_app(app)
+
 # Setup login manager
 login = LoginManager(app)
 login.login_view = 'auth.unauthorized'
