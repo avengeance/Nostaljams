@@ -70,8 +70,29 @@ def fxn():
 
 #update a song
 @bp.route('/<int:id>', methods=['PUT'])
-def fxn():
-    pass
+def update_song(id):
+    song = Song.query.get(id)
+    if song and current_user.id == song.user_id:
+        """
+
+        all this code is to update the song in the database, but also theory
+
+        form = SongForm()
+        form['csrf_token'].data = request.cookies['csrf_token']
+        if form.validate_on_submit():
+            form = form.data['song']
+            db.session.commit()
+            return form.to_dict(), 200
+        else:
+            return jsonify(form.errors), 400
+
+            """
+    else:
+        res = {
+            "message": "Song could not be found.",
+            "statusCode": 404
+        }
+        return jsonify(res), 404
 
 #delete a song
 @bp.route('/<int:id>/delete', methods=['DELETE'])
