@@ -8,3 +8,4 @@ class SongForm(FlaskForm):
     genre = StringField('genre')
     description = StringField('description')
     audio_url = FileField('audio_url', validators=[DataRequired()])
+
