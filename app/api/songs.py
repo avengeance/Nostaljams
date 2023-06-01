@@ -3,6 +3,8 @@ from ..models.song import Song
 from ..models.images import SongImage
 from ..models.comment import Comment
 from ..models.likes import SongLike
+from ..forms import SongForm
+from ..forms import CommentForm
 
 from flask import Blueprint, redirect, url_for, render_template, jsonify
 from flask_login import login_required, current_user, logout_user
@@ -78,6 +80,7 @@ def update_song(id):
 
         all this code is to update the song in the database, but also theory
 
+            """
         form = SongForm()
         form['csrf_token'].data = request.cookies['csrf_token']
         if form.validate_on_submit():
@@ -87,7 +90,6 @@ def update_song(id):
         else:
             return jsonify(form.errors), 400
 
-            """
     else:
         res = {
             "message": "Song could not be found.",
@@ -127,7 +129,17 @@ def fxn():
 def new_comment():
     song = Song.query.get(id)
     if(song):
-        pass
+        form = CommentForm()
+        form['csrf_token'].data = request.cookies['csrf_token']
+        if form.validate_on_submit():
+            comment = Comment(
+                comment=form.data['comment'],
+            )
+            db.session.add(comment)
+            db.session.commit()
+            return comment.to_dict(), 200
+        else:
+            return jsonify(form.errors), 400
     else:
         res = {
             "message": "Song could not be found.",
