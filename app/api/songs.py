@@ -1,4 +1,9 @@
-from ..models import Song, SongImage, SongLike, Comment, db
+from ..models.db import db
+from ..models.song import Song
+from ..models.images import SongImage
+from ..models.comment import Comment
+from ..models.likes import SongLike
+
 from flask import Blueprint, redirect, url_for, render_template, jsonify
 from flask_login import login_required, current_user, logout_user
 
@@ -6,14 +11,16 @@ bp = Blueprint('songs', __name__)
 
 # view all songs
 @bp.route('/', methods=['GET'])
-def fxn():
-    pass
+def get_all_songs():
+    songs = session.query(Song)
+
+
 
 #view song by song id
 @bp.route('/<int:id>', methods=['GET'])
 def song_detail(id):
     # Retrieve the song details from the database
-    song = Song.query.find_one({"song_id": song_id})
+    song = Song.query.find_one({"song_id": id})
     # Check if the song exists in the database
     if(song):
     # Print the song details
@@ -68,8 +75,23 @@ def fxn():
 
 #delete a song
 @bp.route('/<int:id>/delete', methods=['DELETE'])
-def fxn():
-    pass
+def delete_song():
+    song = Song.query.get(id)
+    if song and current_user.id == song.user_id:
+        db.session.delete(song)
+        db.session.commit()
+        res = {
+            "id": song.id,
+            "message": "Successfully deleted",
+            "statusCode": 200
+        }
+        return jsonify(res), 200
+    else:
+        res = {
+            "message": "Song couldn't be found",
+            "statusCode": 404
+        }
+        return jsonify(res), 404
 
 #view songs by comment id
 @bp.route('/<int:id>/comments', methods=['GET'])
