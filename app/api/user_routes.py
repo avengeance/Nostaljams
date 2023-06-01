@@ -1,6 +1,13 @@
 from flask import Blueprint, jsonify
-from flask_login import login_required
-from app.models import User, SongImage, Comment, SongLike
+from flask_login import login_required, current_user
+# from app.models import User, SongImage, Comment, SongLike
+from ..models.db import db
+from ..models.song import Song
+from ..models.images import SongImage
+from ..models.comment import Comment
+from ..models.likes import SongLike
+from ..models.user import User
+from ..models.playlist import Playlist
 
 user_routes = Blueprint('users', __name__)
 
@@ -54,8 +61,18 @@ def get_user_songs(id):
 
 #view all playlists by user
 @user_routes.route('/<int:id>/playlists', method=['GET'])
-def fxn():
-    pass
+def view_user_playlists(user_id):
+    if user_id != current_user.id:
+        return jsonify({
+            "Error": "Cannot Access"
+        })
+
+    user_playlists = Playlist.query.filter_by(user_id=user_id).all()
+
+    playlists_list = [playlist.to_dict() for playlist in user_playlists]
+
+    return jsonify(playlists_list), 200
+
 
 #view all playlists by playlist id
 @user_routes.route('/<int:id>/playlists/<int:id>', method=['GET'])
@@ -69,7 +86,7 @@ def fxn():
 
 #update playlist
 @user_routes.route('/<int:id>/playlists/<int:id>', method=['PUT'])
-def fxn():
+def update_playlist():
     pass
 
 #delete playlist

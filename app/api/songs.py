@@ -205,8 +205,12 @@ def song_likes(id):
 
 #create a new like
 @bp.route('/<int:id>/likes/new', methods=['POST'])
-def create_like():
-    pass
+def create_like(id):
+    user_id = current_user.id
+    new_like = SongLike(user_id=user_id, song_id=id)
+    db.session.add(new_like)
+    db.session.commit()
+    return jsonify(new_like.to_dict()), 201
 
 #delete a like
 @bp.route('/<int:id>/likes/<int:id>/delete', methods=['DELETE'])
