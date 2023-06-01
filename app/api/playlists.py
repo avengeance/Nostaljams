@@ -4,7 +4,7 @@ from flask_login import login_required, current_user, logout_user
 
 bp = Blueprint('playlists', __name__)
 
-#view likes by song Id
+#view likes by playlist Id
 @bp.route('/<int:id>/likes', methods=['GET'])
 def fxn():
     pass
