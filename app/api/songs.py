@@ -70,6 +70,7 @@ def fxn():
 
 #update a song
 @bp.route('/<int:id>', methods=['PUT'])
+@login_required
 def update_song(id):
     song = Song.query.get(id)
     if song and current_user.id == song.user_id:
@@ -96,6 +97,7 @@ def update_song(id):
 
 #delete a song
 @bp.route('/<int:id>/delete', methods=['DELETE'])
+@login_required
 def delete_song():
     song = Song.query.get(id)
     if song and current_user.id == song.user_id:
@@ -121,8 +123,18 @@ def fxn():
 
 #create new song comment
 @bp.route('/<int:id>/comments/new', methods=['POST'])
-def fxn():
-    pass
+@login_required
+def new_comment():
+    song = Song.query.get(id)
+    if(song):
+        pass
+    else:
+        res = {
+            "message": "Song could not be found.",
+            "statusCode": 404
+        }
+        return jsonify(res), 404
+
 
 #update comment
 @bp.route('/<int:id>/comments/<int:id>', methods=['PUT'])
@@ -141,8 +153,23 @@ def fxn():
 
 #view likes by song Id
 @bp.route('/<int:id>/likes', methods=['GET'])
-def fxn():
-    pass
+def song_likes(id):
+    song = Song.query.get(id)
+    if(song):
+        # Get all the likes from the database
+        comments = Comment.query.filter_by(song_id=id).all()
+        res = {
+            "message": "Successfully retrieved",
+            "statusCode": 200,
+            "comments": comments.to_dict()
+        }
+        return jsonify(res), 200
+    else:
+        res = {
+            "message": "Song could not be found.",
+            "statusCode": 404
+        }
+        return jsonify(res), 404
 
 #create a new like
 @bp.route('/<int:id>/likes/new', methods=['POST'])
