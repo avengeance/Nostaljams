@@ -3,6 +3,7 @@ from ..models.song import Song
 from ..models.images import SongImage
 from ..models.comment import Comment
 from ..models.likes import SongLike
+from ..models.user import User
 
 from flask import Blueprint, redirect, url_for, render_template, jsonify
 from flask_login import login_required, current_user, logout_user
@@ -138,8 +139,27 @@ def new_comment():
 
 #update comment
 @bp.route('/<int:id>/comments/<int:id>', methods=['PUT'])
-def fxn():
-    pass
+def update_comment():
+    # need a form var here that invokes our form for updating comment
+    # need a line here for requesting csrf token
+    comment = Comment.query.get(id)
+    user = User.query.get(current_user.id)
+    user = user.to_dict()
+    if comment.user_id == current_user.id:
+        # need an if statement here that checks validate_on_submit
+        # if form.validate_on_submit()
+        # comment.body = form.data['body']
+        db.session.comment()
+        comment_dict = comment.to_dict()
+        comment_dict['users'] = {
+            # this is where we add our key and values for user info
+        }
+        return comment_dict
+    return {
+        # validation error here if comment does not exist
+    }
+    #another return statement here if user does not own the comment
+
 
 #delete comment
 @bp.route('/<int:id>/comments/<int:id>/delete', methods=['DELETE'])
