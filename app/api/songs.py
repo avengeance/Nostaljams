@@ -193,7 +193,7 @@ def song_likes(id):
 
 #create a new like
 @bp.route('/<int:id>/likes/new', methods=['POST'])
-def fxn():
+def create_like():
     pass
 
 #delete a like
