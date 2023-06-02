@@ -68,7 +68,7 @@ def song_detail(id):
 
 #create new song
 @bp.route('/new', methods=['POST'])
-def fxn():
+def create_song():
     pass
 
 #update a song
@@ -121,7 +121,7 @@ def delete_song():
 
 #view songs by comment id
 @bp.route('/<int:id>/comments', methods=['GET'])
-def fxn():
+def view_song_by_comment_id():
     pass
 
 #create new song comment
@@ -150,7 +150,7 @@ def new_comment():
 
 
 #update comment
-@bp.route('/<int:id>/comments/<int:id>', methods=['PUT'])
+@bp.route('/<int:id>/comments/<int:comment_id>', methods=['PUT'])
 def update_comment():
     # need a form var here that invokes our form for updating comment
     # need a line here for requesting csrf token
@@ -174,13 +174,13 @@ def update_comment():
 
 
 #delete comment
-@bp.route('/<int:id>/comments/<int:id>/delete', methods=['DELETE'])
-def fxn():
+@bp.route('/<int:id>/comments/<int:comment_id>/delete', methods=['DELETE'])
+def delete_comment():
     pass
 
 #view likes by song Id
 @bp.route('/<int:id>/likes', methods=['GET'])
-def fxn():
+def view_likes_by_song_id():
     pass
 
 #view likes by song Id
@@ -213,6 +213,6 @@ def create_like(id):
     return jsonify(new_like.to_dict()), 201
 
 #delete a like
-@bp.route('/<int:id>/likes/<int:id>/delete', methods=['DELETE'])
-def fxn():
+@bp.route('/<int:id>/likes/<int:like_id>/delete', methods=['DELETE'])
+def delete_like():
     pass
