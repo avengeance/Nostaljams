@@ -1,8 +1,8 @@
-"""geryko alembric progress
+"""Create_geryko_tables
 
-Revision ID: ce18593d0247
-Revises: e9b5dcf4f824
-Create Date: 2023-05-31 19:24:50.848036
+Revision ID: 7a06e0d696ab
+Revises: 4d45472b3cd9
+Create Date: 2023-06-01 10:56:49.397363
 
 """
 from alembic import op
@@ -13,8 +13,8 @@ environment = os.getenv("FLASK_ENV")
 SCHEMA = os.environ.get("SCHEMA")
 
 # revision identifiers, used by Alembic.
-revision = 'ce18593d0247'
-down_revision = 'e9b5dcf4f824'
+revision = '7a06e0d696ab'
+down_revision = '4d45472b3cd9'
 branch_labels = None
 depends_on = None
 
@@ -71,6 +71,7 @@ def upgrade():
         op.execute(f"ALTER TABLE user_images SET SCHEMA {SCHEMA};")
         op.execute(f"ALTER TABLE song_images SET SCHEMA {SCHEMA};")
         op.execute(f"ALTER TABLE comments SET SCHEMA {SCHEMA};")
+
 
 def downgrade():
     op.drop_table('playlists')
