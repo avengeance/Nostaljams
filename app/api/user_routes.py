@@ -32,7 +32,7 @@ def user(id):
     return user.to_dict()
 
 #view all user songs
-@user_routes.route('/<int:id>/songs', method=['GET'])
+@user_routes.route('/<int:id>/songs', methods=['GET'])
 def get_user_songs(id):
     # we need to match the id from the params to our user id
     user = User.query.get(id)
@@ -41,7 +41,7 @@ def get_user_songs(id):
         for song in user.songs:
             song_dict = song.to_dict()
             song_dict["SongImage"] = {
-                "id": song.song_images[0].id if song.song_images else None,
+                "song_id": song.song_images[0].id if song.song_images else None,
                 "img_url": song.song_images[0].img_url if song.song_images else None
             }
             song_dict["SongCommentsCnt"] = song.comments.count()
@@ -60,7 +60,7 @@ def get_user_songs(id):
         return jsonify(res), 404
 
 #view all playlists by user
-@user_routes.route('/<int:id>/playlists', method=['GET'])
+@user_routes.route('/<int:id>/playlists', methods=['GET'])
 def view_user_playlists(user_id):
     if user_id != current_user.id:
         return jsonify({
@@ -76,21 +76,21 @@ def view_user_playlists(user_id):
 
 
 #view all playlists by playlist id
-@user_routes.route('/<int:id>/playlists/<int:id>', method=['GET'])
-def fxn():
+@user_routes.route('/<int:id>/playlists/<int:playlist_id>', methods=['GET'])
+def view_playlist():
     pass
 
 #create new playlist
-@user_routes.route('/<int:id>/playlists/new', method=['POST'])
-def fxn():
+@user_routes.route('/<int:id>/playlists/new', methods=['POST'])
+def create_playlist():
     pass
 
 #update playlist
-@user_routes.route('/<int:id>/playlists/<int:id>', method=['PUT'])
-def update_playlist(id):
+@user_routes.route('/<int:id>/playlists/<int:playlist_id>', methods=['PUT'])
+def update_playlist():
     pass
 
 #delete playlist
-@user_routes.route('/<int:id>/playlists/<int:id>/delete', method=['DELETE'])
-def fxn():
+@user_routes.route('/<int:id>/playlists/<int:playlist_id>/delete', methods=['DELETE'])
+def delete_playlist():
     pass
