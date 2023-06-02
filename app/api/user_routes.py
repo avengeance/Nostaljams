@@ -64,8 +64,9 @@ def get_user_songs(id):
 def view_user_playlists(user_id):
     if user_id != current_user.id:
         return jsonify({
-            "Error": "Cannot Access"
-        })
+            "message": "User couldn't be found",
+            "statusCode": 404
+        }), 404
 
     user_playlists = Playlist.query.filter_by(user_id=user_id).all()
 
@@ -86,7 +87,7 @@ def fxn():
 
 #update playlist
 @user_routes.route('/<int:id>/playlists/<int:id>', method=['PUT'])
-def update_playlist():
+def update_playlist(id):
     pass
 
 #delete playlist

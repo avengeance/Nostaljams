@@ -1,4 +1,4 @@
-from app.models import db, SongImage, environment, SCHEMA
+from app.models.images import db, SongImage, environment, SCHEMA
 from sqlalchemy.sql import text
 
 # Add Images to songs
@@ -52,5 +52,5 @@ def undo_song_images():
         db.session.execute(f"TRUNCATE table {SCHEMA}.users RESTART IDENTITY CASCADE;")
     else:
         db.session.execute(text("DELETE FROM song_images"))
-        
+
     db.session.commit()

@@ -1,4 +1,4 @@
-from app.models import db, UserImage, environment, SCHEMA
+from app.models.images import db, UserImage, environment, SCHEMA
 from sqlalchemy.sql import text
 
 # Add user profile image
@@ -24,5 +24,5 @@ def undo_user_images():
         db.session.execute(f"TRUNCATE table {SCHEMA}.users RESTART IDENTITY CASCADE;")
     else:
         db.session.execute(text("DELETE FROM user_images"))
-        
+
     db.session.commit()

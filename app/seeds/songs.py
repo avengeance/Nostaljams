@@ -1,4 +1,4 @@
-from app.models import db, Song, environment, SCHEMA
+from app.models.song import db, Song, environment, SCHEMA
 from sqlalchemy.sql import text
 
 # Adds demo songs
@@ -44,7 +44,7 @@ def seed_songs():
     db.session.add(wonderwall)
     db.session.add(good_times)
     db.session.add(september)
-    
+
     db.session.commit()
 
 def undo_songs():
@@ -52,5 +52,5 @@ def undo_songs():
         db.session.execute(f"TRUNCATE table {SCHEMA}.users RESTART IDENTITY CASCADE;")
     else:
         db.session.execute(text("DELETE FROM songs"))
-        
+
     db.session.commit()
