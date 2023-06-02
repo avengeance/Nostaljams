@@ -1,4 +1,4 @@
-from app.models import db, Comment, environment, SCHEMA
+from app.models.comment import db, Comment, environment, SCHEMA
 from sqlalchemy.sql import text
 
 # Add comments
@@ -132,5 +132,5 @@ def undo_comments():
         db.session.execute(f"TRUNCATE table {SCHEMA}.users RESTART IDENTITY CASCADE;")
     else:
         db.session.execute(text("DELETE FROM comments"))
-        
+
     db.session.commit()

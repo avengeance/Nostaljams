@@ -1,4 +1,4 @@
-from app.models import db, SongLike, environment, SCHEMA
+from app.models.likes import db, SongLike, environment, SCHEMA
 from sqlalchemy.sql import text
 
 # Add likes to Songs
@@ -97,5 +97,5 @@ def undo_song_likes():
         db.session.execute(f"TRUNCATE table {SCHEMA}.users RESTART IDENTITY CASCADE;")
     else:
         db.session.execute(text("DELETE FROM song_likes"))
-        
+
     db.session.commit()

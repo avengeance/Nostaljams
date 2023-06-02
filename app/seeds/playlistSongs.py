@@ -1,4 +1,4 @@
-from app.models import db, PlaylistSong, environment, SCHEMA
+from app.models.playlist import db, PlaylistSong, environment, SCHEMA
 from sqlalchemy.sql import text
 
 # Adds songs to the Playlist
@@ -30,7 +30,7 @@ def seed_playlist_songs():
     playlist9 = PlaylistSong(
         song_id=['song_id_3','song_id_6','song_id_9'],playlist_id='9'
     )
-    
+
     db.session.add(playlist1)
     db.session.add(playlist2)
     db.session.add(playlist3)
@@ -40,7 +40,7 @@ def seed_playlist_songs():
     db.session.add(playlist7)
     db.session.add(playlist8)
     db.session.add(playlist9)
-    
+
     db.session.commit()
 
 def undo_playlist_songs():
@@ -48,6 +48,5 @@ def undo_playlist_songs():
         db.session.execute(f"TRUNCATE table {SCHEMA}.users RESTART IDENTITY CASCADE;")
     else:
         db.session.execute(text("DELETE FROM playlist_songs"))
-        
-    db.session.commit()
 
+    db.session.commit()

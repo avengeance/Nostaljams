@@ -1,4 +1,4 @@
-from app.models import db, Playlist, environment, SCHEMA
+from app.models.playlist import db, Playlist, environment, SCHEMA
 from sqlalchemy.sql import text
 
 # Adds Playlists
@@ -43,10 +43,10 @@ def seed_playlist():
 
     db.session.commit()
 
-    def undo_playlists():
+def undo_playlists():
     if environment == "production":
         db.session.execute(f"TRUNCATE table {SCHEMA}.users RESTART IDENTITY CASCADE;")
     else:
         db.session.execute(text("DELETE FROM playlists"))
-        
+
     db.session.commit()
