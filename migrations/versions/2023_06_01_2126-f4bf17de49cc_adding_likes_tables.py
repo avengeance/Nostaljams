@@ -38,6 +38,10 @@ def upgrade():
     sa.PrimaryKeyConstraint('id')
     )
 
+    if environment == "production":
+        op.execute(f"ALTER TABLE song_likes SET SCHEMA {SCHEMA};")
+        op.execute(f"ALTER TABLE playlist_likes SET SCHEMA {SCHEMA};")
+
 def downgrade():
     op.drop_table('song_likes')
     op.drop_table('playlist_likes')

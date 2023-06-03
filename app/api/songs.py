@@ -15,9 +15,10 @@ bp = Blueprint('songs', __name__)
 # view all songs
 @bp.route('/', methods=['GET'])
 def get_all_songs():
-    songs = session.query(Song)
-
-
+    songs = Song.query.all()
+    return {
+        "Songs": [songs.to_dict()] for song in songs
+    }
 
 #view song by song id
 @bp.route('/<int:id>', methods=['GET'])
@@ -151,10 +152,10 @@ def new_comment():
 
 #update comment
 @bp.route('/<int:id>/comments/<int:comment_id>', methods=['PUT'])
-def update_comment():
+def update_comment(comment_id):
     # need a form var here that invokes our form for updating comment
     # need a line here for requesting csrf token
-    comment = Comment.query.get(id)
+    comment = Comment.query.get(comment_id)
     user = User.query.get(current_user.id)
     user = user.to_dict()
     if comment.user_id == current_user.id:
@@ -175,13 +176,18 @@ def update_comment():
 
 #delete comment
 @bp.route('/<int:id>/comments/<int:comment_id>/delete', methods=['DELETE'])
-def delete_comment():
-    pass
+@login_required
+def delete_comment(comment_id):
+    comment = Comment.query.get(comment_id)
+    db.session.delete(comment)
+    db.session.commit()
+    return comment.to_dict()
 
 #view likes by song Id
 @bp.route('/<int:id>/likes', methods=['GET'])
-def view_likes_by_song_id():
-    pass
+def view_likes_by_song_id(id):
+    likes = SongLike.query.filter(SongLike.song_id == id)
+    return jsonify([like.to_dict() for like in likes])
 
 #view likes by song Id
 @bp.route('/<int:id>/likes', methods=['GET'])
