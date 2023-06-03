@@ -4,10 +4,10 @@ from ..models.images import SongImage
 from ..models.comment import Comment
 from ..models.likes import SongLike
 from ..models.user import User
-# from ..forms import SongForm
-# from ..forms import CommentForm
+from ..forms import SongForm
+from ..forms import CommentForm
 
-from flask import Blueprint, redirect, url_for, render_template, jsonify
+from flask import Blueprint, redirect, url_for, render_template, jsonify, request
 from flask_login import login_required, current_user, logout_user
 
 bp = Blueprint('songs', __name__)
@@ -17,7 +17,7 @@ bp = Blueprint('songs', __name__)
 def get_all_songs():
     songs = Song.query.all()
     return {
-        "Songs": [songs.to_dict()] for song in songs
+        "Songs": [song.to_dict() for song in songs]
     }
 
 #view song by song id
@@ -70,7 +70,28 @@ def song_detail(id):
 #create new song
 @bp.route('/new', methods=['POST'])
 def create_song():
-    pass
+    form = SongForm()
+    if form.validate_on_submit():
+        name = form.name.data
+        artists = form.artists.data
+        genre = form.genre.data
+        description = form.description.data
+        audio_url = form.audio_url.data
+
+        song = Song(
+            name=name,
+            artists=artists,
+            genre=genre,
+            description=description,
+            audio_url=audio_url
+        )
+
+        db.session.add(song)
+        db.session.commit()
+
+        return jsonify(song.to_dict()), 201
+    else:
+        return jsonify(form.errors), 400
 
 #update a song
 @bp.route('/<int:id>', methods=['PUT'])
@@ -122,20 +143,29 @@ def delete_song():
 
 #view songs by comment id
 @bp.route('/<int:id>/comments', methods=['GET'])
-def view_song_by_comment_id():
-    pass
+def view_song_by_comment_id(id):
+    comment = Comment.query.get(id)
+    if comment is None:
+        return jsonify({'error': 'Comment not found'}), 404
+
+    songs = comment.songs
+    song_list = [song.to_dict() for song in songs]
+
+    return jsonify(song_list), 200
 
 #create new song comment
 @bp.route('/<int:id>/comments/new', methods=['POST'])
 @login_required
-def new_comment():
+def new_comment(id):
     song = Song.query.get(id)
     if(song):
         form = CommentForm()
         form['csrf_token'].data = request.cookies['csrf_token']
         if form.validate_on_submit():
             comment = Comment(
-                comment=form.data['comment'],
+                user_id=current_user.id,
+                song_id=id,
+                comment=form.comment.data
             )
             db.session.add(comment)
             db.session.commit()
@@ -152,36 +182,64 @@ def new_comment():
 
 #update comment
 @bp.route('/<int:id>/comments/<int:comment_id>', methods=['PUT'])
-def update_comment(comment_id):
-    # need a form var here that invokes our form for updating comment
-    # need a line here for requesting csrf token
+@login_required
+def update_comment(id, comment_id):
     comment = Comment.query.get(comment_id)
-    user = User.query.get(current_user.id)
-    user = user.to_dict()
-    if comment.user_id == current_user.id:
-        # need an if statement here that checks validate_on_submit
-        # if form.validate_on_submit()
-        # comment.body = form.data['body']
-        db.session.comment()
+    if comment is None:
+        return jsonify({'error': 'Comment not found'}), 404
+
+    if comment.user_id != current_user.id:
+        return jsonify({'error': 'You do not have permission to update this comment'}), 403
+
+    form = CommentForm()
+    form.csrf_token.data = request.cookies['csrf_token']
+    if form.validate_on_submit():
+        comment.comment = form.comment.data
+        db.session.commit()
+
         comment_dict = comment.to_dict()
-        comment_dict['users'] = {
-            # this is where we add our key and values for user info
-        }
-        return comment_dict
-    return {
-        # validation error here if comment does not exist
-    }
-    #another return statement here if user does not own the comment
+        comment_dict['user'] = current_user.to_dict()
+
+        return jsonify(comment_dict), 200
+    else:
+        return jsonify(form.errors), 400
+# def update_comment(comment_id):
+#     # need a form var here that invokes our form for updating comment
+#     # need a line here for requesting csrf token
+#     comment = Comment.query.get(comment_id)
+#     user = User.query.get(current_user.id)
+#     user = user.to_dict()
+#     if comment.user_id == current_user.id:
+#         # need an if statement here that checks validate_on_submit
+#         # if form.validate_on_submit()
+#         # comment.body = form.data['body']
+#         db.session.comment()
+#         comment_dict = comment.to_dict()
+#         comment_dict['users'] = {
+#             # this is where we add our key and values for user info
+#         }
+#         return comment_dict
+#     return {
+#         # validation error here if comment does not exist
+#     }
+#     #another return statement here if user does not own the comment
 
 
 #delete comment
 @bp.route('/<int:id>/comments/<int:comment_id>/delete', methods=['DELETE'])
 @login_required
-def delete_comment(comment_id):
+def delete_comment(id, comment_id):
     comment = Comment.query.get(comment_id)
+    if comment is None:
+        return jsonify({'error': 'Comment not found'}), 404
+
+    if comment.user_id != current_user.id:
+        return jsonify({'error': 'You do not have permission to delete this comment'}), 403
+
     db.session.delete(comment)
     db.session.commit()
-    return comment.to_dict()
+
+    return jsonify({'message': 'Comment deleted successfully'}), 200
 
 #view likes by song Id
 @bp.route('/<int:id>/likes', methods=['GET'])
@@ -220,5 +278,15 @@ def create_like(id):
 
 #delete a like
 @bp.route('/<int:id>/likes/<int:like_id>/delete', methods=['DELETE'])
-def delete_like():
-    pass
+def delete_like(id, like_id):
+    like = SongLike.query.get(like_id)
+    if like is None:
+        return jsonify({'error': 'Like not found'}), 404
+
+    if like.user_id != current_user.id:
+        return jsonify({'error': 'You do not have permission to delete this like'}), 403
+
+    db.session.delete(like)
+    db.session.commit()
+
+    return jsonify({'message': 'Like deleted successfully'}), 200

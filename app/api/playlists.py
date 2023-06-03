@@ -27,3 +27,17 @@ def create_playlist_like(id):
     db.session.add(playlist_like)
     db.session.commit()
     return jsonify(playlist_like.to_dict()), 201
+
+@bp.route('/<int:id>/likes/<int:like_id>/delete', methods=['DELETE'])
+def delete_playlist_like(id, like_id):
+    playlist_like = PlaylistLike.query.get(like_id)
+    if playlist_like is None:
+        return jsonify({'error': 'Playlist like not found'}), 404
+
+    if playlist_like.user_id != current_user.id:
+        return jsonify({'error': 'You do not have permission to delete this playlist like'}), 403
+
+    db.session.delete(playlist_like)
+    db.session.commit()
+
+    return jsonify({'message': 'Playlist like deleted successfully'}), 200
