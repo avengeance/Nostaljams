@@ -1,5 +1,6 @@
 from .db import db, environment, SCHEMA, add_prefix_for_prod
 from datetime import datetime
+from .images import SongImage
 
 class Song(db.Model):
     __tablename__ = 'songs'

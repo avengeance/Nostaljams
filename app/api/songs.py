@@ -4,8 +4,8 @@ from ..models.images import SongImage
 from ..models.comment import Comment
 from ..models.likes import SongLike
 from ..models.user import User
-from ..forms import SongForm
-from ..forms import CommentForm
+# from ..forms import SongForm
+# from ..forms import CommentForm
 
 from flask import Blueprint, redirect, url_for, render_template, jsonify
 from flask_login import login_required, current_user, logout_user
