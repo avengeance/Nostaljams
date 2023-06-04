@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
 # from app.models import User, SongImage, Comment, SongLike
 from ..models.db import db
@@ -77,20 +77,69 @@ def view_user_playlists(user_id):
 
 #view all playlists by playlist id
 @user_routes.route('/<int:id>/playlists/<int:playlist_id>', methods=['GET'])
-def view_playlist():
-    pass
+def view_playlist(playlist_id):
+    playlist = Playlist.query.get(playlist_id)
+    if playlist is None:
+        return jsonify({
+            'Error': 'Playlist not found',
+            'status': 404
+        }), 404
+
+    playlist_data = playlist.to_dict()
+    return jsonify(playlist_data), 200
 
 #create new playlist
 @user_routes.route('/<int:id>/playlists/new', methods=['POST'])
-def create_playlist():
-    pass
+def create_playlist(id):
+    user = User.query.get(id)
+    if user is None:
+        return jsonify({'error': 'User not found'}), 404
+
+    data = request.json
+    name = data.get('name')
+    description = data.get('description')
+
+    if not name:
+        return jsonify({'error': 'Name is required'}), 400
+
+    playlist = Playlist(name=name, description=description, user_id=user.id)
+    db.session.add(playlist)
+    db.session.commit()
+
+    playlist_data = playlist.to_dict()
+
+    return jsonify(playlist_data), 201
 
 #update playlist
 @user_routes.route('/<int:id>/playlists/<int:playlist_id>', methods=['PUT'])
-def update_playlist():
-    pass
+def update_playlist(id, playlist_id):
+    playlist = Playlist.query.get(playlist_id)
+    if playlist is None:
+        return jsonify({'error': 'Playlist not found'}), 404
+
+    data = request.json
+    name = data.get('name')
+    description = data.get('description')
+
+    if name:
+        playlist.name = name
+    if description:
+        playlist.description = description
+
+    db.session.commit()
+
+    playlist_data = playlist.to_dict()
+
+    return jsonify(playlist_data), 200
 
 #delete playlist
 @user_routes.route('/<int:id>/playlists/<int:playlist_id>/delete', methods=['DELETE'])
-def delete_playlist():
-    pass
+def delete_playlist(playlist_id):
+    playlist = Playlist.query.get(playlist_id)
+    if playlist is None:
+        return jsonify({'error': 'Playlist not found'}), 404
+
+    db.session.delete(playlist)
+    db.session.commit()
+
+    return jsonify({'message': 'Playlist deleted successfully'}), 200

@@ -1,5 +1,6 @@
 from .db import db, environment, SCHEMA, add_prefix_for_prod
 from datetime import datetime
+from .images import SongImage
 
 class Song(db.Model):
     __tablename__ = 'songs'
@@ -21,8 +22,8 @@ class Song(db.Model):
     comments = db.relationship('Comment', back_populates='songs', cascade='all, delete-orphan')
     song_likes = db.relationship('SongLike', back_populates='songs', cascade='all, delete-orphan')
     # recheck this section below for cascade delete and single_parent
-    song_images = db.relationship('SongImages', back_populates='songs')
-    playlist_songs = db.relationship('PlaylistSongs', back_populates='songs')
+    song_images = db.relationship('SongImage', back_populates='songs')
+    playlist_songs = db.relationship('PlaylistSong', back_populates='songs')
 
     def to_dict(self):
         return {
