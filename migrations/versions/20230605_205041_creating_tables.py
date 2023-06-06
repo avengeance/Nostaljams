@@ -1,8 +1,8 @@
-"""empty message
+"""creating tables
 
-Revision ID: 0f33ad3c173a
+Revision ID: a83e6819378b
 Revises:
-Create Date: 2023-06-04 17:16:04.682967
+Create Date: 2023-06-05 20:50:41.340585
 
 """
 from alembic import op
@@ -13,13 +13,13 @@ environment = os.getenv("FLASK_ENV")
 SCHEMA = os.environ.get("SCHEMA")
 
 # revision identifiers, used by Alembic.
-revision = '0f33ad3c173a'
+revision = 'a83e6819378b'
 down_revision = None
 branch_labels = None
 depends_on = None
 
 
-def upgrade() -> None:
+def upgrade():
     op.create_table('users',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('username', sa.String(length=40), nullable=False),
@@ -114,7 +114,7 @@ def upgrade() -> None:
         op.execute(f"ALTER TABLE song_likes SET SCHEMA {SCHEMA};")
 
 
-def downgrade() -> None:
+def downgrade():
     op.drop_table('users')
     op.drop_table('songs')
     op.drop_table('playlists')

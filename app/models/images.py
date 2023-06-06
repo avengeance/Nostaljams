@@ -32,6 +32,7 @@ class SongImage(db.Model):
     song_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('songs.id')), nullable=False)
     img_url = db.Column(db.String(255))
 
+    # songs = db.relationship('Song', back_populates='song_images')
     songs = db.relationship('Song', back_populates='song_images')
 
     def to_dict(self):
