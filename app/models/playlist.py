@@ -35,8 +35,8 @@ class Playlist(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
     users = db.relationship('User', back_populates='playlists')
-    # playlist_likes = db.relationship('PlaylistLike', back_populates='playlists')
-    # playlist_songs = db.relationship('PlaylistSong', back_populates='playlists')
+    playlist_likes = db.relationship('PlaylistLike', back_populates='playlists')
+    playlist_songs = db.relationship('PlaylistSong', back_populates='playlists')
     songs = db.relationship('Song', secondary=PlaylistSong.__table__)
 
     def to_dict(self):
