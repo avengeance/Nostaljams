@@ -13,10 +13,8 @@ class PlaylistSong(db.Model):
     song_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('songs.id')))
     playlist_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('playlists.id')))
 
-    # songs = db.relationship('Song', back_populates='playlist_songs')
-    # playlists = db.relationship('Playlist', back_populates='playlist_songs')
-    songs = db.relationship('Song', back_populates='playlist_songs')
-    playlist = db.relationship('Playlist', back_populates='playlist_songs')
+    songs = db.relationship('Song', back_populates='playlist_songs', overlaps="playlists")
+    playlist = db.relationship('Playlist', back_populates='playlist_songs', overlaps="playlists")
     def to_dict(self):
         return {
             'id': self.id,
@@ -37,14 +35,10 @@ class Playlist(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
-    # users = db.relationship('User', back_populates='playlists')
-    # playlist_likes = db.relationship('PlaylistLike', back_populates='playlists')
-    # playlist_songs = db.relationship('PlaylistSong', back_populates='playlists')
-    # songs = db.relationship('Song', back_populates='playlists')
     users = db.relationship('User', back_populates='playlists')
     likes = db.relationship('PlaylistLike', back_populates='playlist')
     playlist_songs = db.relationship('PlaylistSong', back_populates='playlist')
-    songs = db.relationship('Song', back_populates='playlists', secondary='playlist_songs')
+    songs = db.relationship('Song', back_populates='playlists', secondary='playlist_songs', overlaps="playlist,playlist_songs,songs")
 
     def to_dict(self):
         return {
