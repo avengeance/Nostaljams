@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD:table-data.py
-=======
-=======
->>>>>>> d12754beed26958b626e47589eca3b902782ae67
 """create_tables
 
 Revision ID: ffdc0a98111c
@@ -26,10 +21,6 @@ depends_on = None
 
 
 
-<<<<<<< HEAD
->>>>>>> d12754beed26958b626e47589eca3b902782ae67:migrations/versions/create-tables.py
-=======
->>>>>>> d12754beed26958b626e47589eca3b902782ae67
 def upgrade():
     op.create_table('users',
     sa.Column('id', sa.Integer(), nullable=False),
