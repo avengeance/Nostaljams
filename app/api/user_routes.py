@@ -44,8 +44,8 @@ def get_user_songs(id):
                 "song_id": song.song_images[0].id if song.song_images else None,
                 "img_url": song.song_images[0].img_url if song.song_images else None
             }
-            song_dict["SongCommentsCnt"] = song.comments.count()
-            song_dict["SongLikesCnt"] = song.song_likes.count()
+            song_dict["SongCommentsCnt"] = len(song.comments)
+            song_dict["SongLikesCnt"] = len(song.song_likes)
             songs_list.append(song_dict)
 
         res = {
