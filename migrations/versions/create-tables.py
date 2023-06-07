@@ -1,8 +1,8 @@
-"""empty message
+"""create_users_table
 
-Revision ID: 0f33ad3c173a
+Revision ID: ffdc0a98111c
 Revises:
-Create Date: 2023-06-04 17:16:04.682967
+Create Date: 2020-11-20 15:06:02.230689
 
 """
 from alembic import op
@@ -12,20 +12,25 @@ import os
 environment = os.getenv("FLASK_ENV")
 SCHEMA = os.environ.get("SCHEMA")
 
+
 # revision identifiers, used by Alembic.
-revision = '0f33ad3c173a'
+revision = 'ffdc0a98111c'
 down_revision = None
 branch_labels = None
 depends_on = None
 
 
-def upgrade() -> None:
+def upgrade():
     op.create_table('users',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('username', sa.String(length=40), nullable=False),
+    sa.Column('first_name', sa.String(length=50), nullable=False),
+    sa.Column('last_name', sa.String(length=50), nullable=False),
     sa.Column('email', sa.String(length=255), nullable=False),
     sa.Column('hashed_password', sa.String(length=255), nullable=False),
     sa.Column('bio_info', sa.String(255), nullable=False),
+    sa.Column('created_at', sa.DateTime(), nullable=True),
+    sa.Column('updated_at', sa.DateTime(), nullable=True),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('email'),
     sa.UniqueConstraint('username')
@@ -38,6 +43,8 @@ def upgrade() -> None:
     sa.Column('genre', sa.String(length=20)),
     sa.Column('description', sa.String(length=255)),
     sa.Column('audio_url', sa.String(length=255)),
+    sa.Column('created_at', sa.DateTime(), nullable=True),
+    sa.Column('updated_at', sa.DateTime(), nullable=True),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'] ),
     sa.PrimaryKeyConstraint('id')
     )
@@ -114,7 +121,7 @@ def upgrade() -> None:
         op.execute(f"ALTER TABLE song_likes SET SCHEMA {SCHEMA};")
 
 
-def downgrade() -> None:
+def downgrade():
     op.drop_table('users')
     op.drop_table('songs')
     op.drop_table('playlists')
