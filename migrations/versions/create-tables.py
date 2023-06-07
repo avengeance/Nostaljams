@@ -1,4 +1,4 @@
-"""create_tables
+"""create_users_table
 
 Revision ID: ffdc0a98111c
 Revises:
@@ -18,7 +18,6 @@ revision = 'ffdc0a98111c'
 down_revision = None
 branch_labels = None
 depends_on = None
-
 
 
 def upgrade():
