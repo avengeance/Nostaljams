@@ -32,8 +32,6 @@ def seed_playlist_likes():
     db.session.add(playlist_like5)
     db.session.add(playlist_like6)
     db.session.add(playlist_like7)
-    db.session.add(playlist_like8)
-    db.session.add(playlist_like9)
 
     db.session.commit()
 

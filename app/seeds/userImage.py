@@ -17,7 +17,7 @@ def seed_user_images():
     db.session.add(user2)
     db.session.add(user3)
 
-    db.commit()
+    db.session.commit()
 
 def undo_user_images():
     if environment == "production":
