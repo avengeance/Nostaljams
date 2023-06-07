@@ -37,9 +37,9 @@ def seed_playlist_songs():
     db.session.add(playlist4)
     db.session.add(playlist5)
     db.session.add(playlist6)
-    db.session.add(playlist7)
-    db.session.add(playlist8)
-    db.session.add(playlist9)
+    # db.session.add(playlist7)
+    # db.session.add(playlist8)
+    # db.session.add(playlist9)
 
     db.session.commit()
 

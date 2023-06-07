@@ -1,3 +1,35 @@
+<<<<<<< HEAD
+<<<<<<< HEAD:table-data.py
+=======
+=======
+>>>>>>> d12754beed26958b626e47589eca3b902782ae67
+"""create_tables
+
+Revision ID: ffdc0a98111c
+Revises:
+Create Date: 2020-11-20 15:06:02.230689
+
+"""
+from alembic import op
+import sqlalchemy as sa
+
+import os
+environment = os.getenv("FLASK_ENV")
+SCHEMA = os.environ.get("SCHEMA")
+
+
+# revision identifiers, used by Alembic.
+revision = 'ffdc0a98111c'
+down_revision = None
+branch_labels = None
+depends_on = None
+
+
+
+<<<<<<< HEAD
+>>>>>>> d12754beed26958b626e47589eca3b902782ae67:migrations/versions/create-tables.py
+=======
+>>>>>>> d12754beed26958b626e47589eca3b902782ae67
 def upgrade():
     op.create_table('users',
     sa.Column('id', sa.Integer(), nullable=False),

@@ -1,8 +1,10 @@
 from .db import db, environment, SCHEMA, add_prefix_for_prod
 from datetime import datetime
+from .images import SongImage
+from .song import Song
 
 class PlaylistSong(db.Model):
-    __tablename__='playlist_songs'
+    __tablename__ = 'playlist_songs'
 
     if environment == 'production':
         __table_args__ = {'schema': SCHEMA}
@@ -11,9 +13,8 @@ class PlaylistSong(db.Model):
     song_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('songs.id')))
     playlist_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('playlists.id')))
 
-    songs = db.relationship('Song', back_populates='playlist_songs')
-    playlists = db.relationship('Playlist', back_populates='playlist_songs')
-
+    songs = db.relationship('Song', back_populates='playlist_songs', overlaps="playlists")
+    playlist = db.relationship('Playlist', back_populates='playlist_songs', overlaps="playlists")
     def to_dict(self):
         return {
             'id': self.id,
@@ -35,9 +36,9 @@ class Playlist(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
     users = db.relationship('User', back_populates='playlists')
-    playlist_likes = db.relationship('PlaylistLike', back_populates='playlists')
-    playlist_songs = db.relationship('PlaylistSong', back_populates='playlists')
-    songs = db.relationship('Song', secondary=PlaylistSong.__table__)
+    likes = db.relationship('PlaylistLike', back_populates='playlist')
+    playlist_songs = db.relationship('PlaylistSong', back_populates='playlist')
+    songs = db.relationship('Song', back_populates='playlists', secondary='playlist_songs', overlaps="playlist,playlist_songs,songs")
 
     def to_dict(self):
         return {
@@ -49,3 +50,24 @@ class Playlist(db.Model):
             'createdAt': self.created_at,
             'updatedAt': self.updated_at
         }
+
+
+# class PlaylistSong(db.Model):
+#     __tablename__='playlist_songs'
+
+#     if environment == 'production':
+#         __table_args__ = {'schema': SCHEMA}
+
+#     id = db.Column(db.Integer, primary_key=True)
+#     song_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('songs.id')))
+#     playlist_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('playlists.id')))
+
+#     songs = db.relationship('Song', back_populates='playlist_songs')
+#     playlists = db.relationship('Playlist', back_populates='playlist_songs')
+
+#     def to_dict(self):
+#         return {
+#             'id': self.id,
+#             'songId': self.song_id,
+#             'playlistId': self.playlist_id
+#         }

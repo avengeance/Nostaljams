@@ -4,7 +4,6 @@ from flask_login import UserMixin
 from datetime import datetime
 
 class User(db.Model, UserMixin):
-    # delete this comment
     __tablename__ = 'users'
 
     if environment == "production":
@@ -20,7 +19,7 @@ class User(db.Model, UserMixin):
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
-    songs = db.relationship('Song', back_populates='users', cascade='all, delete-orphan')
+    songs = db.relationship('Song', back_populates='user', cascade='all, delete-orphan')
     comments = db.relationship('Comment', back_populates='users', cascade='all, delete-orphan')
     playlists = db.relationship('Playlist', back_populates='users', cascade='all, delete-orphan')
     song_likes = db.relationship('SongLike', back_populates='users', cascade='all, delete-orphan')
