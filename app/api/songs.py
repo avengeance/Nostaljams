@@ -57,8 +57,10 @@ def song_detail(id):
 
 #create new song
 @songs_routes.route('/new', methods=['POST'])
+@login_required
 def create_song():
     form = SongForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
         name = form.name.data
         artists = form.artists.data
@@ -67,6 +69,7 @@ def create_song():
         audio_url = form.audio_url.data
 
         song = Song(
+            user_id=current_user.id,
             name=name,
             artists=artists,
             genre=genre,
@@ -111,7 +114,7 @@ def update_song(id):
 #delete a song
 @songs_routes.route('/<int:id>/delete', methods=['DELETE'])
 @login_required
-def delete_song():
+def delete_song(id):
     song = Song.query.get(id)
     if song and current_user.id == song.user_id:
         db.session.delete(song)
