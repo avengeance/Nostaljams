@@ -235,28 +235,36 @@ def delete_comment(id, comment_id):
 #view likes by song Id
 @songs_routes.route('/<int:id>/likes', methods=['GET'])
 def view_likes_by_song_id(id):
-    likes = SongLike.query.filter(SongLike.song_id == id)
-    return jsonify([like.to_dict() for like in likes])
-
-#view likes by song Id
-@songs_routes.route('/<int:id>/likes', methods=['GET'])
-def song_likes(id):
     song = Song.query.get(id)
     if(song):
-        # Get all the likes from the database
-        comments = Comment.query.filter_by(song_id=id).all()
-        res = {
-            "message": "Successfully retrieved",
-            "statusCode": 200,
-            "comments": comments.to_dict()
-        }
-        return jsonify(res), 200
+        likes = SongLike.query.filter(SongLike.song_id == id)
+        return jsonify([like.to_dict() for like in likes]),200
     else:
         res = {
             "message": "Song could not be found.",
             "statusCode": 404
         }
         return jsonify(res), 404
+
+# #view likes by song Id
+# @songs_routes.route('/<int:id>/likes', methods=['GET'])
+# def song_likes(id):
+#     song = Song.query.get(id)
+#     if(song):
+#         # Get all the likes from the database
+#         comments = Comment.query.filter_by(song_id=id).all()
+#         res = {
+#             "message": "Successfully retrieved",
+#             "statusCode": 200,
+#             "comments": comments.to_dict()
+#         }
+#         return jsonify(res), 200
+#     else:
+#         res = {
+#             "message": "Song could not be found.",
+#             "statusCode": 404
+#         }
+#         return jsonify(res), 404
 
 #create a new like
 @songs_routes.route('/<int:id>/likes/new', methods=['POST'])
