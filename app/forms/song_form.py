@@ -10,7 +10,7 @@ class SongForm(FlaskForm):
     audio_url = FileField('audio_url', validators=[DataRequired()])
 
 class EditSongForm(FlaskForm):
-    title=StringField("name")
+    name=StringField("name")
     artists=StringField("artists")
     genre = StringField('genre')
     description = StringField('description')
