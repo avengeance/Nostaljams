@@ -4,7 +4,7 @@ from ..models.images import SongImage
 from ..models.comment import Comment
 from ..models.likes import SongLike
 from ..models.user import User
-from ..forms.song_form import SongForm
+from ..forms.song_form import SongForm, EditSongForm
 from ..forms.comment_form import CommentForm
 
 from flask import Blueprint, redirect, url_for, render_template, jsonify, request
@@ -104,7 +104,7 @@ def update_song(id):
         all this code is to update the song in the database, but also theory
 
             """
-        form = SongForm()
+        form = EditSongForm()
         form['csrf_token'].data = request.cookies['csrf_token']
         if form.validate_on_submit():
             form = form.data['song']
