@@ -4,7 +4,7 @@ from ..models.images import SongImage
 from ..models.comment import Comment
 from ..models.likes import SongLike
 from ..models.user import User
-from ..forms.song_form import SongForm
+from ..forms.song_form import SongForm, EditSongForm
 from ..forms.comment_form import CommentForm
 
 from flask import Blueprint, redirect, url_for, render_template, jsonify, request
@@ -24,42 +24,30 @@ def get_all_songs():
 @songs_routes.route('/<int:id>', methods=['GET'])
 def song_detail(id):
     # Retrieve the song details from the database
-    song = Song.query.find_one({"song_id": id})
+    song = Song.query.get(id)
     # Check if the song exists in the database
     if(song):
     # Print the song details
-        image = SongImage.query.find_one({"song_id": id})
-        likes = SongLike.query.find_one({"song_id": id})
-        comments = Comment.query.find_one({"song_id": id})
+        image = SongImage.query.get(id)
+        likes = SongLike.query.get(id)
+        comments = Comment.query.get(id)
 
         res = {
-            "songId": song['song_id'],
-            "userId": song['userId'],
-            "name": song['name'],
-            "artists": song['artists'],
-            "genre": song['genre'],
-            "description": song['description'],
-            "SongImage": image['img_url'],
-            "SongLikesCnt": likes['id'],
-            "SongComments": comments['comment']
+            "songId": song.id,
+            "userId": song.user_id,
+            "name": song.name,
+            "artists": song.artists,
+            "genre": song.genre,
+            "description": song.description,
+            "SongImage": image.img_url,
+            "SongLikesCnt": likes.id,
+            "SongComments": comments.comment
         }
-
-        # print("Song ID:", song['song_id'])
-        # print("User ID:", song['userId'])
-        # print("Song Title:", song['name'])
-        # print("Artists:", song['artists'])
-        # print('Genre:', song['genre'])
-        # print('Description:', song['description'])
-        # print('Audio Url:', song['audio_url'])
-        # print('Song Image:', song['SongImages'])
-        # print('Song Likes', song['SongLikesCnt'])
-        # print('Song Comments', song['SongComments'])
 
         return jsonify(res), 200
 
     else:
-        # err.response.status_code == 404:
-        # print("Song does not exist")
+
         res = {
             "message": "Song could not be found.",
             "statusCode": 404
@@ -104,7 +92,7 @@ def update_song(id):
         all this code is to update the song in the database, but also theory
 
             """
-        form = SongForm()
+        form = EditSongForm()
         form['csrf_token'].data = request.cookies['csrf_token']
         if form.validate_on_submit():
             form = form.data['song']
