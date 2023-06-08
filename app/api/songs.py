@@ -170,68 +170,6 @@ def new_comment(id):
         }
         return jsonify(res), 404
 
-
-#update comment
-@songs_routes.route('/<int:id>/comments/<int:comment_id>', methods=['PUT'])
-@login_required
-def update_comment(id, comment_id):
-    comment = Comment.query.get(comment_id)
-    if comment is None:
-        return jsonify({'error': 'Comment not found'}), 404
-
-    if comment.user_id != current_user.id:
-        return jsonify({'error': 'You do not have permission to update this comment'}), 403
-
-    form = CommentForm()
-    form.csrf_token.data = request.cookies['csrf_token']
-    if form.validate_on_submit():
-        comment.comment = form.comment.data
-        db.session.commit()
-
-        comment_dict = comment.to_dict()
-        comment_dict['user'] = current_user.to_dict()
-
-        return jsonify(comment_dict), 200
-    else:
-        return jsonify(form.errors), 400
-# def update_comment(comment_id):
-#     # need a form var here that invokes our form for updating comment
-#     # need a line here for requesting csrf token
-#     comment = Comment.query.get(comment_id)
-#     user = User.query.get(current_user.id)
-#     user = user.to_dict()
-#     if comment.user_id == current_user.id:
-#         # need an if statement here that checks validate_on_submit
-#         # if form.validate_on_submit()
-#         # comment.body = form.data['body']
-#         db.session.comment()
-#         comment_dict = comment.to_dict()
-#         comment_dict['users'] = {
-#             # this is where we add our key and values for user info
-#         }
-#         return comment_dict
-#     return {
-#         # validation error here if comment does not exist
-#     }
-#     #another return statement here if user does not own the comment
-
-
-#delete comment
-@songs_routes.route('/<int:id>/comments/<int:comment_id>/delete', methods=['DELETE'])
-@login_required
-def delete_comment(id, comment_id):
-    comment = Comment.query.get(comment_id)
-    if comment is None:
-        return jsonify({'error': 'Comment not found'}), 404
-
-    if comment.user_id != current_user.id:
-        return jsonify({'error': 'You do not have permission to delete this comment'}), 403
-
-    db.session.delete(comment)
-    db.session.commit()
-
-    return jsonify({'message': 'Comment deleted successfully'}), 200
-
 #view likes by song Id
 @songs_routes.route('/<int:id>/likes', methods=['GET'])
 def view_likes_by_song_id(id):
