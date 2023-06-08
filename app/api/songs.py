@@ -206,6 +206,7 @@ def view_likes_by_song_id(id):
 
 #create a new like
 @songs_routes.route('/<int:id>/likes/new', methods=['POST'])
+@login_required
 def create_like(id):
     user_id = current_user.id
     new_like = SongLike(user_id=user_id, song_id=id)
@@ -215,6 +216,7 @@ def create_like(id):
 
 #delete a like
 @songs_routes.route('/<int:id>/likes/<int:like_id>/delete', methods=['DELETE'])
+@login_required
 def delete_like(id, like_id):
     like = SongLike.query.get(like_id)
     if like is None:
