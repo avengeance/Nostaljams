@@ -4,23 +4,13 @@ from flask_cors import CORS
 from flask_migrate import Migrate
 from flask_wtf.csrf import CSRFProtect, generate_csrf
 from flask_login import LoginManager
-from flask_alembic import Alembic
 from .models import db, User
-
 from .api.user_routes import user_routes
 from .api.auth_routes import auth_routes
-from .api.playlists import playlist_routes
-from .api.songs import songs_routes
-from .api.comments import comment_routes
-
 from .seeds import seed_commands
-
 from .config import Config
 
 app = Flask(__name__, static_folder='../react-app/build', static_url_path='/')
-
-alembic = Alembic()
-alembic.init_app(app)
 
 # Setup login manager
 login = LoginManager(app)
@@ -38,10 +28,6 @@ app.cli.add_command(seed_commands)
 app.config.from_object(Config)
 app.register_blueprint(user_routes, url_prefix='/api/users')
 app.register_blueprint(auth_routes, url_prefix='/api/auth')
-app.register_blueprint(playlist_routes, url_prefix='/api/playlists')
-app.register_blueprint(songs_routes, url_prefix='/api/songs')
-app.register_blueprint(comment_routes, url_prefix='/api/comments')
-
 db.init_app(app)
 Migrate(app, db)
 
