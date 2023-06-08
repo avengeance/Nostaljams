@@ -73,20 +73,6 @@ def view_user_playlists(user_id):
 
         return jsonify(playlists_list), 200
 
-
-#view all playlists by playlist id
-@user_routes.route('/<int:id>/playlists/<int:playlist_id>', methods=['GET'])
-def view_playlist(playlist_id):
-    playlist = Playlist.query.get(playlist_id)
-    if playlist is None:
-        return jsonify({
-            'Error': 'Playlist not found',
-            'status': 404
-        }), 404
-
-    playlist_data = playlist.to_dict()
-    return jsonify(playlist_data), 200
-
 #create new playlist
 @user_routes.route('/<int:id>/playlists/new', methods=['POST'])
 @login_required
