@@ -98,9 +98,26 @@ def update_song(id):
         form = EditSongForm()
         form['csrf_token'].data = request.cookies['csrf_token']
         if form.validate_on_submit():
-            form = form.data['song']
+            name = form.name.data
+            artists = form.artists.data
+            genre = form.genre.data
+            description = form.description.data
+            audio_url = form.audio_url.data
+
+            song = Song(
+                user_id=current_user.id,
+                name=name,
+                artists=artists,
+                genre=genre,
+                description=description,
+                audio_url=audio_url
+            )
+
+            db.session.add(song)
             db.session.commit()
-            return form.to_dict(), 200
+
+
+            return jsonify(song.to_dict()), 200
         else:
             return jsonify(form.errors), 400
 
