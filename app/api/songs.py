@@ -114,7 +114,7 @@ def update_song(id):
 #delete a song
 @songs_routes.route('/<int:id>/delete', methods=['DELETE'])
 @login_required
-def delete_song():
+def delete_song(id):
     song = Song.query.get(id)
     if song and current_user.id == song.user_id:
         db.session.delete(song)
