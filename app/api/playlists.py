@@ -20,7 +20,8 @@ def get_playlist_likes(id):
         return jsonify(res), 404
 
 #create new playlist like
-@playlist_routes.route('/<int:id>likes/new', methods=['POST'])
+@playlist_routes.route('/<int:id>/likes/new', methods=['POST'])
+@login_required
 def create_playlist_like(id):
     user_id = current_user.id
     playlist_like = PlaylistLike(user_id=user_id, playlist_id=id)
