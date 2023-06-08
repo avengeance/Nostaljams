@@ -24,6 +24,11 @@ def get_playlist_likes(id):
 @login_required
 def create_playlist_like(id):
     user_id = current_user.id
+
+    existing_like = PlaylistLike.query.filter_by(user_id=user_id, playlist_id=id).first()
+    if existing_like:
+        return jsonify({'error': 'You already like this playlist'}), 400
+
     playlist_like = PlaylistLike(user_id=user_id, playlist_id=id)
     db.session.add(playlist_like)
     db.session.commit()
