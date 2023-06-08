@@ -4,10 +4,10 @@ from ..models.likes import PlaylistLike
 from flask import Blueprint, redirect, url_for, render_template, jsonify
 from flask_login import login_required, current_user, logout_user
 
-bp = Blueprint('playlists', __name__)
+playlist_routes = Blueprint('playlists', __name__)
 
 #view likes by playlist Id
-@bp.route('/<int:id>/likes', methods=['GET'])
+@playlist_routes.route('/<int:id>/likes', methods=['GET'])
 def get_playlist_likes(id):
     playlist = PlaylistLike.query.get(id)
     if(playlist):
@@ -20,7 +20,7 @@ def get_playlist_likes(id):
         return jsonify(res), 404
 
 #create new playlist like
-@bp.route('/<int:id>likes/new', methods=['POST'])
+@playlist_routes.route('/<int:id>likes/new', methods=['POST'])
 def create_playlist_like(id):
     user_id = current_user.id
     playlist_like = PlaylistLike(user_id=user_id, playlist_id=id)
@@ -28,7 +28,7 @@ def create_playlist_like(id):
     db.session.commit()
     return jsonify(playlist_like.to_dict()), 201
 
-@bp.route('/<int:id>/likes/<int:like_id>/delete', methods=['DELETE'])
+@playlist_routes.route('/<int:id>/likes/<int:like_id>/delete', methods=['DELETE'])
 def delete_playlist_like(id, like_id):
     playlist_like = PlaylistLike.query.get(like_id)
     if playlist_like is None:
