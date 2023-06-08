@@ -20,7 +20,7 @@ def get_playlist_likes(id):
         return jsonify(res), 404
 
 #create new playlist like
-@playlist_routes.route('/<int:id>likes/new', methods=['POST'])
+@playlist_routes.route('/<int:id>/likes/new', methods=['POST'])
 def create_playlist_like(id):
     user_id = current_user.id
     playlist_like = PlaylistLike(user_id=user_id, playlist_id=id)
@@ -29,7 +29,7 @@ def create_playlist_like(id):
     return jsonify(playlist_like.to_dict()), 201
 
 @playlist_routes.route('/<int:id>/likes/<int:like_id>/delete', methods=['DELETE'])
-def delete_playlist_like(id, like_id):
+def delete_playlist_like(like_id):
     playlist_like = PlaylistLike.query.get(like_id)
     if playlist_like is None:
         return jsonify({'error': 'Playlist like not found'}), 404
