@@ -129,17 +129,17 @@ def delete_song():
         }
         return jsonify(res), 404
 
-#view songs by comment id
+#view comments by Song ID
 @songs_routes.route('/<int:id>/comments', methods=['GET'])
 def view_song_by_comment_id(id):
-    comment = Comment.query.get(id)
-    if comment is None:
-        return jsonify({'error': 'Comment not found'}), 404
+    song = Song.query.get(id)
+    if song is None:
+        return jsonify({'error': 'Song not found'}), 404
 
-    songs = comment.songs
-    song_list = [song.to_dict() for song in songs]
+    comments = song.comments
+    comment_list = [comment.to_dict() for comment in comments]
 
-    return jsonify(song_list), 200
+    return jsonify(comment_list), 200
 
 #create new song comment
 @songs_routes.route('/<int:id>/comments/new', methods=['POST'])
