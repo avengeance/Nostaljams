@@ -4,16 +4,16 @@ from ..models.images import SongImage
 from ..models.comment import Comment
 from ..models.likes import SongLike
 from ..models.user import User
-from ..forms import SongForm
-from ..forms import CommentForm
+from ..forms.song_form import SongForm
+from ..forms.comment_form import CommentForm
 
 from flask import Blueprint, redirect, url_for, render_template, jsonify, request
 from flask_login import login_required, current_user, logout_user
 
-bp = Blueprint('songs', __name__)
+songs_routes = Blueprint('songs', __name__)
 
 # view all songs
-@bp.route('/', methods=['GET'])
+@songs_routes.route('/', methods=['GET'])
 def get_all_songs():
     songs = Song.query.all()
     return {
@@ -21,7 +21,7 @@ def get_all_songs():
     }
 
 #view song by song id
-@bp.route('/<int:id>', methods=['GET'])
+@songs_routes.route('/<int:id>', methods=['GET'])
 def song_detail(id):
     # Retrieve the song details from the database
     song = Song.query.find_one({"song_id": id})
@@ -68,7 +68,7 @@ def song_detail(id):
         return jsonify(res), 404
 
 #create new song
-@bp.route('/new', methods=['POST'])
+@songs_routes.route('/new', methods=['POST'])
 def create_song():
     form = SongForm()
     if form.validate_on_submit():
@@ -94,7 +94,7 @@ def create_song():
         return jsonify(form.errors), 400
 
 #update a song
-@bp.route('/<int:id>', methods=['PUT'])
+@songs_routes.route('/<int:id>', methods=['PUT'])
 @login_required
 def update_song(id):
     song = Song.query.get(id)
@@ -121,7 +121,7 @@ def update_song(id):
         return jsonify(res), 404
 
 #delete a song
-@bp.route('/<int:id>/delete', methods=['DELETE'])
+@songs_routes.route('/<int:id>/delete', methods=['DELETE'])
 @login_required
 def delete_song():
     song = Song.query.get(id)
@@ -142,7 +142,7 @@ def delete_song():
         return jsonify(res), 404
 
 #view songs by comment id
-@bp.route('/<int:id>/comments', methods=['GET'])
+@songs_routes.route('/<int:id>/comments', methods=['GET'])
 def view_song_by_comment_id(id):
     comment = Comment.query.get(id)
     if comment is None:
@@ -154,7 +154,7 @@ def view_song_by_comment_id(id):
     return jsonify(song_list), 200
 
 #create new song comment
-@bp.route('/<int:id>/comments/new', methods=['POST'])
+@songs_routes.route('/<int:id>/comments/new', methods=['POST'])
 @login_required
 def new_comment(id):
     song = Song.query.get(id)
@@ -181,7 +181,7 @@ def new_comment(id):
 
 
 #update comment
-@bp.route('/<int:id>/comments/<int:comment_id>', methods=['PUT'])
+@songs_routes.route('/<int:id>/comments/<int:comment_id>', methods=['PUT'])
 @login_required
 def update_comment(id, comment_id):
     comment = Comment.query.get(comment_id)
@@ -226,7 +226,7 @@ def update_comment(id, comment_id):
 
 
 #delete comment
-@bp.route('/<int:id>/comments/<int:comment_id>/delete', methods=['DELETE'])
+@songs_routes.route('/<int:id>/comments/<int:comment_id>/delete', methods=['DELETE'])
 @login_required
 def delete_comment(id, comment_id):
     comment = Comment.query.get(comment_id)
@@ -242,13 +242,13 @@ def delete_comment(id, comment_id):
     return jsonify({'message': 'Comment deleted successfully'}), 200
 
 #view likes by song Id
-@bp.route('/<int:id>/likes', methods=['GET'])
+@songs_routes.route('/<int:id>/likes', methods=['GET'])
 def view_likes_by_song_id(id):
     likes = SongLike.query.filter(SongLike.song_id == id)
     return jsonify([like.to_dict() for like in likes])
 
 #view likes by song Id
-@bp.route('/<int:id>/likes', methods=['GET'])
+@songs_routes.route('/<int:id>/likes', methods=['GET'])
 def song_likes(id):
     song = Song.query.get(id)
     if(song):
@@ -268,7 +268,7 @@ def song_likes(id):
         return jsonify(res), 404
 
 #create a new like
-@bp.route('/<int:id>/likes/new', methods=['POST'])
+@songs_routes.route('/<int:id>/likes/new', methods=['POST'])
 def create_like(id):
     user_id = current_user.id
     new_like = SongLike(user_id=user_id, song_id=id)
@@ -277,7 +277,7 @@ def create_like(id):
     return jsonify(new_like.to_dict()), 201
 
 #delete a like
-@bp.route('/<int:id>/likes/<int:like_id>/delete', methods=['DELETE'])
+@songs_routes.route('/<int:id>/likes/<int:like_id>/delete', methods=['DELETE'])
 def delete_like(id, like_id):
     like = SongLike.query.get(like_id)
     if like is None:
