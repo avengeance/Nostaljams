@@ -1,4 +1,4 @@
-from app.models.playlist_songs import db, PlaylistSong, environment, SCHEMA
+from app.models.playlist_song import db, PlaylistSong, environment, SCHEMA
 from sqlalchemy.sql import text
 
 # Adds songs to the Playlist
