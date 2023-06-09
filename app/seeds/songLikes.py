@@ -94,7 +94,7 @@ def seed_song_likes():
 
 def undo_song_likes():
     if environment == "production":
-        db.session.execute(f"TRUNCATE table {SCHEMA}.users RESTART IDENTITY CASCADE;")
+        db.session.execute(f"TRUNCATE table {SCHEMA}.song_likes RESTART IDENTITY CASCADE;")
     else:
         db.session.execute(text("DELETE FROM song_likes"))
 
