@@ -34,7 +34,7 @@ class PlaylistLike(db.Model):
 
     users = db.relationship('User', back_populates='playlist_likes')
     # playlists = db.relationship('Playlist', back_populates='playlist_likes')
-    playlist = db.relationship('Playlist', back_populates='likes')
+    playlists = db.relationship('Playlist', back_populates='likes')
 
     def to_dict(self):
         return {
