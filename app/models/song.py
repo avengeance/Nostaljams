@@ -38,7 +38,6 @@
 #             'createdAt': self.created_at,
 #             'updatedAt': self.updated_at
 #         }
-from .playlist import Playlist
 from .db import db, environment, SCHEMA, add_prefix_for_prod
 from datetime import datetime
 
