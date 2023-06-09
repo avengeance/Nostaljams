@@ -1,5 +1,5 @@
 from .song import Song
-from .playlist_song import PlaylistSong
+from .playlist import PlaylistSong
 from .db import db, environment, SCHEMA, add_prefix_for_prod
 from datetime import datetime
 
