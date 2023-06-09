@@ -1,13 +1,7 @@
 from .db import db, environment, SCHEMA, add_prefix_for_prod
 from datetime import datetime
-from .images import SongImage
-# from .song import Song
-import importlib
-
 
 class PlaylistSong(db.Model):
-    Song = importlib.import_module('.song', 'app.models').Song
-
     __tablename__ = 'playlist_songs'
 
     if environment == 'production':
