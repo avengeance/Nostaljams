@@ -4,46 +4,46 @@ from sqlalchemy.sql import text
 # Add likes to Songs
 def seed_song_likes():
     song1 = SongLike(
-        user_id='1',song_id='1'
+        user_id=1,song_id=1
     )
     song2 = SongLike(
-        user_id='1',song_id='2'
+        user_id=1,song_id=2
     )
     song3 = SongLike(
-        user_id='1',song_id='3'
+        user_id=1,song_id=3
     )
     song4 = SongLike(
-        user_id='1',song_id='6'
+        user_id=1,song_id=6
     )
     song5 = SongLike(
-        user_id='1',song_id='7'
+        user_id=1,song_id=7
     )
     song6 = SongLike(
-        user_id='1',song_id='8'
+        user_id=1,song_id=8
     )
     song7 = SongLike(
-        user_id='1',song_id='9'
+        user_id=1,song_id=9
     )
     song8 = SongLike(
-        user_id='2',song_id='3'
+        user_id=2,song_id=3
     )
     song9 = SongLike(
-        user_id='2',song_id='4'
+        user_id=2,song_id=4
     )
     song10 = SongLike(
-        user_id='2',song_id='6'
+        user_id=2,song_id=6
     )
     song11 = SongLike(
-        user_id='2',song_id='7'
+        user_id=2,song_id=7
     )
     song12 = SongLike(
-        user_id='2',song_id='8'
+        user_id=2,song_id=8
     )
     song13 = SongLike(
-        user_id='2',song_id='9'
+        user_id=2,song_id=9
     )
     song14 = SongLike(
-        user_id='2',song_id='10'
+        user_id=2,song_id=10
     )
     song15 = SongLike(
         user_id='3',song_id='3'
