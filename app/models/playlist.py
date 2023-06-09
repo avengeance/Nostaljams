@@ -17,6 +17,9 @@ class Playlist(db.Model):
 
     users = db.relationship('User', back_populates='playlists')
     likes = db.relationship('PlaylistLike', back_populates='playlist')
+
+    from .playlist_song import PlaylistSong
+    
     playlist_songs = db.relationship('PlaylistSong', back_populates='playlist', cascade='all, delete')
     songs = db.relationship('Song', back_populates='playlists', secondary='playlist_songs', overlaps="playlist_songs,songs", cascade='all, delete')
 
