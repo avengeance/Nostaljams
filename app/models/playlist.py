@@ -21,7 +21,6 @@ class PlaylistSong(db.Model):
         }
 
 class Playlist(db.Model):
-    Song = importlib.import_module('.song', 'app.models').Song
     
     __tablename__='playlists'
 
