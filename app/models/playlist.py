@@ -1,6 +1,7 @@
 from .db import db, environment, SCHEMA, add_prefix_for_prod
 from datetime import datetime
 from .images import SongImage
+from .song import Song
 
 
 class PlaylistSong(db.Model):
@@ -50,6 +51,3 @@ class Playlist(db.Model):
             'createdAt': self.created_at,
             'updatedAt': self.updated_at
         }
-
-
-from .song import Song
