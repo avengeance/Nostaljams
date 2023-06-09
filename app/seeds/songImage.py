@@ -49,7 +49,7 @@ def seed_song_images():
 
 def undo_song_images():
     if environment == "production":
-        db.session.execute(f"TRUNCATE table {SCHEMA}.users RESTART IDENTITY CASCADE;")
+        db.session.execute(f"TRUNCATE table {SCHEMA}.song_images RESTART IDENTITY CASCADE;")
     else:
         db.session.execute(text("DELETE FROM song_images"))
 
