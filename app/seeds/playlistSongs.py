@@ -4,31 +4,31 @@ from sqlalchemy.sql import text
 # Adds songs to the Playlist
 def seed_playlist_songs():
     playlist1 = PlaylistSong(
-        song_id='song_id_1',playlist_id='1'
+        song_id=1,playlist_id=1
     )
     playlist2 = PlaylistSong(
-        song_id='song_id_2',playlist_id='2'
+        song_id=2,playlist_id=2
     )
     playlist3 = PlaylistSong(
-        song_id='song_id_6',playlist_id='3'
+        song_id=6,playlist_id=3
     )
     playlist4 = PlaylistSong(
-        song_id='song_id_8',playlist_id='4'
+        song_id=8,playlist_id=4
     )
     playlist5 = PlaylistSong(
-        song_id='song_id_3',playlist_id='5'
+        song_id=3,playlist_id=5
     )
     playlist6 = PlaylistSong(
-        song_id='song_id_9',playlist_id='6'
+        song_id=9,playlist_id=6
     )
     playlist7 = PlaylistSong(
-        song_id='song_id_4',playlist_id='7'
+        song_id=4,playlist_id=7
     )
     playlist8 = PlaylistSong(
-        song_id='song_id_2',playlist_id='8'
+        song_id=2,playlist_id=8
     )
     playlist9 = PlaylistSong(
-        song_id='song_id_6',playlist_id='9'
+        song_id=6,playlist_id=9
     )
 
     db.session.add(playlist1)

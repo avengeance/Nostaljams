@@ -4,25 +4,25 @@ from sqlalchemy.sql import text
 # Adds likes to Playlist
 def seed_playlist_likes():
     playlist_like1 = PlaylistLike(
-        user_id='1',playlist_id='1'
+        user_id=1,playlist_id=1
     )
     playlist_like2 = PlaylistLike(
-        user_id='1',playlist_id='2'
+        user_id=1,playlist_id=2
     )
     playlist_like3 = PlaylistLike(
-        user_id='1',playlist_id='3'
+        user_id=1,playlist_id=3
     )
     playlist_like4 = PlaylistLike(
-        user_id='2',playlist_id='5'
+        user_id=2,playlist_id=5
     )
     playlist_like5 = PlaylistLike(
-        user_id='2',playlist_id='6'
+        user_id=2,playlist_id=6
     )
     playlist_like6 = PlaylistLike(
-        user_id='3',playlist_id='7'
+        user_id=3,playlist_id=7
     )
     playlist_like7 = PlaylistLike(
-        user_id='3',playlist_id='9'
+        user_id=3,playlist_id=9
     )
 
     db.session.add(playlist_like1)

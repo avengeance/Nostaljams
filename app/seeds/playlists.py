@@ -4,31 +4,31 @@ from sqlalchemy.sql import text
 # Adds Playlists
 def seed_playlist():
     playlist1 = Playlist(
-        user_id='1',name='Daily',description='Daily playlist'
+        user_id=1,name='Daily',description='Daily playlist'
     )
     playlist2 = Playlist(
-        user_id='1',name='Cruising',description='Driving in the car'
+        user_id=1,name='Cruising',description='Driving in the car'
     )
     playlist3 = Playlist(
-        user_id='1',name='Random',description='Random list of songs put together'
+        user_id=1,name='Random',description='Random list of songs put together'
     )
     playlist4 = Playlist(
-        user_id='2',name='Hip hop',description='My hip hop playlist'
+        user_id=2,name='Hip hop',description='My hip hop playlist'
     )
     playlist5 = Playlist(
-        user_id='2',name='Shower songs',description='My shower songs to sing to'
+        user_id=2,name='Shower songs',description='My shower songs to sing to'
     )
     playlist6 = Playlist(
-        user_id='2',name='Whatevers',description='Random list of songs put together'
+        user_id=2,name='Whatevers',description='Random list of songs put together'
     )
     playlist7 = Playlist(
-        user_id='3',name='Commute',description='When traffic hits this playlist starts.'
+        user_id=3,name='Commute',description='When traffic hits this playlist starts.'
     )
     playlist8 = Playlist(
-        user_id='3',name='Binge',description='A tasteful selection of songs.'
+        user_id=3,name='Binge',description='A tasteful selection of songs.'
     )
     playlist9 = Playlist(
-        user_id='3',name='Random',description='Random list of songs put together'
+        user_id=3,name='Random',description='Random list of songs put together'
     )
 
     db.session.add(playlist1)

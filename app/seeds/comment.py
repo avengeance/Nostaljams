@@ -4,52 +4,52 @@ from sqlalchemy.sql import text
 # Add comments
 def seed_comments():
     demo_comment1 = Comment(
-        user_id='1',song_id='1',comment='This is one of my favorite songs.'
+        user_id=1,song_id=1,comment='This is one of my favorite songs.'
     )
     demo_comment2 = Comment(
-        user_id='2',song_id='1',comment='A always place this song waking up.'
+        user_id=2,song_id=1,comment='A always place this song waking up.'
     )
     demo_comment3 = Comment(
-        user_id='3',song_id='1',comment='I cannot believe I did not find this song sooner!'
+        user_id=3,song_id=1,comment='I cannot believe I did not find this song sooner!'
     )
     demo_comment4 = Comment(
-        user_id='1',song_id='2',comment='Probably my favorite song by this singer.'
+        user_id=1,song_id=2,comment='Probably my favorite song by this singer.'
     )
     demo_comment5 = Comment(
-        user_id='2',song_id='2',comment='That bassline always hits.'
+        user_id=2,song_id=2,comment='That bassline always hits.'
     )
     demo_comment6 = Comment(
-        user_id='3',song_id='2',comment='Sock it to me. Sock it to me. Sock it to me.'
+        user_id=3,song_id=2,comment='Sock it to me. Sock it to me. Sock it to me.'
     )
     demo_comment7 = Comment(
-        user_id='1',song_id='3',comment='I love banging my head to this song.'
+        user_id=1,song_id=3,comment='I love banging my head to this song.'
     )
     demo_comment8 = Comment(
-        user_id='2',song_id='3',comment='Reminds me of my punk rock days.'
+        user_id=2,song_id=3,comment='Reminds me of my punk rock days.'
     )
     demo_comment9 = Comment(
-        user_id='3',song_id='3',comment='A timeless classic.'
+        user_id=3,song_id=3,comment='A timeless classic.'
     )
     demo_comment10 = Comment(
-        user_id='1',song_id='4',comment='This was my wedding song.'
+        user_id=1,song_id=4,comment='This was my wedding song.'
     )
     demo_comment11 = Comment(
-        user_id='2',song_id='4',comment='There is no way you can listen to this song and not get the feels.'
+        user_id=2,song_id=4,comment='There is no way you can listen to this song and not get the feels.'
     )
     demo_comment12 = Comment(
-        user_id='3',song_id='4',comment="Stevie's vocals on this are just heavenly."
+        user_id=3,song_id=4,comment="Stevie's vocals on this are just heavenly."
     )
     demo_comment13 = Comment(
-        user_id='1',song_id='5',comment='Shake it like a polaroid picture!'
+        user_id=1,song_id=5,comment='Shake it like a polaroid picture!'
     )
     demo_comment14 = Comment(
-        user_id='2',song_id='5',comment='An upbeat song with some depressing lyrics.'
+        user_id=2,song_id=5,comment='An upbeat song with some depressing lyrics.'
     )
     demo_comment15 = Comment(
-        user_id='3',song_id='5',comment='What better song to play in the car and singing out loud'
+        user_id=3,song_id=5,comment='What better song to play in the car and singing out loud'
     )
     demo_comment16 = Comment(
-        user_id='1',song_id='6',comment="Wanye's World anyone or am I just that old?"
+        user_id=1,song_id=6,comment="Wanye's World anyone or am I just that old?"
     )
     demo_comment17 = Comment(
         user_id='2',song_id='6',comment='The perfect song to sing with a few drinks and a group of people.'
