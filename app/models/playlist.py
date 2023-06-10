@@ -66,8 +66,6 @@ class PlaylistSong(db.Model):
     song_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('songs.id')))
     playlist_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('playlists.id')))
 
-    playlist = db.relationship('Playlist', back_populates='playlist_songs', lazy='subquery')
-
     def to_dict(self):
         return {
             'id': self.id,
@@ -90,8 +88,6 @@ class Playlist(db.Model):
 
     users = db.relationship('User', back_populates='playlists')
     playlist_likes = db.relationship('PlaylistLike', back_populates='playlists')
-    # playlist_songs = db.relationship('PlaylistSong', back_populates='playlist', cascade='all, delete', lazy='subquery')
-
     songs = db.relationship('Song', back_populates='playlists', secondary='playlist_songs', overlaps="playlist_songs", cascade='all, delete')
 
     def to_dict(self):
@@ -109,4 +105,4 @@ class Playlist(db.Model):
 
 # Assign the relationship after both classes are defined
 Playlist.playlist_songs = db.relationship('PlaylistSong', back_populates='playlists', cascade='all, delete',lazy='subquery')
-PlaylistSong.playlist = db.relationship('Playlist', back_populates='playlist_songs', lazy='subquery')
+PlaylistSong.playlists = db.relationship('Playlist', back_populates='playlist_songs', lazy='subquery')
