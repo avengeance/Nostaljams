@@ -1,9 +1,20 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import session from './session'
+import likesReducer from './likes';
+import songsReducer from './songs';
+import playlistsReducer from './playlists';
+// import reducer from './session';
+import commentsReducer from './comments';
+
 
 const rootReducer = combineReducers({
+  // add reducer functions here
   session,
+  likes: likesReducer,
+  songs: songsReducer,
+  playlists: playlistsReducer,
+  comments: commentsReducer
 });
 
 
