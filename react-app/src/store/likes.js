@@ -41,7 +41,7 @@ const deleteLikeBySong = (like) => ({
 
 // Thunks
 export const getLikesBySongThunk = (songId) => async (dispatch) => {
-    const res = await csrfFetch(`/api/songs/${songId}/likes`,{
+    const res = await csrfFetch(`/api/songs/${songId}/likes`, {
         method: 'GET'
     });
     const data = await res.json();
@@ -50,7 +50,7 @@ export const getLikesBySongThunk = (songId) => async (dispatch) => {
 }
 
 export const getLikesByPlaylistThunk = (playlistId) => async (dispatch) => {
-    const res = await csrfFetch(`/api/playlists/${playlistId}/likes`,{
+    const res = await csrfFetch(`/api/playlists/${playlistId}/likes`, {
         method: 'GET'
     });
     const data = await res.json();
@@ -59,9 +59,8 @@ export const getLikesByPlaylistThunk = (playlistId) => async (dispatch) => {
 }
 
 export const createSongLikeThunk = (songId) => async (dispatch) => {
-    const res = await csrfFetch(`/api/songs/${songId}/likes/new`,{
-        method: 'POST',
-        body: JSON.stringify(like)
+    const res = await csrfFetch(`/api/songs/${songId}/likes/new`, {
+        method: 'POST'
     });
     const data = await res.json();
     dispatch(createSongLike(data));
@@ -69,9 +68,8 @@ export const createSongLikeThunk = (songId) => async (dispatch) => {
 }
 
 export const createPlaylistLikeThunk = (playlistId) => async (dispatch) => {
-    const res = await csrfFetch(`/api/playlists/${playlistId}/likes/new`,{
-        method: 'POST',
-        body: JSON.stringify(like)
+    const res = await csrfFetch(`/api/playlists/${playlistId}/likes/new`, {
+        method: 'POST'
     });
     const data = await res.json();
     dispatch(createPlaylistLike(data));
@@ -79,9 +77,8 @@ export const createPlaylistLikeThunk = (playlistId) => async (dispatch) => {
 }
 
 export const deleteLikeByPlaylistThunk = (playlistId, likeId) => async (dispatch) => {
-    const res = await csrfFetch(`/api/playlists/${playlistId}/likes/${likeId}/delete`,{
-        method: 'DELETE',
-        body: JSON.stringify(like)
+    const res = await csrfFetch(`/api/playlists/${playlistId}/likes/${likeId}/delete`, {
+        method: 'DELETE'
     });
     const data = await res.json();
     dispatch(deleteLikeByPlaylist(data));
@@ -89,9 +86,8 @@ export const deleteLikeByPlaylistThunk = (playlistId, likeId) => async (dispatch
 }
 
 export const deleteLikeBySongThunk = (songId, likeId) => async (dispatch) => {
-    const res = await csrfFetch(`/api/songs/${songId}/likes/${likeId}/delete`,{
-        method: 'DELETE',
-        body: JSON.stringify(like)
+    const res = await csrfFetch(`/api/songs/${songId}/likes/${likeId}/delete`, {
+        method: 'DELETE'
     });
     const data = await res.json();
     dispatch(deleteLikeBySong(data));
@@ -100,24 +96,24 @@ export const deleteLikeBySongThunk = (songId, likeId) => async (dispatch) => {
 
 // Reducer
 const initialState = {
-    likesBySong: [],
-    likesByPlaylist: [],
+    likesBySong: {},
+    likesByPlaylist: {},
 }
 
 const likesReducer = (state = initialState, action) => {
-    let newState = {...state};
+    let newState = { ...state };
     switch (action.type) {
         case GET_LIKES_BY_SONG:
-            newState.likesBySong = action.likes;
+            newState.likesBySong[action.like.id] = action.likes;
             return newState;
         case GET_LIKES_BY_PLAYLIST:
-            newState.likesByPlaylist = action.likes;
+            newState.likesByPlaylist[action.like.id] = action.likes;
             return newState;
         case CREATE_SONG_LIKE:
-            newState.likesBySong.push(action.like);
+            newState.likesBySong = state.likesBySong + 1
             return newState;
         case CREATE_PLAYLIST_LIKE:
-            newState.likesByPlaylist.push(action.like);
+            newState.likesByPlaylist = state.likesByPlaylist + 1
             return newState;
         case DELETE_LIKE_BY_PLAYLIST:
             newState.likesByPlaylist = newState.likesByPlaylist.filter(like => like.id !== action.like.id);

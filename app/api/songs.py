@@ -200,7 +200,7 @@ def new_comment(id):
 def view_likes_by_song_id(id):
     song = Song.query.get(id)
     if(song):
-        likes = SongLike.query.filter(SongLike.song_id == id)
+        likes = SongLike.query.filter_by(song_id = id).all()
         return jsonify([like.to_dict() for like in likes]),200
     else:
         res = {
