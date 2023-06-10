@@ -72,3 +72,23 @@ def delete_playlist_like(id, like_id):
             "statusCode": 404
         }
         return jsonify(res), 404
+
+#delete playlist
+@playlist_routes.route('/<int:playlist_id>/delete', methods=['DELETE'])
+@login_required
+def delete_playlist(playlist_id):
+    playlist = Playlist.query.get(playlist_id)
+    
+    if playlist.user_id != current_user.id:
+        return jsonify({
+            "message": "You do not have permission to delete this playlist",
+            "statusCode": 404
+        }), 404
+        
+    if playlist is None:
+        return jsonify({'error': 'Playlist not found'}), 404
+
+    db.session.delete(playlist)
+    db.session.commit()
+
+    return jsonify({'message': 'Playlist deleted successfully'}), 200

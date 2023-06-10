@@ -62,12 +62,14 @@ def get_user_songs(id):
 #view all playlists by user
 @user_routes.route('/<int:user_id>/playlists', methods=['GET'])
 def view_user_playlists(user_id):
-    if user_id != current_user.id:
-        return jsonify({
-            "message": "User couldn't be found",
-            "statusCode": 404
-        }), 404
-    else:
+    # add a query to search if the user id exists if so return the playlists
+    
+    # if user_id != current_user.id:
+    #     return jsonify({
+    #         "message": "User couldn't be found",
+    #         "statusCode": 404
+    #     }), 404
+    # else:
         user_playlists = Playlist.query.filter_by(user_id=user_id).all()
         playlists_list = [playlist.to_dict() for playlist in user_playlists]
 
@@ -118,21 +120,4 @@ def update_playlist(id, playlist_id):
 
     return jsonify(playlist_data), 200
 
-#delete playlist
-@user_routes.route('/<int:user_id>/playlists/<int:playlist_id>/delete', methods=['DELETE'])
-@login_required
-def delete_playlist(user_id, playlist_id):
-    if user_id != current_user.id:
-        return jsonify({
-            "message": "User couldn't be found",
-            "statusCode": 404
-        }), 404
 
-    playlist = Playlist.query.get(playlist_id)
-    if playlist is None:
-        return jsonify({'error': 'Playlist not found'}), 404
-
-    db.session.delete(playlist)
-    db.session.commit()
-
-    return jsonify({'message': 'Playlist deleted successfully'}), 200
