@@ -89,7 +89,7 @@ class Playlist(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
     users = db.relationship('User', back_populates='playlists')
-    playlist_likes = db.relationship('PlaylistLike', back_populates='playlist')
+    playlist_likes = db.relationship('PlaylistLike', back_populates='playlists')
     # playlist_songs = db.relationship('PlaylistSong', back_populates='playlist', cascade='all, delete', lazy='subquery')
 
     songs = db.relationship('Song', back_populates='playlists', secondary='playlist_songs', overlaps="playlist_songs", cascade='all, delete')
@@ -108,5 +108,5 @@ class Playlist(db.Model):
 
 
 # Assign the relationship after both classes are defined
-Playlist.playlist_songs = db.relationship('PlaylistSong', back_populates='playlist', cascade='all, delete',lazy='subquery')
+Playlist.playlist_songs = db.relationship('PlaylistSong', back_populates='playlists', cascade='all, delete',lazy='subquery')
 PlaylistSong.playlist = db.relationship('Playlist', back_populates='playlist_songs', lazy='subquery')
