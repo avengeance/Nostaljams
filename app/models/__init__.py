@@ -4,6 +4,6 @@ from .db import environment, SCHEMA
 from .comment import Comment
 from .images import SongImage, UserImage
 from .likes import SongLike, PlaylistLike
-from .playlist import Playlist
-from .playlist_song import PlaylistSong
+from .playlist import Playlist, PlaylistSong
+# from .playlist_song import PlaylistSong
 from .song import Song
