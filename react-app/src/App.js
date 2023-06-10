@@ -12,7 +12,7 @@ import * as likeActions from "./store/likes";
 import SignupFormPage from "./components/SignupFormPage";
 import LoginFormPage from "./components/LoginFormPage";
 import Navigation from "./components/Navigation";
-import Songs from "./components/Songs";
+import Song from "./components/Songs";
 import CreateSong from "./components/CreateSong";
 
 function App() {
