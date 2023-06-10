@@ -1,7 +1,7 @@
 from ..models import Song
 from ..models.db import db
 from ..models.likes import PlaylistLike
-from ..models.playlist import Playlist
+from ..models.playlist import Playlist, PlaylistSong
 from flask import Blueprint, redirect, url_for, render_template, jsonify
 from flask_login import login_required, current_user, logout_user
 
@@ -33,6 +33,24 @@ def view_playlist(playlist_id):
 
     playlist_data = playlist.to_dict()
     return jsonify(playlist_data), 200
+
+@playlist_routes.route('/<int:playlistId>/song/<int:songId>', methods=['POST'])
+def add_song_to_playlist(playlistId,songId):
+    playlist = Playlist.query.get(playlistId)
+    if playlist is None:
+        return jsonify({
+            'Error': 'Playlist not found',
+            'status': 404
+        }), 404
+
+    playlistAddSong = PlaylistSong(song_id = songId, playlist_id = playlistId)
+    db.session.add(playlistAddSong)
+    db.session.commit()
+
+    return jsonify(playlistAddSong.to_dict()), 201
+
+
+
 
 #create new playlist like
 @playlist_routes.route('/<int:id>/likes/new', methods=['POST'])
@@ -78,16 +96,16 @@ def delete_playlist_like(id, like_id):
 @login_required
 def delete_playlist(playlist_id):
     playlist = Playlist.query.get(playlist_id)
-    
+
     if playlist is None:
         return jsonify({'error': 'Playlist not found'}), 404
-    
+
     if playlist.user_id != current_user.id:
         return jsonify({
             "message": "You do not have permission to delete this playlist",
             "statusCode": 404
         }), 404
-        
+
 
     db.session.delete(playlist)
     db.session.commit()
