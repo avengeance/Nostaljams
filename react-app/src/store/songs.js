@@ -124,13 +124,13 @@ const songsReducer = (state = initialState, action) => {
             newState.songs = action.songs;
             return newState;
         case GET_SONG:
-            newState.song = action.song;
+            newState.songs = action.song;
             return newState;
         case CREATE_SONG:
             newState.songs.push(action.song);
             return newState;
         case UPDATE_SONG:
-            newState.song = action.song;
+            newState.songs = action.song;
             return newState;
         case DELETE_SONG:
             newState.songs = newState.songs.filter(song => song.id !== action.song.id);
