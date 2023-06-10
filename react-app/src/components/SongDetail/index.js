@@ -17,6 +17,7 @@ import "./SongDetail.css";
 const SongDetail = () => {
     const dispatch = useDispatch();
     const history = useHistory();
+    const { setModalContent } = useModal();
     const modalRef = useRef(null);
     const { closeModal } = useModal();
 
@@ -25,5 +26,40 @@ const SongDetail = () => {
 
     const { songId } = useParams();
 
-    
+    const [song, setSong] = useState(null);
+    const [comments, setComments] = useState([]);
+    const user = useSelector((state) => (state.session.user));
+
+    useEffect(() => {
+        dispatch(SongActions.getSongThunk(songId))
+            .then(currentSong => setSong(currentSong))
+        dispatch(CommentActions.getCommentsThunk(songId))
+            .then(currentComments => setComments(currentComments))
+    },[dispatch, songId])
+
+    function handlePostComment(){
+        const modalContent = <CreateComment onCommentSubmit={handlePostComment}/>;
+        history.push(`/songs/${songId}/comments`);
+        setModalContent(modalContent);
+    }
+
+    function handleDeleteComment(commentId){
+        const modalContent = <DeleteComment onCommentDelete={handleDeleteComment} commentId={commentId}/>;
+        history.push(`/songs/${songId}/comments`);
+        setModalContent(modalContent);
+    }
+
+    useEffect(() => {
+        if(!songId){
+            console.error("No songId");
+            return
+        }
+        dispatch(CommentActions.getCommentsThunk(songId))
+            .then(comments => setComments(comments.Comments))
+            .catch(err => console.error(err))
+    },[dispatch, songId])
+
+    return(
+        <></>
+    )
 }
