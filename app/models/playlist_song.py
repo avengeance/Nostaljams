@@ -1,6 +1,6 @@
 from .db import db, environment, SCHEMA, add_prefix_for_prod
 from datetime import datetime
-
+from .app.models.playlist import Playlist
 
 class PlaylistSong(db.Model):
     __tablename__ = 'playlist_songs'
