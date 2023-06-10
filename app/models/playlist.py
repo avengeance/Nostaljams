@@ -92,7 +92,7 @@ class Playlist(db.Model):
 
     users = db.relationship('User', back_populates='playlists')
     playlist_likes = db.relationship('PlaylistLike', back_populates='playlists')
-    songs = db.relationship('Song', back_populates='playlists', secondary='playlist_songs', overlaps="playlist_songs", cascade='all, delete')
+    songs = db.relationship('Song', back_populates='playlists', secondary='playlist_songs', overlaps='playlist_songs', cascade='all, delete')
     playlist_songs = db.relationship('PlaylistSong', back_populates='playlists', cascade='all, delete',lazy='subquery')
 
     def to_dict(self):
