@@ -1,3 +1,4 @@
+import { bindActionCreators } from 'redux';
 import { csrfFetch } from '../store/csrf';
 
 // Constants
@@ -14,24 +15,24 @@ const getAllSongs = (songs) => ({
     songs,
 })
 
-const getSong = (song) => ({
+const getSong = (songs) => ({
     type: GET_SONG,
-    song,
+    songs,
 })
 
-const createSong = (song) => ({
+const createSong = (songs) => ({
     type: CREATE_SONG,
-    song,
+    songs,
 })
 
-const updateSong = (song) => ({
+const updateSong = (songs) => ({
     type: UPDATE_SONG,
-    song,
+    songs,
 })
 
-const deleteSong = (song) => ({
+const deleteSong = (songs) => ({
     type: DELETE_SONG,
-    song,
+    songs,
 })
 
 const getSongsByUser = (songs) => ({
@@ -41,7 +42,7 @@ const getSongsByUser = (songs) => ({
 
 // Thunks
 export const getAllSongsThunk = () => async (dispatch) => {
-    const res = await csrfFetch('/api/songs',{
+    const res = await csrfFetch('/api/songs', {
         method: 'GET'
     });
     const data = await res.json();
@@ -50,7 +51,7 @@ export const getAllSongsThunk = () => async (dispatch) => {
 }
 
 export const getSongThunk = (songId) => async (dispatch) => {
-    const res = await csrfFetch(`/api/songs/${songId}`,{
+    const res = await csrfFetch(`/api/songs/${songId}`, {
         method: 'GET'
     });
     const data = await res.json();
@@ -59,7 +60,7 @@ export const getSongThunk = (songId) => async (dispatch) => {
 }
 
 export const createSongThunk = (song) => async (dispatch) => {
-    const res = await csrfFetch('/api/songs/new',{
+    const res = await csrfFetch('/api/songs/new', {
         method: 'POST',
         body: JSON.stringify(song),
         headers: {
@@ -72,18 +73,9 @@ export const createSongThunk = (song) => async (dispatch) => {
 }
 
 export const updateSongThunk = (song) => async (dispatch) => {
-    const {name,artists,genre,description,audio_url} = song
-    const res = await csrfFetch(`/api/songs/${song.id}`,{
+    const res = await csrfFetch(`/api/songs/${song.id}`, {
         method: 'PUT',
-        body: JSON.stringify(
-            {
-                name,
-                artists,
-                genre,
-                description,
-                audio_url
-            }
-        ),
+        body: JSON.stringify(song),
         headers: {
             'Content-Type': 'application/json'
         }
@@ -96,17 +88,17 @@ export const updateSongThunk = (song) => async (dispatch) => {
 }
 
 export const deleteSongThunk = (songId) => async (dispatch) => {
-    const res = await csrfFetch(`/api/songs/${songId}/delete`,{
+    const res = await csrfFetch(`/api/songs/${songId}/delete`, {
         method: 'DELETE'
     });
-        const data = await res.json();
-        dispatch(deleteSong(data));
-        return data
+    const data = await res.json();
+    dispatch(deleteSong(data));
+    return data
 
 }
 
 export const getSongsByUserThunk = (userId) => async (dispatch) => {
-    const res = await csrfFetch(`/api/users/${userId}/songs`,{
+    const res = await csrfFetch(`/api/users/${userId}/songs`, {
         method: 'GET'
     });
     const data = await res.json();
@@ -115,28 +107,32 @@ export const getSongsByUserThunk = (userId) => async (dispatch) => {
 }
 
 // Reducer
-const initialState = { songs: [] };
+const initialState = { songs: { user: {} } };
 
 const songsReducer = (state = initialState, action) => {
-    let newState = {...state};
+    let newState = { ...state };
     switch (action.type) {
         case GET_ALL_SONGS:
-            newState.songs = action.songs;
+            action.songs.forEach((song) => {
+                newState.songs[song.id] = song
+            })
             return newState;
         case GET_SONG:
-            newState.songs = action.song;
+            newState.songs[action.songs.id] = action.songs
             return newState;
         case CREATE_SONG:
-            newState.songs.push(action.song);
+            newState.songs[action.songs.id] = action.songs
             return newState;
         case UPDATE_SONG:
-            newState.songs = action.song;
+            newState.songs[action.songs.id] = action.songs
             return newState;
         case DELETE_SONG:
-            newState.songs = newState.songs.filter(song => song.id !== action.song.id);
+            delete newState[action.songs.id]
             return newState;
         case GET_SONGS_BY_USER:
-            newState.songs = action.songs;
+            action.songs.forEach((song) => {
+                newState.songs.user[song.id] = song
+            })
             return newState;
         default:
             return state;
