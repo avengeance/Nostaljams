@@ -66,7 +66,7 @@ class PlaylistSong(db.Model):
     song_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('songs.id')))
     playlist_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('playlists.id')))
 
-    playlists = relationship('Playlist', back_populates='playlist_songs', lazy='subquery')
+    playlists = db.relationship('Playlist', back_populates='playlist_songs', lazy='subquery')
 
     def to_dict(self):
         return {
