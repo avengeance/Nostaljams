@@ -12,7 +12,7 @@ import * as likeActions from "./store/likes";
 import SignupFormPage from "./components/SignupFormPage";
 import LoginFormPage from "./components/LoginFormPage";
 import Navigation from "./components/Navigation";
-import Song from "./components/Songs";
+import Song from "./components/Song";
 import CreateSong from "./components/CreateSong";
 
 function App() {
@@ -36,7 +36,7 @@ function App() {
             <SignupFormPage />
           </Route>
           <Route exact path="/">
-            <Songs />
+            <Song />
           </Route>
           <Route exact path='/songs/new'>
             <CreateSong />
