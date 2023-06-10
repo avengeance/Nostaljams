@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import * as SongActions from "../../store/songs";
 import "./CreateSong.css";
 
-function CreateSong() {
+export const CreateSong = (payload) => {
     const user = useSelector(state => state.session.user);
     
     const [song, setSong] = useState([])
