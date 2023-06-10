@@ -79,14 +79,15 @@ def delete_playlist_like(id, like_id):
 def delete_playlist(playlist_id):
     playlist = Playlist.query.get(playlist_id)
     
+    if playlist is None:
+        return jsonify({'error': 'Playlist not found'}), 404
+    
     if playlist.user_id != current_user.id:
         return jsonify({
             "message": "You do not have permission to delete this playlist",
             "statusCode": 404
         }), 404
         
-    if playlist is None:
-        return jsonify({'error': 'Playlist not found'}), 404
 
     db.session.delete(playlist)
     db.session.commit()
