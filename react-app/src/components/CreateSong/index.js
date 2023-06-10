@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import * as SongActions from "../../store/songs";
 import "./CreateSong.css";
 
-export const CreateSong = (payload) => {
+function CreateSong() {
     const user = useSelector(state => state.session.user);
     
     const [song, setSong] = useState([])
@@ -35,7 +35,7 @@ export const CreateSong = (payload) => {
         let newSong;
 
         try {
-            const song = await dispatch(SongActions.createSong(payload));
+            const song = await dispatch(SongActions.createSongThunk(payload));
             const newSongId = song.id;
             const url = `/songs/${newSongId}`;
             if (song){
