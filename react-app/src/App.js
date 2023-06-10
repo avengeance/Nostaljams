@@ -18,7 +18,7 @@ function App() {
   const [isLoaded, setIsLoaded] = useState(false);
   useEffect(() => {
     dispatch(sessionActions.authenticate()).then(() => setIsLoaded(true));
-    dispatch(songActions.getSongsThunk());
+    dispatch(songActions.getSongThunk());
     setIsLoaded(true);
   }, [dispatch]);
 
@@ -40,7 +40,7 @@ function App() {
             <CreateSong />
           </Route>
           <Route exact path='/users/:userId/songs'>
-          
+
           </Route>
         </Switch>
       )}
