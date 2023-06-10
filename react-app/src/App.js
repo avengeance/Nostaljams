@@ -36,7 +36,7 @@ function App() {
             <SignupFormPage />
           </Route>
           <Route exact path="/">
-            <Songs />
+            <Song />
           </Route>
           <Route exact path='/songs/new'>
             <CreateSong />
