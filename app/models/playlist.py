@@ -55,6 +55,7 @@
 
 from .db import db, environment, SCHEMA, add_prefix_for_prod
 from datetime import datetime
+from sqlalchemy.orm import relationship
 
 
 class PlaylistSong(db.Model):
@@ -67,7 +68,7 @@ class PlaylistSong(db.Model):
     song_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('songs.id')))
     playlist_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('playlists.id')))
 
-    playlists = db.relationship('Playlist', back_populates='playlist_songs', lazy='subquery')
+    playlists = relationship('Playlist', back_populates='playlist_songs', lazy='subquery')
 
     def to_dict(self):
         return {
