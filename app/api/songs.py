@@ -79,7 +79,7 @@ def create_song():
 
         db.session.add(song)
         db.session.commit()
-        print('this is song', song)
+
         song_id = song.id
         img = SongImage(
             song_id = song_id,
@@ -92,38 +92,30 @@ def create_song():
     else:
         return jsonify(form.errors), 400
 
-#update a song
 @songs_routes.route('/<int:id>', methods=['PUT'])
 @login_required
 def update_song(id):
     song = Song.query.get(id)
+
     if song and current_user.id == song.user_id:
-        """
-
-        all this code is to update the song in the database, but also theory
-
-            """
         form = EditSongForm()
         form['csrf_token'].data = request.cookies['csrf_token']
-        if form.validate_on_submit():
-            name = form.name.data
-            artists = form.artists.data
-            genre = form.genre.data
-            description = form.description.data
-            audio_url = form.audio_url.data
+        if form.validate():
+            song.name = form.name.data
+            song.artists = form.artists.data
+            song.genre = form.genre.data
+            song.description = form.description.data
+            song.audio_url = form.audio_url.data
 
-            song = Song(
-                user_id=current_user.id,
-                name=name,
-                artists=artists,
-                genre=genre,
-                description=description,
-                audio_url=audio_url
-            )
+            if form.img_url.data:
+                img = SongImage.query.filter_by(song_id=song.id).first()
+                if img:
+                    img.img_url = form.img_url.data
+                else:
+                    img = SongImage(song_id=song.id, img_url=form.img_url.data)
+                    db.session.add(img)
 
-            db.session.add(song)
             db.session.commit()
-
 
             return jsonify(song.to_dict()), 200
         else:
