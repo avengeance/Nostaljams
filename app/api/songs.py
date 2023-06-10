@@ -28,9 +28,9 @@ def song_detail(id):
     # Check if the song exists in the database
     if(song):
     # Print the song details
-        image = SongImage.query.get(id)
-        likes = SongLike.query.get(id)
-        comments = Comment.query.get(id)
+        image = SongImage.query.filter_by(song_id=song.id).first()
+        likes = SongLike.query.filter_by(song_id=song.id).count()
+        comments = Comment.query.filter_by(song_id=song.id).all()
 
         res = {
             "songId": song.id,
@@ -40,10 +40,9 @@ def song_detail(id):
             "genre": song.genre,
             "description": song.description,
             "SongImage": image.img_url,
-            "SongLikesCnt": likes.id,
-            "SongComments": comments.comment
+            "SongLikesCnt": likes,
+            "SongComments": [comment.comment for comment in comments]
         }
-
         return jsonify(res), 200
 
     else:
@@ -67,6 +66,7 @@ def create_song():
         genre = form.genre.data
         description = form.description.data
         audio_url = form.audio_url.data
+        img_url = form.img_url.data
 
         song = Song(
             user_id=current_user.id,
@@ -78,6 +78,14 @@ def create_song():
         )
 
         db.session.add(song)
+        db.session.commit()
+        print('this is song', song)
+        song_id = song.id
+        img = SongImage(
+            song_id = song_id,
+            img_url=img_url
+        )
+        db.session.add(img)
         db.session.commit()
 
         return jsonify(song.to_dict()), 201
@@ -201,25 +209,6 @@ def view_likes_by_song_id(id):
         }
         return jsonify(res), 404
 
-# #view likes by song Id
-# @songs_routes.route('/<int:id>/likes', methods=['GET'])
-# def song_likes(id):
-#     song = Song.query.get(id)
-#     if(song):
-#         # Get all the likes from the database
-#         comments = Comment.query.filter_by(song_id=id).all()
-#         res = {
-#             "message": "Successfully retrieved",
-#             "statusCode": 200,
-#             "comments": comments.to_dict()
-#         }
-#         return jsonify(res), 200
-#     else:
-#         res = {
-#             "message": "Song could not be found.",
-#             "statusCode": 404
-#         }
-#         return jsonify(res), 404
 
 #create a new like
 @songs_routes.route('/<int:id>/likes/new', methods=['POST'])
