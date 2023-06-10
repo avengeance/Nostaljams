@@ -34,7 +34,7 @@ def view_playlist(playlist_id):
     playlist_data = playlist.to_dict()
     return jsonify(playlist_data), 200
 
-@playlist_routes.route('/<int:playlistId>/song/<int:songId>', methods=['POST'])
+@playlist_routes.route('/<int:playlistId>/songs/<int:songId>', methods=['POST'])
 def add_song_to_playlist(playlistId,songId):
     playlist = Playlist.query.get(playlistId)
     if playlist is None:
