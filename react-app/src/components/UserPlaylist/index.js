@@ -9,13 +9,13 @@ import './UserPlaylist.css';
 const UserPlaylist = () => {
     const dispatch = useDispatch();
     const user = useSelector((state) => (state.session.user));
-    const currentPlaylist = useSelector((state) => (state.playlists.playlists.Playlists));
+    // const currentPlaylist = useSelector((state) => (state.playlists.playlists.Playlists));
     const [playlist, setPlaylist] = useState([]);
 
     useEffect(() => {
         const getUserPlaylists = async () => {
             const response = await dispatch(PlaylistActions.getUserPlaylistsThunk(user.id));
-            setPlaylist(response.Spots);
+            setPlaylist(response);
         }
         if(user){
             getUserPlaylists();
@@ -23,6 +23,8 @@ const UserPlaylist = () => {
     },[dispatch, user]);
 
     return (
-        <></>
+        <div></div>
     )
 }
+
+export default UserPlaylist

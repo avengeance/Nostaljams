@@ -25,8 +25,9 @@ const DeleteModal = ({ playlistId }) => {
     function handleNoClick() {
         closeModal()
     }
+    return (
+        <></>
+    )
 }
 
-return (
-    <></>
-)
+export default DeleteModal
