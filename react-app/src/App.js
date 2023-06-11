@@ -41,9 +41,9 @@ function App() {
           <Route exact path='/songs/new'>
             <CreateSong />
           </Route>
-          <Route exact path='/users/:userId/songs'>
+          {/* <Route exact path='/users/:userId/songs'>
 
-          </Route>
+          </Route> */}
         </Switch>
       )}
     </>

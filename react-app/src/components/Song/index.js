@@ -5,19 +5,31 @@ import * as SongActions from "../../store/songs";
 import "./Song.css";
 
 function Song() {
-    const [song, setSong] = useState([])
     const dispatch = useDispatch();
+    const songs = useSelector((state) => Object.values(state.songs.songs))
+    const history = useHistory()
+    console.log('songs', songs)
 
     useEffect(() => {
-        fetch('/api/songs')
-            .then(res => res.json())
-            .then(data => {
-                const songArr = data.Songs;
-                setSong(data)
-            })
-    })
+        dispatch(SongActions.getAllSongsThunk())
+    }, [dispatch])
+
+    const handleSongClick = (songId) => {
+        history.push(`/songs/${songId}`)
+    }
+
     return (
-        <> </>
+        <div className="song-container">
+        {songs.map((song) => (
+            <div key={song.id} className="song-card" onClick={() => handleSongClick(song.id)}>
+                <img src={song.img_url} alt={song.name} className="song-image" />
+                <div className="song-details">
+                    <h3 className="song-name">{song.name}</h3>
+                    <p className="song-artists">{song.artists}</p>
+            </div>
+        </div>
+    ))}
+    </div>
     )
 }
 
