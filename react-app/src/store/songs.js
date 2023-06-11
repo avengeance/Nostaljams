@@ -135,7 +135,8 @@ const songsReducer = (state = initialState, action) => {
             delete newState[action.songs.id]
             return newState;
         case GET_SONGS_BY_USER:
-            action.songs.forEach((song) => {
+            action.songs.UserSongs.forEach((song) => {
+                console.log('this is the user songs', song)
                 newState.songs.user[song.id] = song
             })
             return newState;

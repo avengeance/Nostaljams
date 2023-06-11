@@ -9,21 +9,32 @@ import './UserSongs.css';
 const UserSongs = () => {
     const dispatch = useDispatch();
     const user = useSelector((state) => (state.session.user));
-    const currentSong = useSelector((state) => (state.songs.songs.Songs));
-    const [song, setSong] = useState([]);
-
+    const [songs, setSongs] = useState(null);
+    console.log('user', user);
     useEffect(() => {
         const getUserSongs = async () => {
             const response = await dispatch(SongActions.getSongsByUserThunk(user.id));
-            setSong(response.Spots);
+            // this returns an arrow of our user songs obj
+            console.log('this is res', response)
+            setSongs(response);
         }
         if(user){
             getUserSongs();
         }
     },[dispatch, user]);
 
+    console.log('these are the user songs', songs)
+
     return (
-        <></>
+        <div>
+        {songs.UserSongs.map((song, index) => (
+        <div key={index}>
+            <h3>{song.artists}</h3>
+            <p>{song.audioUrl}</p>
+            {/* Render other song properties as needed */}
+        </div>
+        ))}
+        </div>
     )
 }
 
