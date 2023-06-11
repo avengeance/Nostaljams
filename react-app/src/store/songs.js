@@ -46,7 +46,7 @@ export const getAllSongsThunk = () => async (dispatch) => {
         method: 'GET'
     });
     const data = await res.json();
-    console.log('this is data', data)
+    // console.log('this is data', data)
     let songs = {}
     data.Songs.forEach(song => {
         songs[song.id] = song

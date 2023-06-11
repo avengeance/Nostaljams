@@ -20,8 +20,9 @@ const SongDetail = () => {
     // const modalRef = useRef(null);
     const { closeModal } = useModal();
 
-    const currentSong = useSelector((state) => (state.songs.songs.Songs));
-    const currentComments = useSelector((state) => (state.comments.comments.Comments));
+    const allSongs = useSelector((state) => (state.songs.songs));
+    // const currentSong = allSongs.filter(song => song.id === songId);
+    const currentComments = useSelector((state) => (state.comments.comments));
     const user = useSelector((state) => (state.session.user));
 
     const [song, setSong] = useState(null);
@@ -30,7 +31,7 @@ const SongDetail = () => {
     const dispatch = useDispatch();
     const history = useHistory();
 
-    console.log('this is our current song', currentSong)
+    console.log('this is our current song', allSongs)
     console.log('this is our current comments', currentComments)
     console.log('this is our user', user)
     useEffect(() => {
