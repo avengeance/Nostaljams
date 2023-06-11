@@ -13,6 +13,7 @@ import SignupFormPage from "./components/SignupFormPage";
 import LoginFormPage from "./components/LoginFormPage";
 import Navigation from "./components/Navigation";
 import Song from "./components/Song";
+import SongDetail from "./components/SongDetail";
 import CreateSong from "./components/CreateSong";
 
 function App() {
@@ -40,6 +41,9 @@ function App() {
           </Route>
           <Route exact path='/songs/new'>
             <CreateSong />
+          </Route>
+          <Route path='/songs/:songId'>
+            <SongDetail />
           </Route>
           {/* <Route exact path='/users/:userId/songs'>
 
