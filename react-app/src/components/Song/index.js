@@ -9,7 +9,7 @@ function Song() {
     const songs = useSelector((state) => Object.values(state.songs.songs))
     const history = useHistory()
     console.log('songs', songs)
-
+    console.log(songs.imgUrl)
     useEffect(() => {
         dispatch(SongActions.getAllSongsThunk())
     }, [dispatch])
@@ -20,15 +20,22 @@ function Song() {
 
     return (
         <div className="song-container">
-        {songs.map((song) => (
-            <div key={song.id} className="song-card" onClick={() => handleSongClick(song.id)}>
-                <img src={song.img_url} alt={song.name} className="song-image" />
-                <div className="song-details">
-                    <h3 className="song-name">{song.name}</h3>
-                    <p className="song-artists">{song.artists}</p>
+        {songs.map((song) => {
+        const imgUrl = song.imgUrl && song.imgUrl.length > 0 ? song.imgUrl[0].imgUrl : null;
+        return (
+            <div
+            key={song.id}
+            className="song-card"
+            onClick={() => handleSongClick(song.id)}
+            >
+            <img src={imgUrl} alt={song.name} className="song-image" />
+            <div className="song-details">
+                <h3 className="song-name">{song.name}</h3>
+                <p className="song-artists">{song.artists}</p>
             </div>
-        </div>
-    ))}
+            </div>
+        );
+    })}
     </div>
     )
 }
