@@ -14,7 +14,7 @@ const UserSongs = () => {
 
     useEffect(() => {
         const getUserSongs = async () => {
-            const response = await dispatch(SongActions.getUserSongsThunk(user.id));
+            const response = await dispatch(SongActions.getSongsByUserThunk(user.id));
             setSong(response.Spots);
         }
         if(user){
@@ -26,3 +26,5 @@ const UserSongs = () => {
         <></>
     )
 }
+
+export default UserSongs
