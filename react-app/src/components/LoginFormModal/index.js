@@ -30,44 +30,25 @@ function LoginFormModal() {
       setErrors(["The provided credentials are invalid"]);
     }
     closeModal()
-    // if (data) {
-    //   setErrors(data);
-    // } else {
-    //   closeModal()
-    // }
-    // return dispatch(login({ email, password }))
-    //   .then(closeModal)
-    //   .catch(
-    //     async (res) => {
-    //       const data = await res.json();
-    //       if (data && data.errors) {
-    //         setErrors(data.errors);
-    //       }
-    //       else {
-    //         setErrors(["The provided credentials are invalid"]);
-    //       }
-    //     }
-    //   )
+
   };
 
   const handleDemoLogin = async (e) => {
     e.preventDefault();
     setErrors([]);
-    return dispatch(sessionActions.login({
-      email: "demo@aa.io",
-      password: "password"
-    })).then(closeModal);
+    await dispatch(login("demo@aa.io", "password"));
+    closeModal()
   }
 
   return (
     <div className='login-modal'>
       <h1 id='login-text'>Log In</h1>
       <form onSubmit={handleSubmit}>
-        {/* <ul className="error-list">
+        <ul className="error-list">
           {errors.map((error, idx) => (
             <li key={idx}>{error}</li>
           ))}
-        </ul> */}
+        </ul>
         <div className="login-form">
           <label id='username-email'>
             <input
@@ -91,7 +72,7 @@ function LoginFormModal() {
         <div id='div-login-submit'>
           <button type="submit"
             id='login-button'
-          // disabled={!validCredential || !validPassword}
+          disabled={!validCredential || !validPassword}
           >Log In</button>
         </div>
         <div className="demo-login">
