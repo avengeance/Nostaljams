@@ -40,6 +40,7 @@ def song_detail(id):
             "genre": song.genre,
             "description": song.description,
             "SongImage": image.img_url,
+            "audio_url": song.audio_url,
             "SongLikesCnt": likes,
             "SongComments": [comment.comment for comment in comments]
         }
