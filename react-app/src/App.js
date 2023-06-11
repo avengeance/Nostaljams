@@ -15,6 +15,7 @@ import Navigation from "./components/Navigation";
 import Song from "./components/Song";
 import SongDetail from "./components/SongDetail";
 import CreateSong from "./components/CreateSong";
+import UserSongs from "./components/UserSongs";
 
 function App() {
   const dispatch = useDispatch();
@@ -45,9 +46,9 @@ function App() {
           <Route path='/songs/:songId'>
             <SongDetail />
           </Route>
-          {/* <Route exact path='/users/:userId/songs'>
-
-          </Route> */}
+          <Route exact path='/users/:userId/songs'>
+            <UserSongs/>
+          </Route>
         </Switch>
       )}
     </>

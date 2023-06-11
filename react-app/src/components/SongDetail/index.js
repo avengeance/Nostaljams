@@ -3,15 +3,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { useModal } from "../../context/Modal";
 
-// import OpenModalButton from ".OpenModalButton";
+import OpenModalButton from "../OpenModalButton";
 // import DeleteComment from "./DeleteComment";
-// import CreateComment from "./CreateComment";
+import CreateCommentModal from "../CreateComment";
 
 import * as SongActions from "../../store/songs";
 import * as CommentActions from "../../store/comments";
 import * as PlaylistActions from "../../store/playlists";
 
-import "./SongDetail.css";
+// import "./SongDetail.css";
 
 const SongDetail = () => {
     const { songId } = useParams();
@@ -41,17 +41,17 @@ const SongDetail = () => {
         );
     }, [dispatch, songId]);
 
-  // function handlePostComment(){
-  //     const modalContent = <CreateComment onCommentSubmit={handlePostComment}/>;
-  //     history.push(`/songs/${songId}/comments`);
-  //     setModalContent(modalContent);
-  // }
+    function handlePostComment(){
+        const modalContent = <CreateCommentModal onCommentSubmit={handlePostComment}/>;
+        history.push(`/songs/${songId}/comments`);
+        setModalContent(modalContent);
+    }
 
-  // function handleDeleteComment(commentId){
-  //     const modalContent = <DeleteComment onCommentDelete={handleDeleteComment} commentId={commentId}/>;
-  //     history.push(`/songs/${songId}/comments`);
-  //     setModalContent(modalContent);
-  // }
+    // function handleDeleteComment(commentId){
+    //     const modalContent = <DeleteComment onCommentDelete={handleDeleteComment} commentId={commentId}/>;
+    //     history.push(`/songs/${songId}/comments`);
+    //     setModalContent(modalContent);
+    // }
 
     return (
         <div className="song-detail">
