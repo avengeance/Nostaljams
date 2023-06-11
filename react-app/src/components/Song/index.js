@@ -8,8 +8,8 @@ function Song() {
     const dispatch = useDispatch();
     const songs = useSelector((state) => Object.values(state.songs.songs))
     const history = useHistory()
-    console.log('songs', songs)
-    console.log(songs.imgUrl)
+    // console.log('songs', songs)
+    // console.log(songs.imgUrl)
     useEffect(() => {
         dispatch(SongActions.getAllSongsThunk())
     }, [dispatch])
