@@ -44,7 +44,7 @@ export const login = (email, password) => async (dispatch) => {
 	if (response.ok) {
 		const data = await response.json();
 		dispatch(setUser(data));
-		return null;
+		return response;
 	} else if (response.status < 500) {
 		const data = await response.json();
 		if (data.errors) {
@@ -104,5 +104,3 @@ export default function reducer(state = initialState, action) {
 			return state;
 	}
 }
-
-
