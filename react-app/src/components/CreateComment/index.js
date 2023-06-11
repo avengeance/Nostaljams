@@ -37,3 +37,5 @@ function CreateCommentModal(){
         <> </>
     )
 }
+
+export default CreateCommentModal
