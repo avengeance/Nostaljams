@@ -1,4 +1,4 @@
-import React, {useEffect,useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import * as SongActions from '../../store/songs';
@@ -18,22 +18,22 @@ const UserSongs = () => {
             console.log('this is res', response)
             setSongs(response);
         }
-        if(user){
+        if (user) {
             getUserSongs();
         }
-    },[dispatch, user]);
+    }, [dispatch, user]);
 
     console.log('these are the user songs', songs)
 
     return (
         <div>
-        {songs.UserSongs.map((song, index) => (
-        <div key={index}>
-            <h3>{song.artists}</h3>
-            <p>{song.audioUrl}</p>
-            {/* Render other song properties as needed */}
-        </div>
-        ))}
+            {songs.UserSongs.map((song, index) => (
+                <div key={index}>
+                    <h3>{song.artists}</h3>
+                    <p>{song.audioUrl}</p>
+                    {/* Render other song properties as needed */}
+                </div>
+            ))}
         </div>
     )
 }
