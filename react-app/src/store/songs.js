@@ -59,9 +59,9 @@ export const getSongThunk = (songId) => async (dispatch) => {
     const res = await csrfFetch(`/api/songs/${songId}`, {
         method: 'GET'
     });
-    const data = await res.json();
-    dispatch(getSong(data));
-    return data
+    const songDetails = await res.json();
+    dispatch(getSong(songDetails));
+    return songDetails
 }
 
 export const createSongThunk = (song) => async (dispatch) => {
@@ -123,7 +123,7 @@ const songsReducer = (state = initialState, action) => {
             })
             return newState;
         case GET_SONG:
-            newState.songs[action.songs.id] = action.songs
+            newState.songs[action.songs.songId] = action.songs
             return newState;
         case CREATE_SONG:
             newState.songs[action.songs.id] = action.songs
