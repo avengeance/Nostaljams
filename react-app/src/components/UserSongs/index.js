@@ -5,6 +5,7 @@ import * as SongActions from '../../store/songs';
 import OpenModalButton from '../OpenModalButton';
 import DeleteModal from '../DeleteSong';
 import './UserSongs.css';
+import { NavLink, useHistory } from "react-router-dom";
 
 const UserSongs = () => {
     const dispatch = useDispatch();
@@ -28,27 +29,38 @@ const UserSongs = () => {
 
     return (
         <div className='user-page-container'>
-            {/* stuff we need to add:
-             *if profile picture is not available, have a placeholder img with a upload image button
-             */}
         {user && (
             <div className='user-info-header'>
                 <div>
-                    <img src={user?.userImg} alt={user?.firstName} className="user-img"/>
+                    <img
+                        src={user?.userImg[0]?.imgUrl}
+                        alt={user?.firstName}
+                        className="user-img"
+                        />
                     <h2 className='user-firstname'>{user?.firstName}</h2>
                     <p className='user-username'>{user?.username}</p>
                 </div>
+
             </div>
         )}
-
+        <div className='user-playlist'>
+            <NavLink to={`/users/${user?.id}/playlists`}>Playlists</NavLink>
+        </div>
         <div className='song-list'>
-            {songs && songs?.UserSongs.map((song, index) => (
+        {songs &&
+        songs?.UserSongs.map((song, index) => {
+            console.log("song", song);
+            const imgUrl = song.imgUrl && song.imgUrl.length > 0 ? song.imgUrl[0].imgUrl : null;
+            return (
                 <div key={index}>
-                    <h3>{song.artists}</h3>
-                    <p>{song.audioUrl}</p>
-                    {/* Render other song properties as needed */}
+                <p>{song.name}</p>
+                <img src={imgUrl} alt={song.name} className='song-image'/>
+                <p>{song.artists}</p>
+                <p>{song.genre}</p>
+                <p>{song.SongLikesCnt}</p>
                 </div>
-            ))}
+            );
+            })}
         </div>
         </div>
     )

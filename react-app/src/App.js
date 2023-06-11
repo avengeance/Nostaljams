@@ -16,6 +16,7 @@ import Song from "./components/Song";
 import SongDetail from "./components/SongDetail";
 import CreateSong from "./components/CreateSong";
 import UserSongs from "./components/UserSongs";
+import UserPlaylist from "./components/UserPlaylist";
 
 function App() {
   const dispatch = useDispatch();
@@ -48,6 +49,9 @@ function App() {
           </Route>
           <Route exact path='/users/:userId/songs'>
             <UserSongs/>
+          </Route>
+          <Route path='/users/:userId/playlists'>
+            <UserPlaylist/>
           </Route>
         </Switch>
       )}

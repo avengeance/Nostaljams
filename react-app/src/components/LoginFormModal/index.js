@@ -72,7 +72,7 @@ function LoginFormModal() {
         <div id='div-login-submit'>
           <button type="submit"
             id='login-button'
-          disabled={!validCredential || !validPassword}
+          // disabled={!validCredential || !validPassword}
           >Log In</button>
         </div>
         <div className="demo-login">
