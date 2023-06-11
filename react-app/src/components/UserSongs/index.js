@@ -27,7 +27,7 @@ const UserSongs = () => {
 
     return (
         <div>
-        {songs.UserSongs.map((song, index) => (
+        {songs && songs.UserSongs.map((song, index) => (
         <div key={index}>
             <h3>{song.artists}</h3>
             <p>{song.audioUrl}</p>
