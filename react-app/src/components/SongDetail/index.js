@@ -14,33 +14,32 @@ import * as PlaylistActions from "../../store/playlists";
 import "./SongDetail.css";
 
 const SongDetail = () => {
-  const { songId } = useParams();
+    const { songId } = useParams();
 
-  const { setModalContent } = useModal();
-  // const modalRef = useRef(null);
-  const { closeModal } = useModal();
+    const { setModalContent } = useModal();
+    // const modalRef = useRef(null);
+    const { closeModal } = useModal();
 
-  const allSongs = useSelector((state) => state.songs.songs);
-  // const currentSong = allSongs.filter(song => song.id === songId);
-  const currentComments = useSelector((state) => state.comments.comments);
-  const user = useSelector((state) => state.session.user);
+    const currentSong = useSelector((state) => state.songs.songs[songId]);
+    const currentComments = useSelector((state) => state.comments.comments);
+    const user = useSelector((state) => state.session.user);
 
-  const [song, setSong] = useState(null);
-  const [comments, setComments] = useState([]);
+    const [song, setSong] = useState(null);
+    const [comments, setComments] = useState([]);
 
-  const dispatch = useDispatch();
-  const history = useHistory();
+    const dispatch = useDispatch();
+    const history = useHistory();
+    console.log('currentSong', currentSong)
+    useEffect(() => {
+        if (!songId) {
+        console.error("No songId");
+        return;
+        }
 
-  useEffect(() => {
-    if (!songId) {
-      console.error("No songId");
-      return;
-    }
-
-    dispatch(SongActions.getSongThunk(songId)).then((currentSong) =>
-      setSong(currentSong)
-    );
-  }, [dispatch, songId]);
+        dispatch(SongActions.getSongThunk(songId)).then((currentSong) =>
+        setSong(currentSong)
+        );
+    }, [dispatch, songId]);
 
   // function handlePostComment(){
   //     const modalContent = <CreateComment onCommentSubmit={handlePostComment}/>;
@@ -54,35 +53,34 @@ const SongDetail = () => {
   //     setModalContent(modalContent);
   // }
 
-  return (
-    // <div className="song-detail">
-    // {currentSong && (
-    //     <div className="song-info">
-    //     <h2>{currentSong.title}</h2>
-    //     <p>Artist: {currentSong.artist}</p>
-    //     <p>Album: {currentSong.album}</p>
-    // </div>
-    // )}
+    return (
+        <div className="song-detail">
+        {currentSong && (
+            <div className="song-info">
+            <h2>{currentSong.name}</h2>
+            <p>Artist: {currentSong.artists}</p>
+            {/* <p>Album: {currentSong.playlist}</p> */}
+        </div>
+        )}
 
-    // <div className="comments-section">
-    //     <h3>Comments</h3>
-    //     {user && (
-    //     <button onClick={handlePostComment}>Add Comment</button>
-    //     )}
-    //     {comments.map((comment) => (
-    //         <div key={comment.id} className="comment">
-    //         <p>{comment.content}</p>
-    //         {user && user.id === comment.userId && (
-    //             <button onClick={() => handleDeleteComment(comment.id)}>
-    //             Delete
-    //             </button>
-    //         )}
-    //         </div>
-    //     ))}
-    //     </div>
-    // </div>
-    <></>
-  );
+        {/* <div className="comments-section">
+            <h3>Comments</h3>
+            {user && (
+            <button onClick={handlePostComment}>Add Comment</button>
+            )}
+            {comments.map((comment) => (
+                <div key={comment.id} className="comment">
+                <p>{comment.content}</p>
+                {user && user.id === comment.userId && (
+                    <button onClick={() => handleDeleteComment(comment.id)}>
+                    Delete
+                    </button>
+                )}
+                </div>
+            ))}
+            </div> */}
+        </div>
+    );
 };
 
 export default SongDetail;
