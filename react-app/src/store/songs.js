@@ -46,6 +46,11 @@ export const getAllSongsThunk = () => async (dispatch) => {
         method: 'GET'
     });
     const data = await res.json();
+    console.log('this is data', data)
+    let songs = {}
+    data.Songs.forEach(song => {
+        songs[song.id] = song
+    })
     dispatch(getAllSongs(data));
     return data
 }
@@ -113,7 +118,7 @@ const songsReducer = (state = initialState, action) => {
     let newState = { ...state };
     switch (action.type) {
         case GET_ALL_SONGS:
-            action.songs.forEach((song) => {
+            action.songs.Songs.forEach((song) => {
                 newState.songs[song.id] = song
             })
             return newState;
