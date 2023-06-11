@@ -30,33 +30,14 @@ function LoginFormModal() {
       setErrors(["The provided credentials are invalid"]);
     }
     closeModal()
-    // if (data) {
-    //   setErrors(data);
-    // } else {
-    //   closeModal()
-    // }
-    // return dispatch(login({ email, password }))
-    //   .then(closeModal)
-    //   .catch(
-    //     async (res) => {
-    //       const data = await res.json();
-    //       if (data && data.errors) {
-    //         setErrors(data.errors);
-    //       }
-    //       else {
-    //         setErrors(["The provided credentials are invalid"]);
-    //       }
-    //     }
-    //   )
+
   };
 
   const handleDemoLogin = async (e) => {
     e.preventDefault();
     setErrors([]);
-    return dispatch(sessionActions.login({
-      email: "demo@aa.io",
-      password: "password"
-    })).then(closeModal);
+    await dispatch(login("demo@aa.io", "password"));
+    closeModal()
   }
 
   return (
