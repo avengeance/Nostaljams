@@ -26,14 +26,19 @@ const UserSongs = () => {
     console.log('these are the user songs', songs)
 
     return (
-        <div>
-        {songs && songs.UserSongs.map((song, index) => (
-        <div key={index}>
-            <h3>{song.artists}</h3>
-            <p>{song.audioUrl}</p>
-            {/* Render other song properties as needed */}
+        <div className='user-page-container'>
+            <div className='user-info-header'>
+
+            </div>
+        <div className='song-list'>
+            {songs && songs.UserSongs.map((song, index) => (
+            <div key={index}>
+                <h3>{song.artists}</h3>
+                <p>{song.audioUrl}</p>
+                {/* Render other song properties as needed */}
+            </div>
+            ))}
         </div>
-        ))}
         </div>
     )
 }
