@@ -90,7 +90,7 @@ export const deletePlaylistThunk = (playlistId) => async (dispatch) => {
 }
 
 // Reducer
-const initialState = { playlists: {} }
+const initialState = { playlists: { user: {} } }
 
 const playlistReducer = (state = initialState, action) => {
     let newState = { ...state }
@@ -99,9 +99,11 @@ const playlistReducer = (state = initialState, action) => {
             newState.playlists[action.playlists.id] = action.playlists
             return newState;
         case GET_USER_PLAYLISTS:
-            action.playlists.forEach((playlist) => {
-                newState.playlists.user[playlist.id] = playlist
-            })
+            if (action.playlists.User) {
+                action.playlists.User.forEach((playlist) => {
+                newState.playlists.user[playlist.id] = playlist;
+                });
+            }
             return newState;
         case CREATE_PLAYLIST:
             newState.playlists[action.playlists.id] = action.playlists
