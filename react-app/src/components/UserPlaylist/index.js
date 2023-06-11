@@ -9,22 +9,59 @@ import './UserPlaylist.css';
 const UserPlaylist = () => {
     const dispatch = useDispatch();
     const user = useSelector((state) => (state.session.user));
-    // const currentPlaylist = useSelector((state) => (state.playlists.playlists.Playlists));
-    const [playlist, setPlaylist] = useState([]);
+    const [playlists, setPlaylists] = useState([]);
 
     useEffect(() => {
         const getUserPlaylists = async () => {
             const response = await dispatch(PlaylistActions.getUserPlaylistsThunk(user.id));
-            setPlaylist(response);
+            setPlaylists(response);
+            console.log('this is res',response)
         }
+
         if(user){
             getUserPlaylists();
         }
     },[dispatch, user]);
 
+    console.log('this is user', user)
+    console.log('these are the user playlists', playlists)
+
     return (
-        <div></div>
-    )
+            <div className='user-playlists-container'>
+            {user && (
+                <div className='user-info-header'>
+                <div>
+                    <img
+                    src={user?.userImg[0]?.imgUrl}
+                    alt={user?.firstName}
+                    className='user-img'
+                    />
+                    <h2 className='user-firstname'>{user?.firstName}</h2>
+                    <p className='user-username'>{user?.username}</p>
+                </div>
+                </div>
+            )}
+            <div className='playlist-section'>
+                {Object.keys(playlists).length === 0 ? (
+                <div className='no-playlist-message'>
+                    <p>You haven't created any playlists yet!</p>
+                    {/* <Link to='/create-playlist' className='create-playlist-button'>
+                    Make a Playlist
+                    </Link> */}
+                </div>
+                ) : (
+                <div className='playlist-list'>
+                    {Object.values(playlists).map((playlist) => (
+                    <div key={playlist.id} className='playlist-item'>
+                        <h3>{playlist.name}</h3>
+                        {/* playlist.songs is an array */}
+                    </div>
+                    ))}
+                </div>
+                )}
+            </div>
+            </div>
+        );
 }
 
 export default UserPlaylist
