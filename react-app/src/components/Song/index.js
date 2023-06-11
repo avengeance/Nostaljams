@@ -5,7 +5,6 @@ import * as SongActions from "../../store/songs";
 import "./Song.css";
 
 function Song() {
-    const [song, setSong] = useState([])
     const dispatch = useDispatch();
     const songs = useSelector((state) => Object.values(state.songs.songs))
     const history = useHistory()
@@ -22,12 +21,12 @@ function Song() {
     return (
         <div className="song-container">
         {songs.map((song) => (
-        <div key={song.id} className="song-card">
-        <img src={song.image} alt={song.name} className="song-image" />
-        <div className="song-details">
-            <h3 className="song-name">{song.name}</h3>
-            <p className="song-artists">{song.artists}</p>
-        </div>
+            <div key={song.id} className="song-card" onClick={() => handleSongClick(song.id)}>
+                <img src={song.img_url} alt={song.name} className="song-image" />
+                <div className="song-details">
+                    <h3 className="song-name">{song.name}</h3>
+                    <p className="song-artists">{song.artists}</p>
+            </div>
         </div>
     ))}
     </div>
