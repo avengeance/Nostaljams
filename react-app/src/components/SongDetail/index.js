@@ -15,13 +15,12 @@ import "./SongDetail.css";
 
 const SongDetail = () => {
     const { songId } = useParams();
-
     const { setModalContent } = useModal();
     // const modalRef = useRef(null);
     const { closeModal } = useModal();
 
     const allSongs = useSelector((state) => (state.songs.songs));
-    // const currentSong = allSongs.filter(song => song.id === songId);
+
     const currentComments = useSelector((state) => (state.comments.comments));
     const user = useSelector((state) => (state.session.user));
 
@@ -31,7 +30,8 @@ const SongDetail = () => {
     const dispatch = useDispatch();
     const history = useHistory();
 
-    console.log('this is our current song', allSongs)
+    console.log('this is all the songs', allSongs)
+    // console.log('this is current song', currentSong)
     console.log('this is our current comments', currentComments)
     console.log('this is our user', user)
     useEffect(() => {
@@ -39,14 +39,14 @@ const SongDetail = () => {
             console.error("No songId");
             return;
         }
-
         dispatch(SongActions.getSongThunk(songId))
             .then(currentSong => setSong(currentSong))
-        dispatch(CommentActions.getAllCommentsBySongThunk(songId))
-            .then(currentComments => setComments(currentComments))
     },[dispatch, songId])
 
-
+    // useEffect(() => {
+    //         dispatch(CommentActions.getAllCommentsBySongThunk(songId))
+    //         .then(currentComments => setComments(currentComments))
+    // }, [currentSong])
     // function handlePostComment(){
     //     const modalContent = <CreateComment onCommentSubmit={handlePostComment}/>;
     //     history.push(`/songs/${songId}/comments`);
@@ -59,15 +59,15 @@ const SongDetail = () => {
     //     setModalContent(modalContent);
     // }
 
-    useEffect(() => {
-        if(!songId){
-            console.error("No songId");
-            return
-        }
-        dispatch(CommentActions.getAllCommentsBySongThunk(songId))
-            .then(comments => setComments(comments.Comments))
-            .catch(err => console.error(err))
-    },[dispatch, songId])
+    // useEffect(() => {
+    //     if(!songId){
+    //         console.error("No songId");
+    //         return
+    //     }
+    //     dispatch(CommentActions.getAllCommentsBySongThunk(songId))
+    //         .then(comments => setComments(comments.Comments))
+    //         .catch(err => console.error(err))
+    // },[dispatch, songId])
 
     return(
         // <div className="song-detail">
