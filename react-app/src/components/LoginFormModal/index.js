@@ -11,7 +11,7 @@ function LoginFormModal() {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState([]);
   const { closeModal } = useModal();
-  const [crendential,setCredential] = useState("");
+  const [crendential, setCredential] = useState("");
 
   const MIN_USERNAME_LENGTH = 4;
   const MIN_PASSWORD_LENGTH = 6;
@@ -23,11 +23,18 @@ function LoginFormModal() {
     e.preventDefault();
     setErrors([]);
     const data = await dispatch(login(email, password));
-    if (data) {
-      setErrors(data);
-    } else {
-        closeModal()
+    if (data && data.errors){
+      setErrors(data.errors);
     }
+    else {
+      setErrors(["The provided credentials are invalid"]);
+    }
+    closeModal()
+    // if (data) {
+    //   setErrors(data);
+    // } else {
+    //   closeModal()
+    // }
     // return dispatch(login({ email, password }))
     //   .then(closeModal)
     //   .catch(
@@ -43,7 +50,7 @@ function LoginFormModal() {
     //   )
   };
 
-  const handleDemoLogin = (e) => {
+  const handleDemoLogin = async (e) => {
     e.preventDefault();
     setErrors([]);
     return dispatch(sessionActions.login({
@@ -62,30 +69,30 @@ function LoginFormModal() {
           ))}
         </ul> */}
         <div className="login-form">
-        <label id='username-email'>
-          <input
-            type="text"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            placeholder="Email"
-          />
-        </label>
-        <label id='password'>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            placeholder="Password"
-          />
-        </label>
+          <label id='username-email'>
+            <input
+              type="text"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              placeholder="Email"
+            />
+          </label>
+          <label id='password'>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              placeholder="Password"
+            />
+          </label>
         </div>
         <div id='div-login-submit'>
-        <button type="submit"
-          id='login-button'
+          <button type="submit"
+            id='login-button'
           // disabled={!validCredential || !validPassword}
-        >Log In</button>
+          >Log In</button>
         </div>
         <div className="demo-login">
           <a href="javascript:void(0)"
