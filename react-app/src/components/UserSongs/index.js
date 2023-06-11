@@ -23,15 +23,20 @@ const UserSongs = () => {
         }
     }, [dispatch, user]);
 
+    console.log('this is user', user)
     console.log('these are the user songs', songs)
-    console.log('this is user info stuff', user?.name)
+
     return (
         <div className='user-page-container'>
+            {/* stuff we need to add:
+             *if profile picture is not available, have a placeholder img with a upload image button
+             */}
         {user && (
             <div className='user-info-header'>
                 <div>
-                    <img src={user?.userImg} alt={user?.name} className="user-img"/>
-                    <h2 className='user-name'>{user?.name}</h2>
+                    <img src={user?.userImg} alt={user?.firstName} className="user-img"/>
+                    <h2 className='user-firstname'>{user?.firstName}</h2>
+                    <p className='user-username'>{user?.username}</p>
                 </div>
             </div>
         )}
