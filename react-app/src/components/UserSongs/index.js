@@ -24,19 +24,25 @@ const UserSongs = () => {
     },[dispatch, user]);
 
     console.log('these are the user songs', songs)
-
+    console.log('this is user info stuff', user?.name)
     return (
         <div className='user-page-container'>
+        {user && (
             <div className='user-info-header'>
+                <div>
+                    <img src={user?.userImg} alt={user?.name} className="user-img"/>
+                    <h2 className='user-name'>{user?.name}</h2>
+                </div>
+            </div>
+        )}
 
-            </div>
         <div className='song-list'>
-            {songs && songs.UserSongs.map((song, index) => (
-            <div key={index}>
-                <h3>{song.artists}</h3>
-                <p>{song.audioUrl}</p>
-                {/* Render other song properties as needed */}
-            </div>
+            {songs && songs?.UserSongs.map((song, index) => (
+                <div key={index}>
+                    <h3>{song.artists}</h3>
+                    <p>{song.audioUrl}</p>
+                    {/* Render other song properties as needed */}
+                </div>
             ))}
         </div>
         </div>
