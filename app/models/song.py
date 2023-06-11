@@ -74,6 +74,7 @@ class Song(db.Model):
             'genre': self.genre,
             'description': self.description,
             'audioUrl': self.audio_url,
+            'imgUrl': [img.to_dict() for img in self.song_images],
             'createdAt': self.created_at,
             'updatedAt': self.updated_at
         }
