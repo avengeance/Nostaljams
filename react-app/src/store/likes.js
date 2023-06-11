@@ -19,24 +19,24 @@ const getLikesByPlaylist = (likes) => ({
     likes,
 })
 
-const createSongLike = (like) => ({
+const createSongLike = (likes) => ({
     type: CREATE_SONG_LIKE,
-    like,
+    likes,
 })
 
-const createPlaylistLike = (like) => ({
+const createPlaylistLike = (likes) => ({
     type: CREATE_PLAYLIST_LIKE,
-    like,
+    likes,
 })
 
-const deleteLikeByPlaylist = (like) => ({
+const deleteLikeByPlaylist = (likes) => ({
     type: DELETE_LIKE_BY_PLAYLIST,
-    like,
+    likes,
 })
 
-const deleteLikeBySong = (like) => ({
+const deleteLikeBySong = (likes) => ({
     type: DELETE_LIKE_BY_SONG,
-    like,
+    likes,
 })
 
 // Thunks
@@ -104,22 +104,32 @@ const likesReducer = (state = initialState, action) => {
     let newState = { ...state };
     switch (action.type) {
         case GET_LIKES_BY_SONG:
-            newState.likesBySong[action.like.id] = action.likes;
+            // newState.likesBySong[action.like.id] = action.likes;
+            action.likes.forEach((like) => {
+                newState.likesBySong[like.id] = like
+            })
             return newState;
         case GET_LIKES_BY_PLAYLIST:
-            newState.likesByPlaylist[action.like.id] = action.likes;
+            // newState.likesByPlaylist[action.like.id] = action.likes;
+            action.likes.forEach((like) => {
+                newState.likesByPlaylist[like.id] = like
+            })
             return newState;
         case CREATE_SONG_LIKE:
-            newState.likesBySong = state.likesBySong + 1
+            // newState.likesBySong = state.likesBySong + 1
+            newState.likesBySong[action.likes.id] = action.likes
             return newState;
         case CREATE_PLAYLIST_LIKE:
-            newState.likesByPlaylist = state.likesByPlaylist + 1
+            // newState.likesByPlaylist = state.likesByPlaylist + 1
+            newState.likesByPlaylist[action.likes.id] = action.likes
             return newState;
         case DELETE_LIKE_BY_PLAYLIST:
-            newState.likesByPlaylist = newState.likesByPlaylist.filter(like => like.id !== action.like.id);
+            // newState.likesByPlaylist = newState.likesByPlaylist.filter(like => like.id !== action.like.id);
+            delete newState[action.likes.id]
             return newState;
         case DELETE_LIKE_BY_SONG:
-            newState.likesBySong = newState.likesBySong.filter(like => like.id !== action.like.id);
+            // newState.likesBySong = newState.likesBySong.filter(like => like.id !== action.like.id);
+            delete newState[action.likes.id]
             return newState;
         default:
             return state;

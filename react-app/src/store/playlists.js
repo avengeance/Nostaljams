@@ -1,7 +1,6 @@
 import { csrfFetch } from "./csrf";
 
 // Constants
-const GET_ALL_PLAYLISTS = 'playlists/GET_ALL_PLAYLISTS';
 const GET_PLAYLIST = 'playlists/GET_PLAYLIST';
 const GET_USER_PLAYLISTS = 'playlists/GET_USER_PLAYLISTS';
 const CREATE_PLAYLIST = 'playlists/CREATE_PLAYLIST';
@@ -9,14 +8,9 @@ const UPDATE_PLAYLIST = 'playlists/UPDATE_PLAYLIST';
 const DELETE_PLAYLIST = 'playlists/DELETE_PLAYLIST';
 
 // Actions
-const getAllPlaylists = (playlists) => ({
-    type: GET_ALL_PLAYLISTS,
-    playlists,
-})
-
-const getPlaylist = (playlist) => ({
+const getPlaylist = (playlists) => ({
     type: GET_PLAYLIST,
-    playlist,
+    playlists,
 })
 
 const getUserPlaylists = (playlists) => ({
@@ -24,31 +18,22 @@ const getUserPlaylists = (playlists) => ({
     playlists,
 })
 
-const createPlaylist = (playlist) => ({
+const createPlaylist = (playlists) => ({
     type: CREATE_PLAYLIST,
-    playlist,
+    playlists,
 })
 
-const updatePlaylist = (playlist) => ({
+const updatePlaylist = (playlists) => ({
     type: UPDATE_PLAYLIST,
-    playlist,
+    playlists,
 })
 
-const deletePlaylist = (playlist) => ({
+const deletePlaylist = (playlists) => ({
     type: DELETE_PLAYLIST,
-    playlist,
+    playlists,
 })
 
 // Thunks
-// export const getAllPlaylistsThunk = () => async (dispatch) => {
-//     const res = await csrfFetch('/api/playlists',{
-//         method: 'GET'
-//     });
-//     const data = await res.json();
-//     dispatch(getAllPlaylists(data));
-//     return data
-// }
-
 export const getPlaylistThunk = (playlistId) => async (dispatch) => {
     const res = await csrfFetch(`/api/playlists/${playlistId}`, {
         method: 'GET'
@@ -70,7 +55,10 @@ export const getUserPlaylistsThunk = (userId) => async (dispatch) => {
 export const createPlaylistThunk = (userId, playlist) => async (dispatch) => {
     const res = await csrfFetch(`/api/users/${userId}/playlists/new`, {
         method: 'POST',
-        body: JSON.stringify(playlist)
+        body: JSON.stringify(playlist),
+        headers: {
+            'Content-Type': 'application/json'
+        }
     });
     const data = await res.json();
     dispatch(createPlaylist(data));
@@ -78,15 +66,12 @@ export const createPlaylistThunk = (userId, playlist) => async (dispatch) => {
 }
 
 export const updatePlaylistThunk = (userId, playlist) => async (dispatch) => {
-    const { name, description } = playlist
     const res = await csrfFetch(`/api/users/${userId}/playlists/${playlist.id}`, {
         method: 'PUT',
-        body: JSON.stringify(
-            {
-                name,
-                description
-            }
-        )
+        body: JSON.stringify(playlist),
+        headers: {
+            'Content-Type': 'application/json'
+        }
     });
     if (res.ok) {
         const data = await res.json();
@@ -105,29 +90,30 @@ export const deletePlaylistThunk = (playlistId) => async (dispatch) => {
 }
 
 // Reducer
-const initialState = { playlists: [] }
+const initialState = { playlists: {} }
 
 const playlistReducer = (state = initialState, action) => {
     let newState = { ...state }
     switch (action.type) {
-        case GET_ALL_PLAYLISTS:
-            newState.playlists = action.playlists
-            return newState
         case GET_PLAYLIST:
-            newState.playlists = action.playlists
-            return newState
+            newState.playlists[action.playlists.id] = action.playlists
+            return newState;
         case GET_USER_PLAYLISTS:
-            newState.playlists = action.playlists
-            return newState
+            action.playlists.forEach((playlist) => {
+                newState.playlists.user[playlist.id] = playlist
+            })
+            return newState;
         case CREATE_PLAYLIST:
-            newState.playlists.push(action.playlist)
-            return newState
+            newState.playlists[action.playlists.id] = action.playlists
+            return newState;
         case UPDATE_PLAYLIST:
-            newState.playlists = newState.playlists.map(playlist => playlist.id === action.playlist.id ? action.playlist : playlist)
-            return newState
+            //newState.playlists = newState.playlists.map(playlist => playlist.id === action.playlist.id ? action.playlist : playlist)
+            newState.playlists[action.playlists.id] = action.playlists
+            return newState;
         case DELETE_PLAYLIST:
-            newState.playlists = newState.playlists.filter(playlist => playlist.id !== action.playlist.id)
-            return newState
+            //newState.playlists = newState.playlists.filter(playlist => playlist.id !== action.playlist.id)
+            delete newState[action.songs.id]
+            return newState;
         default:
             return state;
     }

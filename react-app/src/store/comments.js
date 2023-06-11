@@ -2,7 +2,6 @@ import { csrfFetch } from "./csrf";
 
 // Constants
 const GET_ALL_COMMENTS_BY_SONG = 'comments/GET_ALL_COMMENTS_BY_SONG';
-const GET_COMMENT = 'comments/GET_COMMENT';
 const CREATE_COMMENT = 'comments/CREATE_COMMENT';
 const UPDATE_COMMENT = 'comments/UPDATE_COMMENT';
 const DELETE_COMMENT = 'comments/DELETE_COMMENT';
@@ -13,24 +12,19 @@ const getAllCommentsBySong = (comments) => ({
     comments,
 })
 
-const getComment = (comment) => ({
-    type: GET_COMMENT,
-    comment,
-})
-
-const createComment = (comment) => ({
+const createComment = (comments) => ({
     type: CREATE_COMMENT,
-    comment,
+    comments,
 })
 
-const updateComment = (comment) => ({
+const updateComment = (comments) => ({
     type: UPDATE_COMMENT,
-    comment,
+    comments,
 })
 
-const deleteComment = (comment) => ({
+const deleteComment = (comments) => ({
     type: DELETE_COMMENT,
-    comment,
+    comments,
 })
 
 // Thunks
@@ -43,19 +37,13 @@ export const getAllCommentsBySongThunk = (songId) => async (dispatch) => {
     return data
 }
 
-// export const getCommentThunk = (commentId) => async (dispatch) => {
-//     const res = await csrfFetch(`/api/comments/${commentId}`,{
-//         method: 'GET'
-//     });
-//     const data = await res.json();
-//     dispatch(getComment(data));
-//     return data
-// }
-
 export const createCommentThunk = (songId, comment) => async (dispatch) => {
     const res = await csrfFetch(`/api/songs/${songId}/comments/new`, {
         method: 'POST',
         body: JSON.stringify(comment),
+        headers: {
+            'Content-Type': 'application/json'
+        }
     });
     const data = await res.json();
     dispatch(createComment(data));
@@ -63,12 +51,13 @@ export const createCommentThunk = (songId, comment) => async (dispatch) => {
 }
 
 export const updateCommentThunk = (commentId, comment) => async (dispatch) => {
-    const { comment } = comment
+    // const { comment } = comment
     const res = await csrfFetch(`/api/comments/${commentId}`, {
         method: 'PUT',
-        body: JSON.stringify({
-            comment
-        }),
+        body: JSON.stringify(comment),
+        headers: {
+            'Content-Type': 'application/json'
+        }
     });
     const data = await res.json();
     dispatch(updateComment(data));
@@ -86,26 +75,26 @@ export const deleteCommentThunk = (commentId) => async (dispatch) => {
 
 // Reducer
 
-const initialState = {};
+const initialState = { comments: { } };
 
 const commentsReducer = (state = initialState, action) => {
     let newState = {...state};
     switch (action.type) {
         case GET_ALL_COMMENTS_BY_SONG:
-            newState = action.comments;
-            return newState;
-        case GET_COMMENT:
-            newState = action.comment;
+            // newState = action.comments;
+            action.comments.forEach((comment) => {
+                newState.comments[comment.id] = comment
+            })
             return newState;
         case CREATE_COMMENT:
-            newState = action.comment;
+            newState.comments[action.comments.id] = action.comments;
             return newState;
         case UPDATE_COMMENT:
-            newState = action.comment;
+            newState.comments[action.comments.id] = action.comments;
             return newState;
         case DELETE_COMMENT:
             // filter through comments to delete comment?
-            newState = action.comment;
+            delete newState[action.comments.id]
             return newState;
         default:
             return state;
