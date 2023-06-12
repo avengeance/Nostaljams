@@ -21,9 +21,13 @@ const SongDetail = () => {
 
     const currentSong = useSelector((state) => state.songs.songs[songId]);
     const userId = useSelector((state) => state.session.user);
+    // const comments = useSelector((state) => state.comments.comments);
 
     const [song, setSong] = useState(null);
     const [liked, setLiked] = useState(false);
+    const [comments, setComments] = useState([]);
+    const [refreshKey, setRefreshKey] = useState(0);
+
 
     const dispatch = useDispatch();
     const history = useHistory();
@@ -82,11 +86,16 @@ const SongDetail = () => {
         const modalContent = (
         <CreateCommentModal
          onCommentSubmit={handlePostComment} 
-         songId={songId}
          />);
-        history.push(`/songs/${songId}/comments`);
+        history.push(`/songs/${songId}`);
         setModalContent(modalContent);
     }
+
+    useEffect(() => {
+        dispatch(CommentActions.getAllCommentsBySongThunk(songId))
+        .then(comments => setComments(comments))
+    }, [dispatch, songId, refreshKey]);
+    
 
     return (
         <div className="song-detail">
@@ -114,10 +123,13 @@ const SongDetail = () => {
                     <div className='comment-button'>
                         <OpenModalButton
                         buttonText="Add Comment"
-                        modalComponent={<CreateCommentModal />}
+                        modalComponent={<CreateCommentModal 
+                            songId={songId}
+                            onCommentSubmit={()=> setRefreshKey(refreshKey+1)}
+                            />}
                         />
                         <div className="song-comments">
-                            {currentSong?.SongComments?.map((comment, index) => (
+                            {comments.map((comment, index) => (
                                 <div key={index}>
                                     <p>{comment.comment}</p>
                                 </div>

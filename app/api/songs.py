@@ -9,6 +9,7 @@ from ..forms.comment_form import CommentForm
 
 from flask import Blueprint, redirect, url_for, render_template, jsonify, request
 from flask_login import login_required, current_user, logout_user
+import json
 
 songs_routes = Blueprint('songs', __name__)
 
@@ -184,19 +185,23 @@ def view_song_by_comment_id(id):
 def new_comment(id):
     song = Song.query.get(id)
     if(song):
-        form = CommentForm()
-        form['csrf_token'].data = request.cookies['csrf_token']
-        if form.validate_on_submit():
+        # form = CommentForm()
+        # form['csrf_token'].data = request.cookies['csrf_token']
+        # if form.validate_on_submit():
+        if request.is_json:
+            data=request.get_json()
+            data = json.loads(data) if isinstance(data,str) else data
             comment = Comment(
                 user_id=current_user.id,
                 song_id=id,
-                comment=form.comment.data
+                # comment=form.comment.data
+                comment=data['comment']
             )
             db.session.add(comment)
             db.session.commit()
             return comment.to_dict(), 201
-        else:
-            return jsonify(form.errors), 400
+        # else:
+            # return jsonify(form.errors), 400
     else:
         res = {
             "message": "Song could not be found.",
