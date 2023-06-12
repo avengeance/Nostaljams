@@ -20,6 +20,8 @@ const SongDetail = () => {
 
     const currentSong = useSelector((state) => state.songs.songs[songId]);
     const userId = useSelector((state) => state.session.user?.id);
+    const comment = useSelector((state) => state.comments.comments);
+
     const songLikesCount = currentSong?.SongLikesCnt;
     const userHasLiked = currentSong?.SongLikes?.some((like) => like.userId === userId);
 
@@ -41,10 +43,10 @@ const SongDetail = () => {
         }
 
         dispatch(SongActions.getSongThunk(songId))
-            // .then((currentSong) => {
-            //     setSong(currentSong)
-            // }
-            // );
+        // .then((currentSong) => {
+        //     setSong(currentSong)
+        // }
+        // );
     }, [dispatch, songId]);
 
 
@@ -64,25 +66,14 @@ const SongDetail = () => {
         // }
     };
 
-
-
-    // const handleUnlike = () => {
-    //     if (liked) {
-    //         const like = currentSong.SongLikes.find((like) => like.userId === userId)
-    //         if (like) {
-    //             const likeId = like.likeId
-    //             dispatch(LikesActions.deleteLikeBySongThunk(songId, likeId))
-    //                 .then(() => {
-    //                     setLiked(false);
-    //                     setSong((prevSong) => ({
-    //                         ...prevSong,
-    //                         SongLikesCnt: prevSong.SongLikesCnt - 1
-    //                     }))
-    //                 })
-    //             history.push(`/songs/${songId}`);
-    //         }
-    //     }
-    // }
+    function handlePostComment() {
+        const modalContent = (
+            <CreateCommentModal
+                onCommentSubmit={handlePostComment}
+            />)
+        history.push(`/songs/${songId}`);
+        setModalContent(modalContent);
+    }
 
     return (
         <div className="song-detail">
@@ -124,7 +115,7 @@ const SongDetail = () => {
                             {comments.map((comment, index) => (
                                 <div key={index}>
                                     <p>{comment.comment}</p>
-                                    {userId && userId.id === comment.userId && (
+                                    {userId === comment.userId && (
                                         <OpenModalButton
                                             buttonText="Delete Comment"
                                             modalComponent={
