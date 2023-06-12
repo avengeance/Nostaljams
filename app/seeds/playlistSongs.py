@@ -7,10 +7,10 @@ def seed_playlist_songs():
         song_id=1,playlist_id=1
     )
     playlist_song2 = PlaylistSong(
-        song_id=2,playlist_id=2
+        song_id=2,playlist_id=1
     )
     playlist_song3 = PlaylistSong(
-        song_id=6,playlist_id=3
+        song_id=6,playlist_id=1
     )
     playlist_song4 = PlaylistSong(
         song_id=8,playlist_id=4

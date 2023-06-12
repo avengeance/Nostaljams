@@ -112,9 +112,9 @@ const playlistReducer = (state = initialState, action) => {
             //newState.playlists = newState.playlists.map(playlist => playlist.id === action.playlist.id ? action.playlist : playlist)
             newState.playlists[action.playlists.id] = action.playlists
             return newState;
-        case DELETE_PLAYLIST:
-            //newState.playlists = newState.playlists.filter(playlist => playlist.id !== action.playlist.id)
-            delete newState[action.songs.id]
+    case DELETE_PLAYLIST:
+            const { [action.playlists.id]: deletedPlaylist, ...updatedPlaylists } = newState.playlists;
+            newState.playlists = updatedPlaylists;
             return newState;
         default:
             return state;

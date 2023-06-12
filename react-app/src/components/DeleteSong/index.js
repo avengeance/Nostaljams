@@ -7,7 +7,7 @@ import "./DeleteSong.css";
 const DeleteModal = ({ songId, userId, closeModal }) => {
     const dispatch = useDispatch();
     const history = useHistory();
-    const modalRef = useRef(null);
+
     console.log('this is songId', songId)
     const deleteSong = async () => {
         await dispatch(SongActions.deleteSongThunk(songId));
