@@ -19,17 +19,20 @@ const SongDetail = () => {
     const { closeModal } = useModal();
 
     const currentSong = useSelector((state) => state.songs.songs[songId]);
-    const userId = useSelector((state) => state.session.user);
+    const userId = useSelector((state) => state.session.user?.id);
+    const songLikesCount = currentSong?.SongLikesCnt;
+    const userHasLiked = currentSong?.SongLikes?.some((like) => like.userId === userId);
 
-    const [song, setSong] = useState(null);
-    const [liked, setLiked] = useState(false);
     const [comments, setComments] = useState([]);
     const [refreshKey, setRefreshKey] = useState(0);
+    const [liked, setLiked] = useState(false);
+
+    const [song, setSong] = useState(null);
+    // const [userHasLiked, setUserHasLiked] = useState(false);
 
 
     const dispatch = useDispatch();
     const history = useHistory();
-
 
     useEffect(() => {
         if (!songId) {
@@ -37,51 +40,49 @@ const SongDetail = () => {
             return;
         }
 
-        dispatch(SongActions.getSongThunk(songId)).then((currentSong) => {
-            setSong(currentSong)
-            setLiked(currentSong?.likedbyCurrentuser || false)
-        }
-        );
-    }, [dispatch, songId, currentSong?.likedbyCurrentuser]);
+        dispatch(SongActions.getSongThunk(songId))
+            // .then((currentSong) => {
+            //     setSong(currentSong)
+            // }
+            // );
+    }, [dispatch, songId]);
 
-    useEffect(() => {
-        setLiked(currentSong?.likedbyCurrentuser || false);
-    }, [currentSong]);
-
-    const handleLike = () => {
-        if (!liked) {
-            dispatch(LikesActions.createSongLikeThunk(songId))
-                .then(() => setLiked(true))
-            setSong((prevSong) => ({
-                ...prevSong,
-                SongLikesCnt: prevSong.SongLikesCnt + 1
-            }))
-        }
-    }
-
-    const handleUnlike = () => {
-        if (liked) {
-            const like = currentSong.SongLikes.find((like) => like.userId === userId)
-            if (like) {
-                const likeId = like.likeId
-                dispatch(LikesActions.deleteLikeBySongThunk(songId, likeId))
-                    .then(() => {
-                        setLiked(false);
-                        setSong((prevSong) => ({
-                            ...prevSong,
-                            SongLikesCnt: prevSong.SongLikesCnt - 1
-                        }))
-                    })
-                history.push(`/songs/${songId}`);
-            }
-        }
-    }
 
     useEffect(() => {
         dispatch(CommentActions.getAllCommentsBySongThunk(songId))
-            .then(comments => setComments(comments))
+            .then((comments) => setComments(comments));
     }, [dispatch, songId, refreshKey]);
 
+    const handleLike = () => {
+        // if (!liked) {
+        dispatch(LikesActions.createSongLikeThunk(songId))
+            .then(() => {
+                setLiked(true);
+                dispatch(SongActions.getSongThunk(songId));
+                setRefreshKey(refreshKey + 1);
+            });
+        // }
+    };
+
+
+
+    // const handleUnlike = () => {
+    //     if (liked) {
+    //         const like = currentSong.SongLikes.find((like) => like.userId === userId)
+    //         if (like) {
+    //             const likeId = like.likeId
+    //             dispatch(LikesActions.deleteLikeBySongThunk(songId, likeId))
+    //                 .then(() => {
+    //                     setLiked(false);
+    //                     setSong((prevSong) => ({
+    //                         ...prevSong,
+    //                         SongLikesCnt: prevSong.SongLikesCnt - 1
+    //                     }))
+    //                 })
+    //             history.push(`/songs/${songId}`);
+    //         }
+    //     }
+    // }
 
     return (
         <div className="song-detail">
@@ -94,14 +95,14 @@ const SongDetail = () => {
                     ></img>
                     <div className="song-actions">
                         <p>{currentSong.SongLikesCnt}</p>
-                        <button onClick={handleLike}>
-                            {/* {liked ? "Unlike" : "Like"} */}
-                            Like
-                        </button>
-                        <button onClick={handleUnlike}>
-                            {/* {liked ? "Like" : "Unlike"} */}
+                        {!liked && (
+                            <button onClick={handleLike}>
+                                Like
+                            </button>
+                        )}
+                        {/* <button onClick={handleUnlike}>
                             Unlike
-                        </button>
+                        </button> */}
                     </div>
                     <h2>{currentSong.name}</h2>
                     <p>Artist: {currentSong.artists}</p>
