@@ -18,10 +18,11 @@ const getUserPlaylists = (playlists) => ({
     playlists,
 })
 
-const createPlaylist = (playlists) => ({
+const createPlaylist = (playlist) => ({
     type: CREATE_PLAYLIST,
-    playlists,
-})
+    playlist,
+});
+
 
 const updatePlaylist = (playlists) => ({
     type: UPDATE_PLAYLIST,
@@ -62,11 +63,12 @@ export const createPlaylistThunk = (userId, playlist) => async (dispatch) => {
     });
     const data = await res.json();
     dispatch(createPlaylist(data));
+    dispatch(getUserPlaylistsThunk(userId));
     return data
 }
 
 export const updatePlaylistThunk = (userId, playlist) => async (dispatch) => {
-    const res = await csrfFetch(`/api/users/${userId}/playlists/${playlist.id}`, {
+    const res = await csrfFetch(`/api/users/${userId}/playlists/${playlist.id}/edit`, {
         method: 'PUT',
         body: JSON.stringify(playlist),
         headers: {
@@ -76,6 +78,7 @@ export const updatePlaylistThunk = (userId, playlist) => async (dispatch) => {
     if (res.ok) {
         const data = await res.json();
         dispatch(updatePlaylist(data));
+        dispatch(getUserPlaylistsThunk(userId));
         return data
     }
 }
@@ -99,20 +102,17 @@ const playlistReducer = (state = initialState, action) => {
             newState.playlists[action.playlists.id] = action.playlists
             return newState;
         case GET_USER_PLAYLISTS:
-            if (action.playlists.User) {
-                action.playlists.User.forEach((playlist) => {
+            action.playlists.forEach((playlist) => {
                 newState.playlists.user[playlist.id] = playlist;
-                });
-            }
+            });
             return newState;
         case CREATE_PLAYLIST:
-            newState.playlists[action.playlists.id] = action.playlists
-            return newState;
+                newState.playlists.user[action.playlist.id] = action.playlist;
+                return newState;
         case UPDATE_PLAYLIST:
-            //newState.playlists = newState.playlists.map(playlist => playlist.id === action.playlist.id ? action.playlist : playlist)
-            newState.playlists[action.playlists.id] = action.playlists
+            newState.playlists.user[action.playlists.id] = action.playlists
             return newState;
-    case DELETE_PLAYLIST:
+        case DELETE_PLAYLIST:
             const { [action.playlists.id]: deletedPlaylist, ...updatedPlaylists } = newState.playlists;
             newState.playlists = updatedPlaylists;
             return newState;

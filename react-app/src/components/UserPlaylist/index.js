@@ -2,24 +2,26 @@ import React, {useEffect, useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import * as PlaylistActions from '../../store/playlists';
 import DeleteModal from '../DeletePlaylist';
+import EditPlaylist from '../EditPlaylist';
+import CreatePlaylistModal from '../CreatePlaylist';
 import './UserPlaylist.css';
 
 // this app also needs:
-    // a modal to delete a playlist
-    // a link for updating a playlist
-
+    // a modal to delete a playlist = done
+    // a link for updating a playlist = wip
+    // a modal to create a playlist = wip
 const UserPlaylist = () => {
     const dispatch = useDispatch();
     const user = useSelector((state) => (state.session.user));
     const [playlists, setPlaylists] = useState([]);
     const [deletePlaylistModals, setDeletePlaylistModals] = useState({});
     const [refresh, setRefresh] = useState(false)
+    const [showCreateModal, setShowCreateModal] = useState(false);
 
     useEffect(() => {
         const getUserPlaylists = async () => {
             const response = await dispatch(PlaylistActions.getUserPlaylistsThunk(user.id));
             setPlaylists(response);
-            console.log('this is res', response)
         }
 
         if(user){
@@ -34,6 +36,11 @@ const UserPlaylist = () => {
         [playlistId]: !prevState[playlistId]
         }));
         setRefresh(refresh ? false : true)
+    };
+
+    const toggleCreateModal = () => {
+        setShowCreateModal((prev) => !prev);
+        dispatch(PlaylistActions.getUserPlaylistsThunk(user.id));
     };
 
     return (
@@ -55,12 +62,17 @@ const UserPlaylist = () => {
                 {Object.keys(playlists).length === 0 ? (
                 <div className='no-playlist-message'>
                     <p>You haven't created any playlists yet!</p>
-                    {/* <Link to='/create-playlist' className='create-playlist-button'>
+                    <button className="create-playlist-button" onClick={toggleCreateModal}>
                     Make a Playlist
-                    </Link> */}
+                    </button>
                 </div>
                 ) : (
                 <div className='playlist-list'>
+                    <div className='create-playlist'>
+                    <button className="create-playlist-button" onClick={toggleCreateModal}>
+                    Make a Playlist
+                    </button>
+                    </div>
                 {Object.values(playlists).map((playlist) => (
                 <div key={playlist.id} className='playlist-item'>
                     <h3>{playlist.name}</h3>
@@ -85,7 +97,9 @@ const UserPlaylist = () => {
                             </div>
                         </li>
                         ))}
-                        <button>Update Playlist</button>
+                        <div className='update-playlist'>
+                            <Link to={`/users/${user.id}/playlists/${playlist.id}/edit`}>Update Playlist</Link>
+                        </div>
                         <button onClick={() => toggleDeleteModal(playlist.id)}>Delete</button>
                         {deletePlaylistModals[playlist.id] && (
                         <DeleteModal
@@ -101,6 +115,15 @@ const UserPlaylist = () => {
                 </div>
                 )}
             </div>
+
+      {/* Render the CreatePlaylistModal */}
+        {showCreateModal && (
+            <CreatePlaylistModal
+                userId={user.id}
+                closeModal={toggleCreateModal}
+                refreshPlaylists={() => setRefresh((prev) => !prev)}
+                />
+        )}
             </div>
         );
 }
