@@ -18,6 +18,7 @@ import CreateSong from "./components/CreateSong";
 import UserSongs from "./components/UserSongs";
 import UserPlaylist from "./components/UserPlaylist";
 import DeleteModal from "./components/DeleteSong";
+import Player from "./components/player/player";
 
 function App() {
   const dispatch = useDispatch();
@@ -59,6 +60,7 @@ function App() {
           </Route>
         </Switch>
       )}
+      <Player />
     </>
   );
 }

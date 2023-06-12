@@ -6,56 +6,100 @@ import * as SongActions from "../../store/songs";
 import "./CreateSong.css";
 
 function CreateSong() {
-    const user = useSelector(state => state.session.user);
-    
-    const [song, setSong] = useState([])
-    
-    const [name, setName] = useState('');
-    const [artists, setArtists] = useState('');
-    const [genre, setGenre] = useState('');
-    const [description, setDescription] = useState('');
-    const [audio_url, setAudio_url] = useState('');
-    
-    const [errors, setErrors] = useState([]);
+  const user = useSelector((state) => state.session.user);
 
-    const dispatch = useDispatch();
-    const history = useHistory();
+  const [song, setSong] = useState([]);
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+  const [name, setName] = useState("");
+  const [artists, setArtists] = useState("");
+  const [genre, setGenre] = useState("");
+  const [description, setDescription] = useState("");
+  const [audio_url, setAudio_url] = useState("");
 
-        const payload = {
-            name,
-            artists,
-            genre,
-            description,
-            audio_url
-        }
+  const [errors, setErrors] = useState([]);
 
-        let newSong;
+  const dispatch = useDispatch();
+  const history = useHistory();
 
-        try {
-            const song = await dispatch(SongActions.createSongThunk(payload));
-            const newSongId = song.id;
-            const url = `/songs/${newSongId}`;
-            if (song){
-                newSong = song
-                setName('');
-                setArtists('');
-                setGenre('');
-                setDescription('');
-                setAudio_url('');
-                setErrors([]);
-                history.push(url);
-            }
-        } catch(res){
-            const data = await res.json();
-            setErrors(res.data.errors);
-        }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const payload = {
+      name,
+      artists,
+      genre,
+      description,
+      audio_url,
+    };
+
+    let newSong;
+
+    try {
+      const song = await dispatch(SongActions.createSongThunk(payload));
+      const newSongId = song.id;
+      const url = `/songs/${newSongId}`;
+      if (song) {
+        newSong = song;
+        setName("");
+        setArtists("");
+        setGenre("");
+        setDescription("");
+        setAudio_url("");
+        setErrors([]);
+        history.push(url);
+      }
+    } catch (res) {
+      const data = await res.json();
+      setErrors(res.data.errors);
     }
-    return(
-        <></>
-    )
+  };
+
+  return (
+    <>
+      <form onSubmit={handleSubmit}>
+        <label>
+          Name
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </label>
+        <label>
+          Artists
+          <input
+            type="text"
+            value={artists}
+            onChange={(e) => setArtists(e.target.value)}
+          />
+        </label>
+        <label>
+          Genre
+          <input
+            type="text"
+            value={genre}
+            onChange={(e) => setGenre(e.target.value)}
+          />
+        </label>
+        <label>
+          Description
+          <input
+            type="text"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+        </label>
+        <label>
+            Song
+          <input type="file" accept="song/*" onChange={updateSong} />
+        </label>
+        <label>
+            Album Art
+          <input type="file" accept="image/*" onChange={updateSong} />
+        </label>
+      </form>
+    </>
+  );
 }
 
-export default CreateSong
+export default CreateSong;
