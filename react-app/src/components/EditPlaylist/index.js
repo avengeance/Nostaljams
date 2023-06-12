@@ -13,8 +13,8 @@ const EditPlaylistModal = ({ playlistId, closeModal }) => {
     const [selectedSongs, setSelectedSongs] = useState([]);
     const [errors, setErrors] = useState({});
 
-    console.log(playlists.user[playlistId])
-    //this is to grab all the songs
+    console.log(playlists.user[playlistId].songs);
+
     useEffect(() => {
         dispatch(SongActions.getAllSongsThunk());
     }, [dispatch]);
@@ -22,49 +22,50 @@ const EditPlaylistModal = ({ playlistId, closeModal }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const payload = {
-            id: playlistId,
-            name,
-            description,
-            songs: selectedSongs,
-            };
-
-            const data = await dispatch(PlaylistActions.updatePlaylistThunk(user.id, payload));
-            if (data) {
-            // Add songs to the playlist
-            const playlistId = data.id;
-            if (playlistId && selectedSongs.length > 0) {
-                for (const songId of selectedSongs) {
-                const songPayload = {
-                    songId,
-                };
-                await dispatch(PlaylistActions.addSongToPlaylistThunk(playlistId, songPayload));
-                }
-            }
-
-            closeModal();
-            }
+        id: playlistId,
+        name,
+        description,
+        songs: selectedSongs,
         };
 
+        const data = await dispatch(
+        PlaylistActions.updatePlaylistThunk(user.id, payload)
+        );
+        if (data) {
+        const playlistId = data.id;
+        if (playlistId && selectedSongs.length > 0) {
+            for (const songId of selectedSongs) {
+            const songPayload = {
+                songId,
+            };
+            await dispatch(
+                PlaylistActions.addSongToPlaylistThunk(playlistId, songPayload)
+            );
+            }
+        }
 
+        closeModal();
+        }
+    };
 
-
-
+    const handleDeleteSong = async (songId) => {
+        await dispatch(
+        PlaylistActions.deleteSongFromPlaylistThunk(playlistId, songId)
+        );
+    };
 
     useEffect(() => {
         const fetchPlaylist = async () => {
-            const data = await dispatch(PlaylistActions.getPlaylistThunk(playlistId));
-            if (data) {
-                setName(data.name);
-                setDescription(data.description);
-                setSelectedSongs(data.songs);
-            }
-            };
-            fetchPlaylist();
-            dispatch(SongActions.getAllSongsThunk());
-        }, [dispatch, playlistId]);
-
-
-
+        const data = await dispatch(PlaylistActions.getPlaylistThunk(playlistId));
+        if (data) {
+            setName(data.name);
+            setDescription(data.description);
+            setSelectedSongs(data.songs);
+        }
+        };
+        fetchPlaylist();
+        dispatch(SongActions.getAllSongsThunk());
+    }, [dispatch, playlistId]);
 
     return (
         <div className="edit-playlist-modal">
@@ -96,7 +97,11 @@ const EditPlaylistModal = ({ playlistId, closeModal }) => {
             <select
                 id="songs"
                 value={selectedSongs}
-                onChange={(e) => setSelectedSongs(Array.from(e.target.selectedOptions, (option) => option.value))}
+                onChange={(e) =>
+                setSelectedSongs(
+                    Array.from(e.target.selectedOptions, (option) => option.value)
+                )
+                }
                 multiple
             >
                 {songs.map((song) => (
@@ -107,6 +112,17 @@ const EditPlaylistModal = ({ playlistId, closeModal }) => {
             </select>
             </div>
         </form>
+        <div className="browse-songs">
+            <h3>Browse Songs in Playlist</h3>
+            {playlists.user[playlistId].songs.map((song) => (
+                <div key={song.id}>
+                <p>{song.name}</p>
+                <button onClick={() => handleDeleteSong(song.id)}>
+                    Delete Song
+                </button>
+                </div>
+            ))}
+            </div>
         </div>
     );
 };
