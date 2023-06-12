@@ -5,36 +5,50 @@ import { useModal } from "../../context/Modal";
 import * as CommentActions from "../../store/comments";
 import "./CreateComment.css";
 
-function CreateCommentModal(){
-    // const dispatch = useDispatch();
-    // const history = useHistory();
-    // const modalRef = useRef(null);
+function CreateCommentModal() {
+    const dispatch = useDispatch();
 
-    // const currentSong = useSelector((state) => (state.songs.songs.Songs));
+    const [comment, setComment] = useState("");
+    const [errors, setErrors] = useState("");
+    const { closeModal } = useModal();
 
-    // const [comment, setComment] = useState('');
-    // const [errors,setErrors] = useState([]);
+    const { songId } = useParams();
 
-    // const { closeModal } = useModal();
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setErrors([]);
+        const data = await dispatch(CommentActions.createCommentThunk(songId, comment))
+        setComment("");
+        if (data && data.errors) {
+            setErrors(data.errors);
+        } else {
+            setErrors(["The provided credentials are invalid"]);
+        }
+        if (data.ok) {
+            closeModal()
+        }
+    }
 
-    // const handleSubmit = async (e) => {
-    //     e.preventDefault();
-
-    //     const url = currentSong.id
-
-    //     setErrors([]);
-    //     await dispatch(CommentActions.createCommentThunk({
-    //         comment,
-    //         url
-    //     }))
-    // }
-
-    // function handleNoClick() {
-    //     closeModal()
-    // }
-
-    return(
-        <> </>
+    return (
+        <>
+            <div className="create-comment-modal">
+                <h1 id='login-text'>Comment</h1>
+                <form onSubmit={handleSubmit}>
+                    <div className="create-comment-form">
+                        <label id='username-email'>
+                            <textarea
+                                value={comment}
+                                onChange={(e) => setComment(e.target.value)}
+                                rows={4}
+                                required
+                                placeholder="Comment"
+                            ></textarea>
+                            <button type='submit'>Submit</button>
+                        </label>
+                    </div>
+                </form>
+            </div>
+        </>
     )
 }
 

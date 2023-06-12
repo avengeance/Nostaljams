@@ -31,6 +31,7 @@ def song_detail(id):
         image = SongImage.query.filter_by(song_id=song.id).first()
         likes = SongLike.query.filter_by(song_id=song.id).count()
         comments = Comment.query.filter_by(song_id=song.id).all()
+        likesId = SongLike.query.filter_by(song_id=song.id).all()
 
         res = {
             "songId": song.id,
@@ -42,6 +43,14 @@ def song_detail(id):
             "SongImage": image.img_url,
             "audio_url": song.audio_url,
             "SongLikesCnt": likes,
+            "SongLikes": [like.user_id for like in likesId],
+            # "SongLikes": [
+            #     {
+            #         "likeId": like.id,
+            #         "userId": like.user_id
+            #     }
+            #     for like in likes
+            # ],
             "SongComments": [
             {
                 "comment": comment.comment,
@@ -185,7 +194,7 @@ def new_comment(id):
             )
             db.session.add(comment)
             db.session.commit()
-            return comment.to_dict(), 200
+            return comment.to_dict(), 201
         else:
             return jsonify(form.errors), 400
     else:
