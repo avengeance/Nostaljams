@@ -62,8 +62,7 @@ class Song(db.Model):
     comments = db.relationship('Comment', back_populates='songs', cascade='all, delete-orphan')
     song_likes = db.relationship('SongLike', back_populates='songs', cascade='all, delete-orphan')
     song_images = db.relationship('SongImage', back_populates='songs')
-    playlist_songs = db.relationship('PlaylistSong')
-    # playlists = db.relationship('Playlist', secondary='playlist_songs', back_populates='songs', overlaps='playlist_songs')
+    playlist_songs = db.relationship('PlaylistSong', cascade='all, delete')
 
     def to_dict(self):
         return {

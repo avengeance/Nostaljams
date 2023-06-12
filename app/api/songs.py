@@ -140,8 +140,9 @@ def update_song(id):
 @songs_routes.route('/<int:id>/delete', methods=['DELETE'])
 @login_required
 def delete_song(id):
-    song = Song.query.get(id)
-    if song and current_user.id == song.user_id:
+    song = Song.query.filter_by(id=id, user_id=current_user.id).first()
+    if song:
+        SongImage.query.filter_by(song_id=id).delete()
         db.session.delete(song)
         db.session.commit()
         res = {
@@ -156,7 +157,6 @@ def delete_song(id):
             "statusCode": 404
         }
         return jsonify(res), 404
-
 #view comments by Song ID
 @songs_routes.route('/<int:id>/comments', methods=['GET'])
 def view_song_by_comment_id(id):
