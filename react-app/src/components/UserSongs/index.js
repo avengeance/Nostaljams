@@ -59,7 +59,6 @@ const UserSongs = () => {
         songs?.UserSongs.map((song, index) => {
             const imgUrl = song.imgUrl && song.imgUrl.length > 0 ? song.imgUrl[0].imgUrl : null;
             const songId = song.id;
-            {console.log('this is song id', song.id)}
             return (
                 <div
                     key={index}
