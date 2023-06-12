@@ -1,8 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 import * as PlaylistActions from '../../store/playlists';
-import OpenModalButton from '../OpenModalButton';
 import DeleteModal from '../DeletePlaylist';
 import './UserPlaylist.css';
 

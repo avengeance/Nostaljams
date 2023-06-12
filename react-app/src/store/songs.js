@@ -112,7 +112,7 @@ export const getSongsByUserThunk = (userId) => async (dispatch) => {
 }
 
 // Reducer
-const initialState = { songs: {  } };
+const initialState = { songs: {} };
 
 const songsReducer = (state = initialState, action) => {
     let newState = { ...state };
