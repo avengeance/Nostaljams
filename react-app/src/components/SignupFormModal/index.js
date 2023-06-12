@@ -36,21 +36,21 @@ function SignupFormModal() {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		if (password === confirmPassword) {
-		  const data = await dispatch(
-			signUp(username, email, firstName, lastName, bio, userImage, password) // Include the password parameter
-		  );
-		  if (data) {
-			setErrors(data);
-		  } else {
-			closeModal();
-		  }
+			const data = await dispatch(
+				signUp(username, email, firstName, lastName, bio, userImage, password) // Include the password parameter
+			);
+			if (data) {
+				setErrors(data);
+			} else {
+				closeModal();
+			}
 		} else {
-		  setErrors([
-			"Confirm Password field must be the same as the Password field",
-		  ]);
+			setErrors([
+				"Confirm Password field must be the same as the Password field",
+			]);
 		}
-	  };
-	  
+	};
+
 
 	async function checkUsername(username) {
 		const response = await fetch(`/api/users/${username}`);
@@ -69,91 +69,120 @@ function SignupFormModal() {
 			<form onSubmit={handleSubmit} className="signup-form">
 				<ul>
 					{errors.map((error, idx) => (
-						<li key={idx}>{error}</li>
+						<li className='signup-errors' key={idx}>{error}</li>
 					))}
 				</ul>
 				<div className="label-div">
-				<label className="label">
-					Email
-					<input
-					className="input"
-						type="text"
-						value={email}
-						onChange={(e) => setEmail(e.target.value)}
-						required
-						
-					/>
-				</label>
-				<label className="label">
-					Username
-					<input
-						className="input"
-						type="text"
-						value={username}
-						onChange={(e) => setUsername(e.target.value)}
-						required
-						
-					/>
-				</label>
-				<label className="label">
-					First Name
-					<input
-						className="input"
-						type="text"
-						value={firstName}
-						onChange={(e) => setFirstName(e.target.value)}
-						required
-					/>
-				</label>
-				<label className="label">
-					Last Name
-					<input
-						className="input"
-						type="text"
-						value={lastName}
-						onChange={(e) => setLastName(e.target.value)}
-						required
-					/>
-				</label>
-				<label className="label">
-					Bio
-					<input
-						className="input"
-						type="text"
-						value={bio}
-						onChange={(e) => setBio(e.target.value)}
-						
-					/>
-				</label>
-				<label className="label">
-					User Image
-					<input
-						type='file'
-						value={userImage}
-						onChange={(e) => setUserImage(e.target.value)}
-					/>
-				</label>
-				<label className="label">
-					Password
-					<input
-						className="input"
-						type="password"
-						value={password}
-						onChange={(e) => setPassword(e.target.value)}
-						required
-						
-					/>
-				</label>
-				<label className="label">
-					Confirm Password
-					<input
-						className="input"
-						type="password"
-						value={confirmPassword}
-						onChange={(e) => setConfirmPassword(e.target.value)}
-						required
-					/>
-				</label>
+					<label className="label">
+						Email
+						<input
+							className="input"
+							type="text"
+							value={email}
+							onChange={(e) => setEmail(e.target.value)}
+							required
+
+						/>
+					</label>
+					<label className="label">
+						Username
+						<input
+							className="input"
+							type="text"
+							value={username}
+							onChange={(e) => setUsername(e.target.value)}
+							required
+
+						/>
+					</label>
+					<label className="label">
+						First Name
+						<input
+							className="input"
+							type="text"
+							value={firstName}
+							onChange={(e) => setFirstName(e.target.value)}
+							required
+						/>
+					</label>
+					<label className="label">
+						Last Name
+						<input
+							className="input"
+							type="text"
+							value={lastName}
+							onChange={(e) => setLastName(e.target.value)}
+							required
+						/>
+					</label>
+					<label className="label">
+						Bio
+						<input
+							className="input"
+							type="text"
+							value={bio}
+							onChange={(e) => setBio(e.target.value)}
+
+						/>
+					</label>
+					{/* <label className="label">
+						User Image
+						<div className="file-input">
+							<input
+								id="user-image"
+								type='file'
+								value={userImage}
+								onChange={(e) => setUserImage(e.target.value)}
+							/>
+							<button type="button" className="choose-file-button">
+								Choose File
+							</button>
+						</div>
+					</label> */}
+					<label className="label">
+						User Image
+					</label>
+					<div className="file-input">
+						<input
+							id="user-image"
+							type='file'
+							value={userImage}
+							onChange={(e) => setUserImage(e.target.value)}
+							style={{ display: 'none' }} // Hide the input element
+						/>
+						<button
+							type="button"
+							className="choose-file-button"
+							onClick={() => {
+								// Trigger the file input click event when the button is clicked
+								document.getElementById('user-image').click();
+							}}
+						>
+							Choose File
+						</button>
+					</div>
+
+					<label className="label">
+						Password
+						<input
+							className="input"
+							type="password"
+							value={password}
+							onChange={(e) => setPassword(e.target.value)}
+							required
+
+						/>
+					</label>
+					<label className="label">
+						Confirm Password
+						<input
+							className="input"
+							type="password"
+							value={confirmPassword}
+							onChange={(e) => setConfirmPassword(e.target.value)}
+							required
+						/>
+					</label>
 				</div>
 				<button type="submit"
 					disabled={!validEmail || !validUsername || !validFirstName || !validLastName || !validPassword || !validConfirmPassword}
