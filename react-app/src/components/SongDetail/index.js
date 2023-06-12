@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { useModal } from "../../context/Modal";
@@ -10,7 +10,6 @@ import DeleteComment from "../DeleteComment";
 import * as SongActions from "../../store/songs";
 import * as LikesActions from "../../store/likes";
 import * as CommentActions from "../../store/comments";
-import * as PlaylistActions from "../../store/playlists";
 
 // import "./SongDetail.css";
 
@@ -21,7 +20,6 @@ const SongDetail = () => {
 
     const currentSong = useSelector((state) => state.songs.songs[songId]);
     const userId = useSelector((state) => state.session.user);
-    const comment = useSelector((state) => state.comments.comments);
 
     const [song, setSong] = useState(null);
     const [liked, setLiked] = useState(false);
@@ -31,13 +29,6 @@ const SongDetail = () => {
 
     const dispatch = useDispatch();
     const history = useHistory();
-
-    // console.log('Current song:', currentSong);
-    // console.log('User:', user)
-    // console.log("Current Song Like ID", currentSong?.SongLikes);
-    console.log('User ID:', userId, typeof userId);
-    // console.log('Comment User ID:', comment.userId, typeof comment.userId);
-    console.log("Comment user ID:", comment)
 
 
     useEffect(() => {
@@ -86,15 +77,6 @@ const SongDetail = () => {
         }
     }
 
-    function handlePostComment() {
-        const modalContent = (
-            <CreateCommentModal
-                onCommentSubmit={handlePostComment}
-            />);
-        history.push(`/songs/${songId}`);
-        setModalContent(modalContent);
-    }
-
     useEffect(() => {
         dispatch(CommentActions.getAllCommentsBySongThunk(songId))
             .then(comments => setComments(comments))
@@ -108,6 +90,7 @@ const SongDetail = () => {
                     <img
                         src={currentSong?.SongImage}
                         className="song-image"
+                        alt={currentSong?.name || 'song-image'}
                     ></img>
                     <div className="song-actions">
                         <p>{currentSong.SongLikesCnt}</p>
@@ -125,20 +108,22 @@ const SongDetail = () => {
                     <p>Genre: {currentSong.genre}</p>
                     <p>Description: {currentSong.description}</p>
                     <div className='comment-button'>
-                        <OpenModalButton
-                            buttonText="Add Comment"
-                            modalComponent={<CreateCommentModal
-                                songId={songId}
-                                onCommentSubmit={() => setRefreshKey(refreshKey + 1)}
-                                refreshKey={refreshKey}
-                                setRefreshKey={setRefreshKey}
-                            />}
-                        />
+                        {userId && (
+                            <OpenModalButton
+                                buttonText="Add Comment"
+                                modalComponent={<CreateCommentModal
+                                    songId={songId}
+                                    onCommentSubmit={() => setRefreshKey(refreshKey + 1)}
+                                    refreshKey={refreshKey}
+                                    setRefreshKey={setRefreshKey}
+                                />}
+                            />
+                        )}
                         <div className="song-comments">
                             {comments.map((comment, index) => (
                                 <div key={index}>
                                     <p>{comment.comment}</p>
-                                    {userId.id === comment.userId && (
+                                    {userId && userId.id === comment.userId && (
                                         <OpenModalButton
                                             buttonText="Delete Comment"
                                             modalComponent={

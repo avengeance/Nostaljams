@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useHistory, useParams } from "react-router-dom";
+import { useDispatch} from "react-redux";
 import { useModal } from "../../context/Modal";
 import * as CommentActions from "../../store/comments";
 import "./CreateComment.css";
@@ -12,9 +11,7 @@ function CreateCommentModal({ songId, onCommentSubmit }) {
     const [errors, setErrors] = useState("");
     const [refreshKey, setRefreshKey] = useState(0);
     const { closeModal } = useModal();
-    const history = useHistory();
 
-    // const { songId } = useParams();
 
     const handleSubmit = async (e) => {
         e.preventDefault();

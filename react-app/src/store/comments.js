@@ -51,7 +51,6 @@ export const createCommentThunk = (songId, comment) => async (dispatch) => {
 }
 
 export const updateCommentThunk = (commentId, comment) => async (dispatch) => {
-    // const { comment } = comment
     const res = await csrfFetch(`/api/comments/${commentId}`, {
         method: 'PUT',
         body: JSON.stringify(comment),
