@@ -66,7 +66,7 @@ export const createPlaylistThunk = (userId, playlist) => async (dispatch) => {
 }
 
 export const updatePlaylistThunk = (userId, playlist) => async (dispatch) => {
-    const res = await csrfFetch(`/api/users/${userId}/playlists/${playlist.id}`, {
+    const res = await csrfFetch(`/api/users/${userId}/playlists/${playlist.id}/edit`, {
         method: 'PUT',
         body: JSON.stringify(playlist),
         headers: {
