@@ -17,6 +17,7 @@ import SongDetail from "./components/SongDetail";
 import CreateSong from "./components/CreateSong";
 import UserSongs from "./components/UserSongs";
 import UserPlaylist from "./components/UserPlaylist";
+import DeleteModal from "./components/DeleteSong";
 
 function App() {
   const dispatch = useDispatch();
@@ -52,6 +53,9 @@ function App() {
           </Route>
           <Route path='/users/:userId/playlists'>
             <UserPlaylist/>
+          </Route>
+          <Route path='/songs/:songId/delete'>
+            <DeleteModal/>
           </Route>
         </Switch>
       )}

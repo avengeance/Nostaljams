@@ -6,6 +6,10 @@ import OpenModalButton from '../OpenModalButton';
 import DeleteModal from '../DeletePlaylist';
 import './UserPlaylist.css';
 
+// this app also needs:
+    // a modal to delete a playlist
+    // a link for updating a playlist
+
 const UserPlaylist = () => {
     const dispatch = useDispatch();
     const user = useSelector((state) => (state.session.user));
@@ -15,7 +19,6 @@ const UserPlaylist = () => {
         const getUserPlaylists = async () => {
             const response = await dispatch(PlaylistActions.getUserPlaylistsThunk(user.id));
             setPlaylists(response);
-            console.log('this is res',response)
         }
 
         if(user){
@@ -54,7 +57,8 @@ const UserPlaylist = () => {
                     {Object.values(playlists).map((playlist) => (
                     <div key={playlist.id} className='playlist-item'>
                         <h3>{playlist.name}</h3>
-                        {/* playlist.songs is an array */}
+                        {/* playlist.songs is an array, we should be able
+                         to display the songs in the playlist */}
                     </div>
                     ))}
                 </div>
