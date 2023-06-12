@@ -8,7 +8,6 @@ import * as playlistActions from "./store/playlists";
 import * as songActions from "./store/songs";
 import * as likeActions from "./store/likes";
 
-
 import SignupFormPage from "./components/SignupFormPage";
 import LoginFormPage from "./components/LoginFormPage";
 import Navigation from "./components/Navigation";
@@ -18,6 +17,8 @@ import CreateSong from "./components/CreateSong";
 import UserSongs from "./components/UserSongs";
 import UserPlaylist from "./components/UserPlaylist";
 import DeleteModal from "./components/DeleteSong";
+import EditSong from "./components/EditSong";
+import EditPlaylist from "./components/EditPlaylist";
 
 function App() {
   const dispatch = useDispatch();
@@ -53,6 +54,9 @@ function App() {
           </Route>
           <Route path='/users/:userId/playlists'>
             <UserPlaylist/>
+          </Route>
+          <Route path='/songs/:songId/edit'>
+            <EditSong/>
           </Route>
           <Route path='/songs/:songId/delete'>
             <DeleteModal/>

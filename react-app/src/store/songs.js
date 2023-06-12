@@ -78,7 +78,7 @@ export const createSongThunk = (song) => async (dispatch) => {
 }
 
 export const updateSongThunk = (song) => async (dispatch) => {
-    const res = await csrfFetch(`/api/songs/${song.id}`, {
+    const res = await csrfFetch(`/api/songs/${song.id}/edit`, {
         method: 'PUT',
         body: JSON.stringify(song),
         headers: {
@@ -118,6 +118,7 @@ const songsReducer = (state = initialState, action) => {
     let newState = { ...state };
     switch (action.type) {
         case GET_ALL_SONGS:
+            newState.songs = {};
             action.songs.Songs.forEach((song) => {
                 newState.songs[song.id] = song
             })
@@ -132,10 +133,11 @@ const songsReducer = (state = initialState, action) => {
             newState.songs[action.songs.id] = action.songs
             return newState;
         case DELETE_SONG:
-            const { [action.song.id]: deletedSong, ...updatedSongs } = newState.songs;
+            const { [action.songs.id]: deletedSong, ...updatedSongs } = newState.songs;
             newState.songs = updatedSongs;
             return newState;
         case GET_SONGS_BY_USER:
+            newState.songs = {};
             action.songs.UserSongs.forEach((song) => {
                 newState.songs.user[song.id] = song
             })

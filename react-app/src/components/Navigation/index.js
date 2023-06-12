@@ -16,6 +16,14 @@ function Navigation({ isLoaded }) {
 							<NavLink exact to="/"
 								className='logo-link'>Home</NavLink>
 						</li>
+						<div className='create-song'>
+							{sessionUser && (
+								<li id='song-button'>
+									<NavLink exact to="/songs/new"
+										className='logo-link'>Create Song</NavLink>
+								</li>
+							)}
+						</div>
 						{isLoaded && (
 							<div className='profile-button'>
 								<li>
