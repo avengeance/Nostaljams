@@ -4,8 +4,8 @@ import { useHistory, useParams } from "react-router-dom";
 import { useModal } from "../../context/Modal";
 
 import OpenModalButton from "../OpenModalButton";
-// import DeleteComment from "./DeleteComment";
 import CreateCommentModal from "../CreateComment";
+import DeleteComment from "../DeleteComment";
 
 import * as SongActions from "../../store/songs";
 import * as LikesActions from "../../store/likes";
@@ -21,7 +21,7 @@ const SongDetail = () => {
 
     const currentSong = useSelector((state) => state.songs.songs[songId]);
     const userId = useSelector((state) => state.session.user);
-    // const comments = useSelector((state) => state.comments.comments);
+    const comment = useSelector((state) => state.comments.comments);
 
     const [song, setSong] = useState(null);
     const [liked, setLiked] = useState(false);
@@ -35,6 +35,10 @@ const SongDetail = () => {
     // console.log('Current song:', currentSong);
     // console.log('User:', user)
     // console.log("Current Song Like ID", currentSong?.SongLikes);
+    console.log('User ID:', userId, typeof userId);
+    // console.log('Comment User ID:', comment.userId, typeof comment.userId);
+    console.log("Comment user ID:", comment)
+
 
     useEffect(() => {
         if (!songId) {
@@ -84,18 +88,18 @@ const SongDetail = () => {
 
     function handlePostComment() {
         const modalContent = (
-        <CreateCommentModal
-         onCommentSubmit={handlePostComment} 
-         />);
+            <CreateCommentModal
+                onCommentSubmit={handlePostComment}
+            />);
         history.push(`/songs/${songId}`);
         setModalContent(modalContent);
     }
 
     useEffect(() => {
         dispatch(CommentActions.getAllCommentsBySongThunk(songId))
-        .then(comments => setComments(comments))
+            .then(comments => setComments(comments))
     }, [dispatch, songId, refreshKey]);
-    
+
 
     return (
         <div className="song-detail">
@@ -122,19 +126,36 @@ const SongDetail = () => {
                     <p>Description: {currentSong.description}</p>
                     <div className='comment-button'>
                         <OpenModalButton
-                        buttonText="Add Comment"
-                        modalComponent={<CreateCommentModal 
-                            songId={songId}
-                            onCommentSubmit={()=> setRefreshKey(refreshKey+1)}
+                            buttonText="Add Comment"
+                            modalComponent={<CreateCommentModal
+                                songId={songId}
+                                onCommentSubmit={() => setRefreshKey(refreshKey + 1)}
+                                refreshKey={refreshKey}
+                                setRefreshKey={setRefreshKey}
                             />}
                         />
                         <div className="song-comments">
                             {comments.map((comment, index) => (
                                 <div key={index}>
                                     <p>{comment.comment}</p>
+                                    {userId.id === comment.userId && (
+                                        <OpenModalButton
+                                            buttonText="Delete Comment"
+                                            modalComponent={
+                                                <DeleteComment
+                                                    songId={songId}
+                                                    commentId={comment.id}
+                                                    closeModal={closeModal}
+                                                    refreshKey={refreshKey}
+                                                    setRefreshKey={setRefreshKey}
+                                                />
+                                            }
+                                        />
+                                    )}
                                 </div>
                             ))}
                         </div>
+
                     </div>
                 </div>
             )}
