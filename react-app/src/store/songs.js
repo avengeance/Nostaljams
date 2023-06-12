@@ -132,11 +132,11 @@ const songsReducer = (state = initialState, action) => {
             newState.songs[action.songs.id] = action.songs
             return newState;
         case DELETE_SONG:
-            delete newState[action.songs.id]
+            const { [action.song.id]: deletedSong, ...updatedSongs } = newState.songs;
+            newState.songs = updatedSongs;
             return newState;
         case GET_SONGS_BY_USER:
             action.songs.UserSongs.forEach((song) => {
-                console.log('this is the user songs', song)
                 newState.songs.user[song.id] = song
             })
             return newState;

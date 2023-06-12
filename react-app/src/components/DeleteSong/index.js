@@ -5,28 +5,41 @@ import { useModal } from "../../context/Modal";
 import * as SongActions from "../../store/songs";
 import "./DeleteSong.css";
 
-const DeleteModal = ({ songId }) => {
+const DeleteModal = ({ songId, userId, closeModal }) => {
     const dispatch = useDispatch();
     const history = useHistory();
     const modalRef = useRef(null);
 
-    const songs = useSelector((state) => (state.songs.songs.Songs));
+    const songs = useSelector((state) => Object.values(state.songs.songs));
 
-    const { closeModal } = useModal();
+    const currentSong = songs.find((song) => {
+        console.log('this is the obj', song)
+    });
 
-    const deleteSong = async () => {
-        if (songs.length > 0) {
-            const currentSong = songs.find((song) => song.id === songId)
-            await dispatch(SongActions.deleteSongThunk(songId));
-            history.push('/songs/current');
-        }
-    }
 
     function handleNoClick() {
-        closeModal()
+        closeModal();
+    }
+
+    console.log('these are the songs', songs, songId)
+    console.log('this is the curr song', currentSong)
+    const deleteSong = async () => {
+        await dispatch(SongActions.deleteSongThunk(songId));
+        closeModal();
+        history.push(`/users/${userId}/songs`);
+    };
+
+    function handleNoClick() {
+        closeModal();
     }
 
     return (
-        <></>
-    )
+        <div className="delete-modal">
+            <h3>Are you sure you want to delete this song?</h3>
+            <button onClick={deleteSong}>Yes</button>
+            <button onClick={handleNoClick}>No</button>
+        </div>
+    );
 }
+
+export default DeleteModal

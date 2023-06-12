@@ -1,22 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import * as SongActions from '../../store/songs';
 import OpenModalButton from '../OpenModalButton';
 import DeleteModal from '../DeleteSong';
 import './UserSongs.css';
-import { NavLink, useHistory } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+
+// this component also needs:
+    // a modal to delete a song
+    // a link for updating a song
 
 const UserSongs = () => {
     const dispatch = useDispatch();
     const user = useSelector((state) => (state.session.user));
     const [songs, setSongs] = useState(null);
-    console.log('user', user);
+    const [deleteSongModal, setDeleteSongModal] = useState(false);
+    const history = useHistory();
+
     useEffect(() => {
         const getUserSongs = async () => {
             const response = await dispatch(SongActions.getSongsByUserThunk(user.id));
-            // this returns an arrow of our user songs obj
-            console.log('this is res', response)
             setSongs(response);
         }
         if (user) {
@@ -24,8 +28,12 @@ const UserSongs = () => {
         }
     }, [dispatch, user]);
 
-    console.log('this is user', user)
-    console.log('these are the user songs', songs)
+    const toggleDeleteModal = () => {
+        setDeleteSongModal(!deleteSongModal);
+    }
+    const handleSongClick = (songId) => {
+        history.push(`/songs/${songId}`)
+    }
 
     return (
         <div className='user-page-container'>
@@ -49,15 +57,31 @@ const UserSongs = () => {
         <div className='song-list'>
         {songs &&
         songs?.UserSongs.map((song, index) => {
-            console.log("song", song);
             const imgUrl = song.imgUrl && song.imgUrl.length > 0 ? song.imgUrl[0].imgUrl : null;
+            const songId = song.id;
+            {console.log('this is song id', song.id)}
             return (
-                <div key={index}>
+                <div
+                    key={index}
+                    className='song-item'
+                >
+                <div
+                    className='song-info'
+                    onClick={() => handleSongClick(song.id)}
+                >
                 <p>{song.name}</p>
                 <img src={imgUrl} alt={song.name} className='song-image'/>
                 <p>{song.artists}</p>
                 <p>{song.genre}</p>
                 <p>{song.SongLikesCnt}</p>
+                </div>
+                <button onClick={() => setDeleteSongModal(true)}>Delete</button>
+                {deleteSongModal && (
+                    <DeleteModal
+                        songId={song?.id}
+                        userId={user.id}
+                        closeModal={() => setDeleteSongModal(false)} />
+                )}
                 </div>
             );
             })}
