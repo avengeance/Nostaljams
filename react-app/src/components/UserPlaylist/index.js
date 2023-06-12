@@ -24,7 +24,6 @@ const UserPlaylist = () => {
         const getUserPlaylists = async () => {
             const response = await dispatch(PlaylistActions.getUserPlaylistsThunk(user.id));
             setPlaylists(response);
-            console.log('this is res', response)
         }
 
         if(user){
@@ -43,6 +42,7 @@ const UserPlaylist = () => {
 
     const toggleCreateModal = () => {
         setShowCreateModal((prev) => !prev);
+        dispatch(PlaylistActions.getUserPlaylistsThunk(user.id));
     };
 
     return (
@@ -120,7 +120,11 @@ const UserPlaylist = () => {
 
       {/* Render the CreatePlaylistModal */}
         {showCreateModal && (
-            <CreatePlaylistModal userId={user.id} />
+            <CreatePlaylistModal
+                userId={user.id}
+                closeModal={toggleCreateModal}
+                refreshPlaylists={() => setRefresh((prev) => !prev)}
+                />
         )}
             </div>
         );

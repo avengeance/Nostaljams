@@ -5,9 +5,8 @@ import { useModal } from "../../context/Modal";
 import * as PlaylistActions from "../../store/playlists";
 import "./CreatePlaylist.css";
 
-function CreatePlaylistModal({ userId }) {
+function CreatePlaylistModal({ userId, closeModal }) {
     const dispatch = useDispatch();
-    const { closeModal } = useModal();
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const [errors, setErrors] = useState([]);
@@ -34,8 +33,9 @@ function CreatePlaylistModal({ userId }) {
                 setName("");
                 setDescription("");
                 setErrors([]);
+                closeModal();
+                await dispatch(PlaylistActions.getUserPlaylistsThunk(user.id));
                 history.push(url);
-                closeModal(); // Close the modal after successful submission
             }
         } catch (err) {
             if (err.response && err.response.data && err.response.data.errors) {
