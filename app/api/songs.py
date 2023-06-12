@@ -49,7 +49,14 @@ def song_detail(id):
             "SongImage": image.img_url,
             "audio_url": song.audio_url,
             "SongLikesCnt": likes,
-            "SongComments": [comment.comment for comment in comments]
+            "SongComments": [
+            {
+                "comment": comment.comment,
+                "song_id": comment.song_id,
+                "user_id": comment.user_id
+            }
+        for comment in comments
+    ]
         }
         return jsonify(res), 200
 
