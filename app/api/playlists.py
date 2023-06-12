@@ -2,7 +2,7 @@ from ..models import Song
 from ..models.db import db
 from ..models.likes import PlaylistLike
 from ..models.playlist import Playlist, PlaylistSong
-from flask import Blueprint, redirect, url_for, render_template, jsonify
+from flask import Blueprint, redirect, url_for, render_template, jsonify, request
 from flask_login import login_required, current_user, logout_user
 
 playlist_routes = Blueprint('playlists', __name__)
@@ -34,8 +34,11 @@ def view_playlist(playlist_id):
     playlist_data = playlist.to_dict()
     return jsonify(playlist_data), 200
 
-@playlist_routes.route('/<int:playlistId>/songs/<int:songId>', methods=['POST'])
-def add_song_to_playlist(playlistId,songId):
+@playlist_routes.route('/<int:playlistId>/songs', methods=['POST'])
+def add_song_to_playlist(playlistId):
+    # Retrieve songId from the request body
+    songId = request.json.get('songId')
+
     playlist = Playlist.query.get(playlistId)
     if playlist is None:
         return jsonify({
@@ -43,13 +46,32 @@ def add_song_to_playlist(playlistId,songId):
             'status': 404
         }), 404
 
-    playlistAddSong = PlaylistSong(song_id = songId, playlist_id = playlistId)
+    playlistAddSong = PlaylistSong(song_id=songId, playlist_id=playlistId)
     db.session.add(playlistAddSong)
     db.session.commit()
 
     return jsonify(playlistAddSong.to_dict()), 201
 
+@playlist_routes.route('/<int:playlistId>/songs/<int:songId>', methods=['DELETE'])
+def remove_song_from_playlist(playlistId, songId):
+    playlist = Playlist.query.get(playlistId)
+    if playlist is None:
+        return jsonify({
+            'Error': 'Playlist not found',
+            'status': 404
+        }), 404
 
+    playlistDeleteSong = PlaylistSong.query.get(songId)
+    if playlistDeleteSong is None:
+        return jsonify({
+            'Error': 'Song not found',
+            'status': 404
+        }), 404
+
+    db.session.delete(playlistDeleteSong)
+    db.session.commit()
+
+    return jsonify(playlistDeleteSong.to_dict()), 201
 
 
 #create new playlist like

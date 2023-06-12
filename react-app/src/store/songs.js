@@ -8,6 +8,7 @@ const CREATE_SONG = 'songs/CREATE_SONG';
 const UPDATE_SONG = 'songs/UPDATE_SONG';
 const DELETE_SONG = 'songs/DELETE_SONG';
 const GET_SONGS_BY_USER = 'songs/GET_SONGS_BY_USER';
+const GET_SONGS_BY_PLAYLIST = 'songs/GET_SONGS_BY_PLAYLIST';
 
 // Actions
 const getAllSongs = (songs) => ({
@@ -39,6 +40,11 @@ const getSongsByUser = (songs) => ({
     type: GET_SONGS_BY_USER,
     songs,
 })
+
+const getSongsByPlaylist = (songs) => ({
+    type: GET_SONGS_BY_PLAYLIST,
+    songs,
+});
 
 // Thunks
 export const getAllSongsThunk = () => async (dispatch) => {
@@ -110,6 +116,20 @@ export const getSongsByUserThunk = (userId) => async (dispatch) => {
     return data
 }
 
+export const getSongsByPlaylistThunk = (playlistId) => async (dispatch) => {
+    const res = await csrfFetch(`/api/songs/${playlistId}/playlist`, {
+        method: 'GET',
+    });
+    if (!res.ok) {
+      // Handle error if necessary
+    return;
+    }
+    const data = await res.json();
+    // Dispatch an action to update the state with the fetched songs
+    dispatch(getSongsByPlaylist(data));
+    return data;
+};
+
 // Reducer
 const initialState = { songs: {} };
 
@@ -138,6 +158,11 @@ const songsReducer = (state = initialState, action) => {
             action.songs.UserSongs.forEach((song) => {
                 newState.songs.user[song.id] = song
             })
+            return newState;
+        case GET_SONGS_BY_PLAYLIST:
+            action.songs.forEach((song) => {
+                newState.songs[song.id] = song;
+            });
             return newState;
         default:
             return state;

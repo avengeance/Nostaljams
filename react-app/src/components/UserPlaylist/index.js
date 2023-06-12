@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import * as PlaylistActions from '../../store/playlists';
 import DeleteModal from '../DeletePlaylist';
-import EditPlaylist from '../EditPlaylist';
+import EditPlaylistModal from '../EditPlaylist';
 import CreatePlaylistModal from '../CreatePlaylist';
 import './UserPlaylist.css';
 
@@ -18,6 +18,8 @@ const UserPlaylist = () => {
     const [deletePlaylistModals, setDeletePlaylistModals] = useState({});
     const [refresh, setRefresh] = useState(false)
     const [showCreateModal, setShowCreateModal] = useState(false);
+    const [showEditModal, setShowEditModal] = useState(false);
+    const [editPlaylistId, setEditPlaylistId] = useState(null);
 
     useEffect(() => {
         const getUserPlaylists = async () => {
@@ -31,7 +33,6 @@ const UserPlaylist = () => {
     },[dispatch, user, refresh]);
 
     const toggleDeleteModal = (playlistId) => {
-        console.log('playlistId from toggleDeleteModal',playlistId)
         setDeletePlaylistModals((prevState) => ({
         ...prevState,
         [playlistId]: !prevState[playlistId]
@@ -41,7 +42,15 @@ const UserPlaylist = () => {
 
     const toggleCreateModal = () => {
         setShowCreateModal((prev) => !prev);
-        dispatch(PlaylistActions.getUserPlaylistsThunk(user.id));
+    };
+
+    const openEditModal = (playlistId) => {
+        setEditPlaylistId(playlistId);
+        setShowEditModal(true);
+    };
+
+    const closeEditModal = () => {
+        setShowEditModal(false);
     };
 
     return (
@@ -98,8 +107,9 @@ const UserPlaylist = () => {
                             </div>
                         </li>
                         ))}
-                        <div className='update-playlist'>
-                            <Link to={`/users/${user.id}/playlists/${playlist.id}/edit`}>Update Playlist</Link>
+
+                        <div className="update-playlist">
+                            <button onClick={() => openEditModal(playlist.id)}>Update Playlist</button>
                         </div>
                         <button onClick={() => toggleDeleteModal(playlist.id)}>Delete</button>
                         {deletePlaylistModals[playlist.id] && (
@@ -125,8 +135,11 @@ const UserPlaylist = () => {
                 refreshPlaylists={() => setRefresh((prev) => !prev)}
                 />
         )}
-            </div>
-        );
+        {showEditModal && (
+            <EditPlaylistModal playlistId={editPlaylistId} closeModal={closeEditModal} />
+            )}
+        </div>
+    );
 }
 
 export default UserPlaylist

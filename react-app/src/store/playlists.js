@@ -1,4 +1,4 @@
-import { csrfFetch } from "./csrf";
+import {csrfFetch} from "./csrf";
 
 // Constants
 const GET_PLAYLIST = 'playlists/GET_PLAYLIST';
@@ -6,6 +6,8 @@ const GET_USER_PLAYLISTS = 'playlists/GET_USER_PLAYLISTS';
 const CREATE_PLAYLIST = 'playlists/CREATE_PLAYLIST';
 const UPDATE_PLAYLIST = 'playlists/UPDATE_PLAYLIST';
 const DELETE_PLAYLIST = 'playlists/DELETE_PLAYLIST';
+const ADD_SONG_TO_PLAYLIST = 'playlists/ADD_SONG_TO_PLAYLIST';
+const DELETE_SONG_FROM_PLAYLIST = 'playlists/DELETE_SONG_FROM_PLAYLIST';
 
 // Actions
 const getPlaylist = (playlists) => ({
@@ -33,6 +35,18 @@ const deletePlaylist = (playlists) => ({
     type: DELETE_PLAYLIST,
     playlists,
 })
+
+const addSongToPlaylist = (playlistId, song) => ({
+    type: ADD_SONG_TO_PLAYLIST,
+    playlistId,
+    song,
+});
+
+const deleteSongFromPlaylist = (playlistId, songId) => ({
+    type: DELETE_SONG_FROM_PLAYLIST,
+    playlistId,
+    songId,
+});
 
 // Thunks
 export const getPlaylistThunk = (playlistId) => async (dispatch) => {
@@ -63,7 +77,7 @@ export const createPlaylistThunk = (userId, playlist) => async (dispatch) => {
     });
     const data = await res.json();
     dispatch(createPlaylist(data));
-    dispatch(getUserPlaylistsThunk(userId));
+    await dispatch(getUserPlaylistsThunk(userId));
     return data
 }
 
@@ -74,14 +88,16 @@ export const updatePlaylistThunk = (userId, playlist) => async (dispatch) => {
         headers: {
             'Content-Type': 'application/json'
         }
-    });
-    if (res.ok) {
+        });
+
+        if (res.ok) {
         const data = await res.json();
         dispatch(updatePlaylist(data));
-        dispatch(getUserPlaylistsThunk(userId));
-        return data
-    }
-}
+        await dispatch(getUserPlaylistsThunk(userId));
+        return data;
+        }
+    };
+
 
 export const deletePlaylistThunk = (playlistId) => async (dispatch) => {
     const res = await csrfFetch(`/api/playlists/${playlistId}/delete`, {
@@ -91,6 +107,31 @@ export const deletePlaylistThunk = (playlistId) => async (dispatch) => {
     dispatch(deletePlaylist(data));
     return data
 }
+
+export const addSongToPlaylistThunk = (playlistId, song) => async (dispatch) => {
+    const res = await csrfFetch(`/api/playlists/${playlistId}/songs`, {
+        method: 'POST',
+        body: JSON.stringify(song),
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        });
+        if (res.ok) {
+        const data = await res.json();
+        dispatch(addSongToPlaylist(playlistId, data));
+        return data;
+        }
+    };
+export const deleteSongFromPlaylistThunk = (playlistId, songId) => async (dispatch) => {
+    const res = await csrfFetch(`/api/playlists/${playlistId}/songs/${songId}`, {
+        method: 'DELETE',
+        });
+        const data = await res.json();
+        if (res.ok) {
+        dispatch(deleteSongFromPlaylist(playlistId, songId));
+        return data;
+        }
+    };
 
 // Reducer
 const initialState = { playlists: { user: {} } }
@@ -115,6 +156,18 @@ const playlistReducer = (state = initialState, action) => {
         case DELETE_PLAYLIST:
             const { [action.playlists.id]: deletedPlaylist, ...updatedPlaylists } = newState.playlists;
             newState.playlists = updatedPlaylists;
+            return newState;
+        case ADD_SONG_TO_PLAYLIST:
+            const playlistToUpdate = newState.playlists.user[action.playlistId];
+            if (playlistToUpdate) {
+                playlistToUpdate.songs.push(action.song);
+            }
+            return newState;
+        case DELETE_SONG_FROM_PLAYLIST:
+            const playlist = newState.playlists.user[action.playlistId];
+            if (playlist) {
+                playlist.songs = playlist.songs.filter((songId) => songId !== action.songId);
+            }
             return newState;
         default:
             return state;

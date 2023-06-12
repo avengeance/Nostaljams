@@ -6,7 +6,7 @@ from ..models.likes import SongLike
 from ..models.user import User
 from ..forms.song_form import SongForm, EditSongForm
 from ..forms.comment_form import CommentForm
-
+from ..models.playlist import PlaylistSong
 from flask import Blueprint, redirect, url_for, render_template, jsonify, request
 from flask_login import login_required, current_user, logout_user
 import json
@@ -71,6 +71,27 @@ def song_detail(id):
         }
 
         return jsonify(res), 404
+
+#view song by playlist id
+@songs_routes.route('/<int:songId>/playlist', methods=['GET'])
+def get_song_playlist(songId):
+    song = Song.query.get(songId)
+    if song is None:
+        return jsonify({
+            'error': 'Song not found',
+            'status': 404
+        }), 404
+
+    playlistSong = PlaylistSong.query.filter_by(song_id=songId).first()
+    if playlistSong is None:
+        # Return null or default playlist ID if the song is not in any playlist
+        playlistId = None
+    else:
+        playlistId = playlistSong.playlist_id
+
+    return jsonify({
+        'playlistId': playlistId
+    }), 200
 
 #create new song
 @songs_routes.route('/new', methods=['POST'])
