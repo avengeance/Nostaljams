@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch} from "react-redux";
 import { useModal } from "../../context/Modal";
+import PropTypes from 'prop-types';
 import * as CommentActions from "../../store/comments";
 import "./CreateComment.css";
 
@@ -51,6 +52,11 @@ function CreateCommentModal({ songId, onCommentSubmit }) {
             </div>
         </>
     )
+}
+
+CreateCommentModal.propTypes = {
+    songId: PropTypes.string.isRequired,
+    onCommentSubmit: PropTypes.func.isRequired
 }
 
 export default CreateCommentModal
