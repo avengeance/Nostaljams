@@ -100,7 +100,7 @@ def create_song():
     else:
         return jsonify(form.errors), 400
 
-@songs_routes.route('/<int:id>', methods=['PUT'])
+@songs_routes.route('/<int:id>/edit', methods=['PUT'])
 @login_required
 def update_song(id):
     song = Song.query.get(id)

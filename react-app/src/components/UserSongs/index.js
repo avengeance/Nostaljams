@@ -74,7 +74,9 @@ const UserSongs = () => {
                     <p>{song.genre}</p>
                     <p>{song.SongLikesCnt}</p>
                     </div>
-                    <button>Update Song</button>
+                    <div className='update-song-button'>
+                        <NavLink to={`/songs/${songId}/edit`}>Update Song</NavLink>
+                    </div>
                     <button onClick={() => toggleDeleteModal(songId)}>Delete</button>
                     {deleteModalOpen && (
                         <DeleteModal
