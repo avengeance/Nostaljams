@@ -32,9 +32,10 @@ function Song() {
 
   return (
     <div className="song-container">
-
       {songs.map((song) => {
-        if (!song.imgUrl) { return null }
+        if (!song.imgUrl) {
+          return null;
+        }
         const imgUrl =
           song.imgUrl && song.imgUrl.length > 0 ? song.imgUrl[0].imgUrl : null;
         return (
@@ -54,7 +55,6 @@ function Song() {
               className="play__button"
               onClick={() => {
                 setCurSong(song.audioUrl);
-                console.log(song.audioUrl);
               }}
             ></button>
           </>

@@ -30,38 +30,36 @@ function App() {
     <>
       <Navigation isLoaded={isLoaded} />
       {isLoaded && (
-        <Switch>
-          <Route path="/login">
-            <LoginFormPage />
-          </Route>
-          <Route path="/signup">
-            <SignupFormPage />
-          </Route>
-          <Route exact path="/">
-            <PlayerProvider>
+        <PlayerProvider>
+          <Switch>
+            <Route path="/login">
+              <LoginFormPage />
+            </Route>
+            <Route path="/signup">
+              <SignupFormPage />
+            </Route>
+            <Route exact path="/">
               <Song />
-            </PlayerProvider>
-          </Route>
-          <Route exact path="/songs/new">
-            <CreateSong />
-          </Route>
-          <Route path="/songs/:songId/edit">
-            <EditSong />
-          </Route>
-          <Route path="/songs/:songId">
-            <SongDetail />
-          </Route>
-          <Route exact path="/users/:userId/songs">
-            <UserSongs />
-          </Route>
-          <Route path="/users/:userId/playlists">
-            <UserPlaylist />
-          </Route>
-        </Switch>
+            </Route>
+            <Route exact path="/songs/new">
+              <CreateSong />
+            </Route>
+            <Route path="/songs/:songId/edit">
+              <EditSong />
+            </Route>
+            <Route path="/songs/:songId">
+              <SongDetail />
+            </Route>
+            <Route exact path="/users/:userId/songs">
+              <UserSongs />
+            </Route>
+            <Route path="/users/:userId/playlists">
+              <UserPlaylist />
+            </Route>
+          </Switch>
+          <Player />
+        </PlayerProvider>
       )}
-      <PlayerProvider>
-        <Player />
-      </PlayerProvider>
     </>
   );
 }

@@ -12,7 +12,7 @@ function Player() {
         autoPlay
         src={curSong}
         onPlay={(e) => console.log("onPlay")}
-        showSkipControls={false}
+        
       />
     </div>
   );
