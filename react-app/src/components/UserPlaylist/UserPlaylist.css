@@ -3,7 +3,134 @@
     align-items: center;
   }
 
-.featured-song {
+
+  .user-playlists-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+
+  .user-info-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .user-img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+
+  .user-firstname {
+    margin: 0;
+    font-size: 24px;
+  }
+
+  .user-username {
+    margin: 0;
+    font-size: 16px;
+    color: gray;
+  }
+
+  .playlist-section {
+    width: 100%;
+  }
+
+  .no-playlist-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+  }
+
+  .create-playlist-button {
+    padding: 10px 20px;
+    background-color: #ff5500;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  .playlist-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }
+
+  .playlist-item {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border-radius: 4px;
+    padding: 20px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .playlist-img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-right: 10px;
+  }
+
+  .playlist-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .featured-song {
+    display: flex;
+    align-items: center;
+  }
+
+  .featured-song h4,
+  .featured-song p {
+    margin: 0;
+    font-size: 14px;
+  }
+
+  .song-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .song-list li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .song-list h4,
+  .song-list p {
+    margin: 0;
+    font-size: 14px;
+  }
+
+  .update-playlist,
+  .delete-playlist {
+    margin-top: 20px;
+  }
+
+  /* .update-playlist button,
+  .delete-playlist button {
+    padding: 5px 10px;
+    background-color: #ff5500;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+  } */
+/* .featured-song {
     margin-right: 20px;
   }
 
@@ -29,4 +156,4 @@
 
 .song-list li div {
     flex-grow: 1;
-  }
+  } */
