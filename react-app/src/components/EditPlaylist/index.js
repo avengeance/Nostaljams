@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import * as PlaylistActions from '../../store/playlists';
 import * as SongActions from "../../store/songs";
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
-const EditPlaylistModal = ({ playlistId, closeModal }) => {
+const EditPlaylistModal = ({ playlistId, closeModal, setRefresh }) => {
     const dispatch = useDispatch();
     const user = useSelector((state) => state.session.user);
     const playlists = useSelector((state) => state.playlists.playlists);
@@ -12,7 +13,7 @@ const EditPlaylistModal = ({ playlistId, closeModal }) => {
     const [description, setDescription] = useState('');
     const [selectedSongs, setSelectedSongs] = useState([]);
     const [errors, setErrors] = useState({});
-
+    const history= useHistory();
     // console.log(playlists.user[playlistId].songs);
 
     useEffect(() => {
@@ -52,18 +53,19 @@ const EditPlaylistModal = ({ playlistId, closeModal }) => {
                 songId,
             };
             await dispatch(PlaylistActions.addSongToPlaylistThunk(playlistId, songPayload));
-            console.log('this happens')
-            console.log('this happens too')
             }
         }
-
+        const url = `/users/${user.id}/playlists`
         closeModal();
-        }
+        history.push(url)
+    }
+
     };const handleDeleteSong = async (songId) => {
         await dispatch(PlaylistActions.deleteSongFromPlaylistThunk(playlistId, songId));
 
         const updatedSelectedSongs = selectedSongs.filter((id) => id !== songId);
         setSelectedSongs(updatedSelectedSongs);
+        setRefresh((refresh) => !refresh);
     };
 
 
