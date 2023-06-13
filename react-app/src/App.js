@@ -44,9 +44,6 @@ function App() {
           <Route path='/songs/:songId/edit'>
             <EditSong/>
           </Route>
-          {/* <Route path='/users/:userId/playlists/:playlistId/edit'>
-            <EditPlaylist/>
-          </Route> */}
           <Route path='/songs/:songId'>
             <SongDetail />
           </Route>

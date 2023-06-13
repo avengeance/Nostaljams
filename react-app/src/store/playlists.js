@@ -122,16 +122,25 @@ export const addSongToPlaylistThunk = (playlistId, song) => async (dispatch) => 
         return data;
         }
     };
-export const deleteSongFromPlaylistThunk = (playlistId, songId) => async (dispatch) => {
-    const res = await csrfFetch(`/api/playlists/${playlistId}/songs/${songId}`, {
-        method: 'DELETE',
-        });
-        const data = await res.json();
-        if (res.ok) {
-        dispatch(deleteSongFromPlaylist(playlistId, songId));
-        return data;
+    export const deleteSongFromPlaylistThunk = (playlistId, songId) => async (dispatch) => {
+        try {
+            const res = await csrfFetch(`/api/playlists/${playlistId}/songs/${songId}/delete`, {
+                method: 'DELETE',
+            });
+
+            if (res.ok) {
+                dispatch(deleteSongFromPlaylist(playlistId, songId));
+                return true;
+            } else {
+                const data = await res.json();
+                throw new Error(data.message || 'Failed to delete song from playlist.');
+            }
+        } catch (error) {
+            console.error(error);
+            return false;
         }
     };
+
 
 // Reducer
 const initialState = { playlists: { user: {} } }
@@ -166,9 +175,10 @@ const playlistReducer = (state = initialState, action) => {
         case DELETE_SONG_FROM_PLAYLIST:
             const playlist = newState.playlists.user[action.playlistId];
             if (playlist) {
-                playlist.songs = playlist.songs.filter((songId) => songId !== action.songId);
+                playlist.songs = playlist.songs.filter((song) => song.id !== action.songId);
             }
             return newState;
+
         default:
             return state;
     }
