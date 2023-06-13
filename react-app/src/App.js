@@ -13,6 +13,7 @@ import SongDetail from "./components/SongDetail";
 import CreateSong from "./components/CreateSong";
 import UserSongs from "./components/UserSongs";
 import UserPlaylist from "./components/UserPlaylist";
+import Player from "./components/player/player";
 import EditSong from "./components/EditSong";
 
 function App() {
@@ -55,6 +56,7 @@ function App() {
           </Route>
         </Switch>
       )}
+      <Player />
     </>
   );
 }

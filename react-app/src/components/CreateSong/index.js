@@ -3,122 +3,135 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import * as SongActions from "../../store/songs";
+
 import "./CreateSong.css";
+import { csrfFetch } from "../../store/csrf";
+import Cookies from "js-cookie";
 
 //need to add a way to also include a song image; if not, use a default image
 
 function CreateSong() {
-    const user = useSelector(state => state.session.user);
+  const user = useSelector((state) => state.session.user);
 
-    const [song, setSong] = useState([])
+  const [song, setSong] = useState();
+  const [songImage, setSongImage] = useState();
 
-    const [name, setName] = useState('');
-    const [artists, setArtists] = useState('');
-    const [genre, setGenre] = useState('');
-    const [description, setDescription] = useState('');
-    const [audio_url, setAudio_Url] = useState('');
-    const [image_url, setImage_Url] = useState('');
-    const [errors, setErrors] = useState([]);
+  const [uploading, setUploading] = useState(false);
 
-    const dispatch = useDispatch();
-    const history = useHistory();
+  const [name, setName] = useState("");
+  const [artists, setArtists] = useState("");
+  const [genre, setGenre] = useState("");
+  const [description, setDescription] = useState("");
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+  const [errors, setErrors] = useState([]);
 
-        const payload = {
-            name,
-            artists,
-            genre,
-            description,
-            audio_url,
-            image_url
-        }
+  const dispatch = useDispatch();
+  const history = useHistory();
 
-        let newSong;
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-        try {
-            const song = await dispatch(SongActions.createSongThunk(payload));
-            const newSongId = song.id;
-            const url = `/songs/${newSongId}`;
-            if (song){
-                newSong = song
-                setName('');
-                setArtists('');
-                setGenre('');
-                setDescription('');
-                setAudio_Url('');
-                setImage_Url('');
-                setErrors([]);
-                history.push(url);
-            }
-        } catch(res){
-            const data = await res.json();
-            setErrors(data.errors);
-        }
+    const formData = new FormData();
+    formData["audio"] = song
+    formData["image"] = songImage
+
+    setUploading(true);
+
+    console.log(formData)
+
+    const res = await fetch("/api/songs/upload", {
+      method: "POST",
+      body: formData,
+    });
+
+    if (res.ok) {
+      const upload_data = res.json();
     }
-    return (
-        <div className="create-song-form-container">
-            <form className="create-song-form" onSubmit={handleSubmit}>
-                <h2>Create a Song</h2>
-                {errors.length > 0 && (
-                <ul>
-                    {errors.map((error, index) => (
-                    <li key={index}>{error}</li>
-                    ))}
-                </ul>
-                )}
-                <div className="form-field">
-                <label>Name</label>
-                <input
-                    type="text"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                />
-                </div>
-                <div className="form-field">
-                <label>Artists</label>
-                <input
-                    type="text"
-                    value={artists}
-                    onChange={(e) => setArtists(e.target.value)}
-                />
-                </div>
-                <div className="form-field">
-                <label>Genre</label>
-                <input
-                    type="text"
-                    value={genre}
-                    onChange={(e) => setGenre(e.target.value)}
-                />
-                </div>
-                <div className="form-field">
-                <label>Description</label>
-                <textarea
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                ></textarea>
-                </div>
-                <div className="form-field">
-                <label>Audio URL</label>
-                <input
-                    type="text"
-                    value={audio_url}
-                    onChange={(e) => setAudio_Url(e.target.value)}
-                />
-                </div>
-                <div className="form-field">
-                <label>Image URL</label>
-                <input
-                    type="text"
-                    value={image_url}
-                    onChange={(e) => setImage_Url(e.target.value)}
-                />
-                </div>
-                <button type="submit">Create</button>
-            </form>
-            </div>
-        );
+
+    const payload = {
+      name,
+      artists,
+      genre,
+      description,
+    };
+
+    let newSong;
+
+    try {
+      const song = await dispatch(SongActions.createSongThunk(payload));
+      const newSongId = song.id;
+      const url = `/songs/${newSongId}`;
+      if (song) {
+        newSong = song;
+        setName("");
+        setArtists("");
+        setGenre("");
+        setDescription("");
+        setErrors([]);
+        history.push(url);
+      }
+    } catch (res) {
+      const data = await res.json();
+      setErrors(res.data.errors);
+    }
+  };
+
+  return (
+    <>
+      <form onSubmit={handleSubmit}>
+        <label>
+          Name
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </label>
+        <label>
+          Artists
+          <input
+            type="text"
+            value={artists}
+            onChange={(e) => setArtists(e.target.value)}
+          />
+        </label>
+        <label>
+          Genre
+          <input
+            type="text"
+            value={genre}
+            onChange={(e) => setGenre(e.target.value)}
+          />
+        </label>
+        <label>
+          Description
+          <input
+            type="text"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+        </label>
+        <label>
+          Song
+          <input
+            type="file"
+            accept="audio/*"
+            onChange={(e) => setSong(e.target.files[0])}
+          />
+        </label>
+        <label>
+          Album Art
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => setSongImage(e.target.files[0])}
+          />
+        </label>
+        <button>Submit</button>
+      </form>
+    </>
+  );
+
 }
 
-export default CreateSong
+export default CreateSong;
