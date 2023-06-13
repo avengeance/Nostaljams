@@ -109,7 +109,6 @@ def get_song_playlist(songId):
 @login_required
 def create_song():
     form = SongForm()
-    print(form)
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
         name = form.name.data
@@ -132,7 +131,6 @@ def create_song():
 
         image_url = form.img_url.data
         song_id = new_song.id
-
         new_image = SongImage(
             song_id=song_id,
             img_url=image_url
