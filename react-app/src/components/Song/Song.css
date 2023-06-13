@@ -41,3 +41,11 @@
 .song-artists{
     /* border: 1px solid red; */
 }
+
+.play__button button{
+    border: solid 1px black;
+    outline: none;
+    text-decoration: none;
+    color: white;
+    justify-content: center;
+}
