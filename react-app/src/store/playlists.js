@@ -173,12 +173,8 @@ const playlistReducer = (state = initialState, action) => {
             }
             return newState;
         case DELETE_SONG_FROM_PLAYLIST:
-            console.log('DELETE_SONG_FROM_PLAYLIST case reached');
             const playlist = newState.playlists.user[action.playlistId];
-            console.log('playlist:', playlist);
-            console.log('action.songId:', action.songId);
             if (playlist) {
-                console.log('this is the case',playlist.songs)
                 playlist.songs = playlist.songs.filter((song) => song.id !== action.songId);
             }
             return newState;
