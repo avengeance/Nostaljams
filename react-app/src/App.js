@@ -14,6 +14,7 @@ import CreateSong from "./components/CreateSong";
 import UserSongs from "./components/UserSongs";
 import UserPlaylist from "./components/UserPlaylist";
 import Player from "./components/player/player";
+import { PlayerProvider } from "../src/context/playerContext";
 import EditSong from "./components/EditSong";
 
 function App() {
@@ -30,33 +31,37 @@ function App() {
       <Navigation isLoaded={isLoaded} />
       {isLoaded && (
         <Switch>
-          <Route path="/login" >
+          <Route path="/login">
             <LoginFormPage />
           </Route>
           <Route path="/signup">
             <SignupFormPage />
           </Route>
           <Route exact path="/">
-            <Song />
+            <PlayerProvider>
+              <Song />
+            </PlayerProvider>
           </Route>
-          <Route exact path='/songs/new'>
+          <Route exact path="/songs/new">
             <CreateSong />
           </Route>
-          <Route path='/songs/:songId/edit'>
-            <EditSong/>
+          <Route path="/songs/:songId/edit">
+            <EditSong />
           </Route>
-          <Route path='/songs/:songId'>
+          <Route path="/songs/:songId">
             <SongDetail />
           </Route>
-          <Route exact path='/users/:userId/songs'>
-            <UserSongs/>
+          <Route exact path="/users/:userId/songs">
+            <UserSongs />
           </Route>
-          <Route path='/users/:userId/playlists'>
-            <UserPlaylist/>
+          <Route path="/users/:userId/playlists">
+            <UserPlaylist />
           </Route>
         </Switch>
       )}
-      <Player />
+      <PlayerProvider>
+        <Player />
+      </PlayerProvider>
     </>
   );
 }

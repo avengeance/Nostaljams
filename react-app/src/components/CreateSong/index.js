@@ -76,6 +76,7 @@ function CreateSong() {
   return (
     <>
       <form onSubmit={handleSubmit}>
+        <h2>Upload your Song!</h2>
         <table>
           <tbody>
             <tr>
@@ -83,6 +84,7 @@ function CreateSong() {
                 <label>Name</label>
                 <input
                   type="text"
+                  placeholder="Name your Song!"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                 />
@@ -98,6 +100,7 @@ function CreateSong() {
                 <label>Artists</label>
                 <input
                   type="text"
+                  placeholder="Who made your Song?"
                   value={artists}
                   onChange={(e) => setArtists(e.target.value)}
                 />
@@ -113,6 +116,7 @@ function CreateSong() {
                 <label>Genre</label>
                 <input
                   type="text"
+                  placeholder="What is your Song like?"
                   value={genre}
                   onChange={(e) => setGenre(e.target.value)}
                 />
@@ -123,9 +127,15 @@ function CreateSong() {
                 <label>Description</label>
                 <input
                   type="text"
+                  placeholder="Tell us your Song!"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                 />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <h2>Upload your Audio file below!</h2>
               </td>
             </tr>
             <tr>
@@ -145,6 +155,11 @@ function CreateSong() {
             )}
             <tr>
               <td>
+                <h2>Upload your Ablum Art below!</h2>
+              </td>
+            </tr>
+            <tr>
+              <td>
                 <label>Album Art</label>
                 <input
                   type="file"
@@ -160,7 +175,7 @@ function CreateSong() {
             )}
           </tbody>
         </table>
-        <button>Submit</button>
+        <button>Upload your Song!</button>
       </form>
       {uploading && (
         <div>

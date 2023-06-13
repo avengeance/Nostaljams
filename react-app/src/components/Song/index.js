@@ -3,14 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import * as SongActions from "../../store/songs";
 import "./Song.css";
-
 import { usePlayer } from "../../context/playerContext";
 
 function Song() {
   const dispatch = useDispatch();
   const songs = useSelector((state) => Object.values(state.songs.songs));
   const history = useHistory();
-  // const { curSong, setCurSong } = usePlayer();
+  const { curSong, setCurSong } = usePlayer();
 
   useEffect(() => {
     dispatch(SongActions.getAllSongsThunk());
@@ -20,9 +19,6 @@ function Song() {
     history.push(`/songs/${songId}`);
   };
 
-  const handlePlay = (songUrl) => {
-    // setCurSong(songUrl);
-  };
   const fetchImage = (url) =>
     fetch(`${url}`, {
       method: "GET",
@@ -31,7 +27,7 @@ function Song() {
     })
       .then((response) => response.blob()) // convert to blob
       .then((blob) => {
-       return URL.createObjectURL(blob);
+        return URL.createObjectURL(blob);
       });
 
   return (
@@ -54,7 +50,10 @@ function Song() {
             </div>
             <button
               className="play__button"
-              onClick={() => handlePlay(song.url)}
+              onClick={() => {
+                setCurSong(song.audioUrl);
+                console.log(song.audioUrl);
+              }}
             ></button>
           </>
         );
