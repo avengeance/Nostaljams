@@ -8,12 +8,20 @@ function EditSong() {
   const { id } = useParams();
   const user = useSelector((state) => state.session.user);
 
+  const [song, setSong] = useState();
+  const [songImage, setSongImage] = useState();
+  const [uploading, setUploading] = useState(false);
+
   const [name, setName] = useState("");
   const [artists, setArtists] = useState("");
   const [genre, setGenre] = useState("");
   const [description, setDescription] = useState("");
-  const [audio_url, setAudio_Url] = useState("");
-  const [image_url, setImage_Url] = useState("");
+
+  const [nameCur, setNameCur] = useState("");
+  const [artistsCur, setArtistsCur] = useState("");
+  const [genreCur, setGenreCur] = useState("");
+  const [descriptionCur, setDescriptionCur] = useState("");
+
   const [errors, setErrors] = useState([]);
 
   const dispatch = useDispatch();
@@ -25,12 +33,11 @@ function EditSong() {
       if (response) {
         const { name, artists, genre, description, audio_url, image_url } =
           response;
-        setName(name);
-        setArtists(artists);
-        setGenre(genre);
-        setDescription(description);
-        setAudio_Url(audio_url);
-        setImage_Url(image_url);
+        setSong(response);
+        setNameCur(name);
+        setArtistsCur(artists);
+        setGenreCur(genre);
+        setDescriptionCur(description);
       }
     };
 
