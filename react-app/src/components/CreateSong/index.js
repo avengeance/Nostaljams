@@ -32,20 +32,24 @@ function CreateSong() {
     e.preventDefault();
 
     const formData = new FormData();
-    formData["audio"] = song
-    formData["image"] = songImage
+    formData.append("audio", song);
+    formData.append("image", songImage);
 
     setUploading(true);
 
-    console.log(formData)
+    try {
+      const res = await fetch("/api/songs/upload", {
+        method: "POST",
+        body: formData,
+      });
 
-    const res = await fetch("/api/songs/upload", {
-      method: "POST",
-      body: formData,
-    });
-
-    if (res.ok) {
-      const upload_data = res.json();
+      if (res.ok) {
+        const upload_data = res.json();
+        console.log(upload_data);
+      }
+    } catch (res) {
+      //   const data = await res.json();
+      //   setErrors(res.data.errors);
     }
 
     const payload = {
@@ -55,25 +59,25 @@ function CreateSong() {
       description,
     };
 
-    let newSong;
+    // let newSong;
 
-    try {
-      const song = await dispatch(SongActions.createSongThunk(payload));
-      const newSongId = song.id;
-      const url = `/songs/${newSongId}`;
-      if (song) {
-        newSong = song;
-        setName("");
-        setArtists("");
-        setGenre("");
-        setDescription("");
-        setErrors([]);
-        history.push(url);
-      }
-    } catch (res) {
-      const data = await res.json();
-      setErrors(res.data.errors);
-    }
+    // try {
+    //   const song = await dispatch(SongActions.createSongThunk(payload));
+    //   const newSongId = song.id;
+    //   const url = `/songs/${newSongId}`;
+    //   if (song) {
+    //     newSong = song;
+    //     setName("");
+    //     setArtists("");
+    //     setGenre("");
+    //     setDescription("");
+    //     setErrors([]);
+    //     history.push(url);
+    //   }
+    // } catch (res) {
+    //   const data = await res.json();
+    //   setErrors(res.data.errors);
+    // }
   };
 
   return (
@@ -131,7 +135,6 @@ function CreateSong() {
       </form>
     </>
   );
-
 }
 
 export default CreateSong;

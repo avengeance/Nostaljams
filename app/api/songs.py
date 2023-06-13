@@ -141,21 +141,21 @@ def create_song():
 @songs_routes.route('/upload', methods=["POST"])
 @login_required
 def upload_file():
-    print(request)
+    # print(request.files)
     if "audio" not in request.files:
         return {"errors": "Song required"}, 400
 
     if "image" not in request.files:
         return {"errors": "Image required"}, 400
 
-    song = request.files["song"]
+    song = request.files["audio"]
     image = request.files["image"]
-
+    print(song.filename)
     if not if_allowed_songs(song.filename):
-        return {"errors": "file type not supported"}, 400
+        return {"errors": "file audio type not supported"}, 400
 
     if not if_allowed_image(image.filename):
-        return {"errors": "file type not supported"}, 400
+        return {"errors": "file image type not supported"}, 400
 
     song.filename = file_unique_name(song.filename)
     song_upload = upload_S3(song)
@@ -176,7 +176,7 @@ def upload_file():
     return {
         "audio_url": audio_url,
         "image_url": image_url
-    }
+    }, 201
 
 
 @songs_routes.route('/<int:id>/edit', methods=['PUT'])
