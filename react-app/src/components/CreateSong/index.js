@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { useParams } from "react-router-dom";
@@ -23,56 +23,56 @@ function CreateSong() {
   const [genre, setGenre] = useState("");
   const [description, setDescription] = useState("");
 
-  const [errors, setErrors] = useState([]);
+  const [errors, setErrors] = useState({});
 
   const dispatch = useDispatch();
   const history = useHistory();
 
+  useEffect(() => {
+    console.log("errors", errors);
+  }, [errors]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrors({});
 
     const formData = new FormData();
-    formData["audio"] = song
-    formData["image"] = songImage
+    formData.append("audio", song);
+    formData.append("image", songImage);
 
     setUploading(true);
-
-    console.log(formData)
-
     const res = await fetch("/api/songs/upload", {
       method: "POST",
       body: formData,
     });
 
+    const upload_data = await res.json();
+    console.log("upload_data", upload_data);
     if (res.ok) {
-      const upload_data = res.json();
-    }
+      const payload = {
+        name,
+        artists,
+        genre,
+        description,
+        audio_url: upload_data.audio_url,
+        image_url: upload_data.image_url,
+      };
+      const newSong = await dispatch(SongActions.createSongThunk(payload));
 
-    const payload = {
-      name,
-      artists,
-      genre,
-      description,
-    };
-
-    let newSong;
-
-    try {
-      const song = await dispatch(SongActions.createSongThunk(payload));
-      const newSongId = song.id;
-      const url = `/songs/${newSongId}`;
-      if (song) {
-        newSong = song;
+      if (newSong.ok) {
+        const newSongId = newSong.id;
+        const url = `/songs/${newSongId}`;
         setName("");
         setArtists("");
         setGenre("");
         setDescription("");
         setErrors([]);
         history.push(url);
+      } else {
+        setErrors(newSong);
       }
-    } catch (res) {
-      const data = await res.json();
-      setErrors(res.data.errors);
+    } else {
+      setErrors(upload_data);
     }
   };
 
@@ -131,7 +131,6 @@ function CreateSong() {
       </form>
     </>
   );
-
 }
 
 export default CreateSong;
