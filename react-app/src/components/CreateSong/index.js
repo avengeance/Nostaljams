@@ -32,20 +32,24 @@ function CreateSong() {
     e.preventDefault();
 
     const formData = new FormData();
-    formData["audio"] = song
-    formData["image"] = songImage
+    formData.append("audio", song);
+    formData.append("image", songImage);
 
     setUploading(true);
+    let upload_data;
 
-    console.log(formData)
+    try {
+      const res = await fetch("/api/songs/upload", {
+        method: "POST",
+        body: formData,
+      });
 
-    const res = await fetch("/api/songs/upload", {
-      method: "POST",
-      body: formData,
-    });
-
-    if (res.ok) {
-      const upload_data = res.json();
+      if (res.ok) {
+        upload_data = await res.json();
+      }
+    } catch (res) {
+      // const data = await res.json();
+      // setErrors(res.data.errors);
     }
 
     const payload = {
@@ -53,6 +57,8 @@ function CreateSong() {
       artists,
       genre,
       description,
+      "audio_url": upload_data.audio_url,
+      "image_url": upload_data.image_url,
     };
 
     let newSong;
@@ -71,8 +77,8 @@ function CreateSong() {
         history.push(url);
       }
     } catch (res) {
-      const data = await res.json();
-      setErrors(res.data.errors);
+      //   const data = await res.json();
+      //   setErrors(res.data.errors);
     }
   };
 
@@ -131,7 +137,6 @@ function CreateSong() {
       </form>
     </>
   );
-
 }
 
 export default CreateSong;

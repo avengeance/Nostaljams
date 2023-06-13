@@ -76,6 +76,7 @@ export const createSongThunk = (song) => async (dispatch) => {
             'Content-Type': 'application/json'
         }
     });
+    console.log(song, res)
     const data = await res.json();
     dispatch(createSong(data));
     return data
