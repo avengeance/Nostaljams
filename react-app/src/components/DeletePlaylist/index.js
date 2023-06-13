@@ -21,9 +21,13 @@ const DeleteModal = ({ playlistId, userId, closeModal }) => {
 
     return (
         <div className="delete-modal">
-        <h3>Are you sure you want to delete this playlist?</h3>
-        <button onClick={deletePlaylist}>Yes</button>
-        <button onClick={handleNoClick}>No</button>
+            <div className='delete-modal-contents'>
+                <h3>Are you sure you want to delete this playlist?</h3>
+                <div className='delete-modal-buttons'>
+                    <button onClick={deletePlaylist}>Yes</button>
+                    <button onClick={handleNoClick}>No</button>
+                </div>
+            </div>
         </div>
     )
 }

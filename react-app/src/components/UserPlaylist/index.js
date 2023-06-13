@@ -92,7 +92,9 @@ const UserPlaylist = () => {
                     <div className="playlist-container">
                         <div className="featured-song">
                         {/* Display the image of the first song */}
-                        <img src={playlist.songs[0]?.imgUrl[0]?.imgUrl} alt="Song Cover" className='playlist-img' />
+                        <Link to={`/songs/${playlist.songs[0]?.id}`}>
+                            <img src={playlist.songs[0]?.imgUrl[0]?.imgUrl} alt="Song Cover" className='playlist-img' />
+                        </Link>
                         <div>
                             <h4>{playlist.songs[0]?.name}</h4>
                             <p>{playlist.songs[0]?.artists}</p>
@@ -102,18 +104,22 @@ const UserPlaylist = () => {
                         {/* Render the remaining songs */}
                         {playlist.songs.slice(1, 3).map((song) => (
                             <li key={song.id}>
-                            <img src={song.imgUrl[0]?.imgUrl} alt="Song Cover" />
+                            <Link to={`/songs/${song?.id}`}>
+                                <img src={song.imgUrl[0]?.imgUrl} alt="Song Cover" />
+                            </Link>
                             <div>
                                 <h4>{song.name}</h4>
                                 <p>{song.artists}</p>
                             </div>
                             </li>
                         ))}
-                        <div className="update-playlist">
-                            <button onClick={() => openEditModal(playlist.id)}>Update Playlist</button>
-                        </div>
-                        <div className='delete-playlist'>
-                            <button onClick={() => toggleDeleteModal(playlist.id)}>Delete</button>
+                        <div className='playlist-buttons'>
+                            <div className="update-playlist">
+                                <button className='update-button'onClick={() => openEditModal(playlist.id)}>Update Playlist</button>
+                            </div>
+                            <div className='delete-playlist'>
+                                <button onClick={() => toggleDeleteModal(playlist.id)}>Delete</button>
+                            </div>
                         </div>
                         {deletePlaylistModals[playlist.id] && (
                             <DeleteModal
