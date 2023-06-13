@@ -111,6 +111,7 @@ export const getSongsByUserThunk = (userId) => async (dispatch) => {
         method: 'GET'
     });
     const data = await res.json();
+    // console.log(data);
     dispatch(getSongsByUser(data));
     return data
 }
@@ -120,8 +121,8 @@ export const getSongsByPlaylistThunk = (playlistId) => async (dispatch) => {
         method: 'GET',
     });
     if (!res.ok) {
-      // Handle error if necessary
-    return;
+        // Handle error if necessary
+        return;
     }
     const data = await res.json();
     // Dispatch an action to update the state with the fetched songs
@@ -130,7 +131,9 @@ export const getSongsByPlaylistThunk = (playlistId) => async (dispatch) => {
 };
 
 // Reducer
-const initialState = { songs: {} };
+const initialState = {
+    songs: { user: {} }
+};
 
 const songsReducer = (state = initialState, action) => {
     let newState = { ...state };
@@ -154,6 +157,7 @@ const songsReducer = (state = initialState, action) => {
             newState.songs = updatedSongs;
             return newState;
         case GET_SONGS_BY_USER:
+            // console.log(action.songs.UserSongs);
             action.songs.UserSongs.forEach((song) => {
                 newState.songs.user[song.id] = song
             })
