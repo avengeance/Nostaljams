@@ -125,20 +125,6 @@ function SignupFormModal() {
 
 						/>
 					</label>
-					{/* <label className="label">
-						User Image
-						<div className="file-input">
-							<input
-								id="user-image"
-								type='file'
-								value={userImage}
-								onChange={(e) => setUserImage(e.target.value)}
-							/>
-							<button type="button" className="choose-file-button">
-								Choose File
-							</button>
-						</div>
-					</label> */}
 					<label className="label">
 						User Image
 					</label>

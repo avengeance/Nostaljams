@@ -80,58 +80,64 @@ const SongDetail = () => {
                                 alt={currentSong?.name || 'song-image'}
                             ></img>
                             <div className="song-actions">
-                                <p>{currentSong.SongLikesCnt}</p>
+                                <p id='song-likes'>{currentSong.SongLikesCnt}</p>
                                 {!liked && (
                                     <button onClick={handleLike}>
-                                        Like
+                                        <i class="fas fa-thumbs-up"></i>
                                     </button>
                                 )}
                                 {liked && (<button onClick={handleUnlike}>
-                                    Unlike
+                                    <i class="fas fa-thumbs-down"></i>
                                 </button>)}
                             </div>
                             <div className="song-info-details">
                                 <h2>{currentSong.name}</h2>
-                                <p>Artist: {currentSong.artists}</p>
-                                <p>Genre: {currentSong.genre}</p>
-                                <p>Description: {currentSong.description}</p>
+                                <span>Artist: </span>
+                                <p className="song-description">{currentSong.artists}</p>
+                                <span>Genre: </span>
+                                <p className="song-description">{currentSong.genre}</p>
+                                <span>Description: </span>
+                                <p className="song-description">{currentSong.description}</p>
                             </div>
                         </div>
                     </div>
-                    <div className='comment-button'>
-                        {userId && (
-                            <OpenModalButton
-                                buttonText="Add Comment"
-                                modalComponent={<CreateCommentModal
-                                    songId={songId}
-                                    onCommentSubmit={() => setRefreshKey(refreshKey + 1)}
-                                    refreshKey={refreshKey}
-                                    setRefreshKey={setRefreshKey}
-                                />}
-                            />
-                        )}
-                        <div className="song-comments">
-                            {comments.map((comment, index) => (
-                                <div key={index}>
-                                    <p>{comment.comment}</p>
-                                    {userId === comment.userId && (
-                                        <OpenModalButton
-                                            buttonText="Delete Comment"
-                                            modalComponent={
-                                                <DeleteComment
-                                                    songId={songId}
-                                                    commentId={comment.id}
-                                                    closeModal={closeModal}
-                                                    refreshKey={refreshKey}
-                                                    setRefreshKey={setRefreshKey}
-                                                />
-                                            }
-                                        />
-                                    )}
-                                </div>
-                            ))}
-                        </div>
+                    <div className="comment-section">
+                        <h2>Comments</h2>
+                        <div className='comment-button'>
+                            {userId && (
+                                <OpenModalButton
+                                    buttonText={<i class="fas fa-comment">Add comment</i>}
+                                    modalComponent={<CreateCommentModal
+                                        songId={songId}
+                                        onCommentSubmit={() => setRefreshKey(refreshKey + 1)}
+                                        refreshKey={refreshKey}
+                                        setRefreshKey={setRefreshKey}
+                                    />}
+                                />
+                            )}
+                            <div className="song-comments">
+                                {comments.map((comment, index) => (
+                                    <div key={index}>
+                                        <p>{comment.comment}</p>
+                                        {userId === comment.userId && (
+                                            <OpenModalButton
+                                                buttonText={<i class="fas fa-trash">Delete Comment</i>}
+                                                modalComponent={
+                                                    <DeleteComment
+                                                        songId={songId}
+                                                        commentId={comment.id}
+                                                        closeModal={closeModal}
+                                                        refreshKey={refreshKey}
+                                                        setRefreshKey={setRefreshKey}
+                                                    />
+                                                }
+                                            />
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
 
+                        </div>
                     </div>
                 </div>
             )}
