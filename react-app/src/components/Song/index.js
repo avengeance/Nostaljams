@@ -10,7 +10,7 @@ function Song() {
   const dispatch = useDispatch();
   const songs = useSelector((state) => Object.values(state.songs.songs));
   const history = useHistory();
-  const { curSong, setCurSong } = usePlayer();
+  // const { curSong, setCurSong } = usePlayer();
 
   useEffect(() => {
     dispatch(SongActions.getAllSongsThunk());
@@ -21,7 +21,7 @@ function Song() {
   };
 
   const handlePlay = (songUrl) => {
-    setCurSong(songUrl);
+    // setCurSong(songUrl);
   };
 
   return (

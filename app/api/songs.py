@@ -11,7 +11,8 @@ from flask import Blueprint, redirect, url_for, render_template, jsonify, reques
 from flask_login import login_required, current_user, logout_user
 
 # AWS Helpers
-from .aws import (if_allowed_songs, if_allowed_image, file_unique_name, upload_S3)
+from .aws import (if_allowed_songs, if_allowed_image,
+                  file_unique_name, upload_S3)
 
 songs_routes = Blueprint('songs', __name__)
 
@@ -50,13 +51,13 @@ def song_detail(id):
             "audio_url": song.audio_url,
             "SongLikesCnt": likes,
             "SongComments": [
-            {
-                "comment": comment.comment,
-                "song_id": comment.song_id,
-                "user_id": comment.user_id
-            }
-        for comment in comments
-    ]
+                {
+                    "comment": comment.comment,
+                    "song_id": comment.song_id,
+                    "user_id": comment.user_id
+                }
+                for comment in comments
+            ]
         }
         return jsonify(res), 200
 
@@ -82,23 +83,7 @@ def create_song():
         artists = form.artists.data
         genre = form.genre.data
         description = form.description.data
-
-        if "song" not in request.files:
-            return {"errors": "Song required"}
-
-        song = request.files["song"]
-
-        if not if_allowed_songs(song.filename):
-            return {"errors": "file type not supported"}
-
-        song.filename = file_unique_name(song.filename)
-
-        song_upload = upload_S3(song)
-
-        if "url" not in song_upload:
-            return song_upload, 400
-
-        audio_url = song_upload["url"]
+        audio_url = form.audio_url
 
         new_song = Song(
             user_id=current_user.id,
@@ -112,24 +97,9 @@ def create_song():
         db.session.add(new_song)
         db.session.commit()
 
-        if "image" not in request.files:
-            return {"errors": "Image required"}
-
-        image = request.files["image"]
-
-        if not if_allowed_image(image.filename):
-            return {"errors": "file type not supported"}
-
-        image.filename = file_unique_name(image.filename)
-
-        image_upload = upload_S3(image)
-
-        if "url" not in image_upload:
-            return image_upload, 400
-
-        image_url = image_upload["url"]
-
+        image_url = form.image_url
         song_id = new_song.id
+
         new_image = SongImage(
             song_id=song_id,
             img_url=image_url
@@ -137,9 +107,50 @@ def create_song():
         db.session.add(new_image)
         db.session.commit()
 
-        return jsonify(song.to_dict()), 201
+        return jsonify(new_song.to_dict()), 201
     else:
         return jsonify(form.errors), 400
+
+
+@songs_routes.route('/upload', methods=["POST"])
+@login_required
+def upload_file():
+    print(request)
+    if "audio" not in request.files:
+        return {"errors": "Song required"}, 400
+
+    if "image" not in request.files:
+        return {"errors": "Image required"}, 400
+
+    song = request.files["song"]
+    image = request.files["image"]
+
+    if not if_allowed_songs(song.filename):
+        return {"errors": "file type not supported"}, 400
+
+    if not if_allowed_image(image.filename):
+        return {"errors": "file type not supported"}, 400
+
+    song.filename = file_unique_name(song.filename)
+    song_upload = upload_S3(song)
+
+    if "url" not in song_upload:
+        return song_upload, 400
+
+    audio_url = song_upload["url"]
+
+    image.filename = file_unique_name(image.filename)
+    image_upload = upload_S3(image)
+
+    if "url" not in image_upload:
+        return image_upload, 400
+
+    image_url = image_upload["url"]
+
+    return {
+        "audio_url": audio_url,
+        "image_url": image_url
+    }
 
 
 @songs_routes.route('/<int:id>', methods=['PUT'])

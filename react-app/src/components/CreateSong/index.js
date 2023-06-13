@@ -3,18 +3,23 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import * as SongActions from "../../store/songs";
+
 import "./CreateSong.css";
+import { csrfFetch } from "../../store/csrf";
+import Cookies from "js-cookie";
 
 function CreateSong() {
   const user = useSelector((state) => state.session.user);
 
-  const [song, setSong] = useState([]);
+  const [song, setSong] = useState();
+  const [songImage, setSongImage] = useState();
+
+  const [uploading, setUploading] = useState(false);
 
   const [name, setName] = useState("");
   const [artists, setArtists] = useState("");
   const [genre, setGenre] = useState("");
   const [description, setDescription] = useState("");
-  const [audio_url, setAudio_url] = useState("");
 
   const [errors, setErrors] = useState([]);
 
@@ -24,12 +29,28 @@ function CreateSong() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const formData = new FormData();
+    formData.append("audio", song);
+    formData.append("image", songImage);
+    formData.append("csrf_token", Cookies.get('csrf_token'))
+    
+    setUploading(true);
+
+    
+    const res = await csrfFetch("/api/songs/upload", {
+      method: "POST",
+      body: formData,
+    });
+
+    if (res.ok) {
+      const upload_data = res.json();
+    }
+
     const payload = {
       name,
       artists,
       genre,
       description,
-      audio_url,
     };
 
     let newSong;
@@ -44,7 +65,6 @@ function CreateSong() {
         setArtists("");
         setGenre("");
         setDescription("");
-        setAudio_url("");
         setErrors([]);
         history.push(url);
       }
@@ -90,13 +110,22 @@ function CreateSong() {
           />
         </label>
         <label>
-            Song
-          <input type="file" accept="song/*" onChange={updateSong} />
+          Song
+          <input
+            type="file"
+            accept="audio/*"
+            onChange={(e) => setSong(e.target.value)}
+          />
         </label>
         <label>
-            Album Art
-          <input type="file" accept="image/*" onChange={updateSong} />
+          Album Art
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => setSongImage(e.target.value)}
+          />
         </label>
+        <button>Submit</button>
       </form>
     </>
   );

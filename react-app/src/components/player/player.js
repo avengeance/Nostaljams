@@ -4,13 +4,13 @@ import "./player.css";
 import { usePlayer } from "../../context/playerContext";
 
 function Player() {
-  const {curSong, setCurSong} = usePlayer()
+  // const {curSong, setCurSong} = usePlayer()
 
   return (
     <div className="audioPlayer__cont">
       <AudioPlayer
         autoPlay
-        src={curSong}
+        src={''}
         onPlay={(e) => console.log("onPlay")}
       />
     </div>
