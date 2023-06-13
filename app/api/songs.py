@@ -6,9 +6,10 @@ from ..models.likes import SongLike
 from ..models.user import User
 from ..forms.song_form import SongForm, EditSongForm
 from ..forms.comment_form import CommentForm
-
+from ..models.playlist import PlaylistSong
 from flask import Blueprint, redirect, url_for, render_template, jsonify, request
 from flask_login import login_required, current_user, logout_user
+import json
 
 # AWS Helpers
 from .aws import (if_allowed_songs, if_allowed_image,
@@ -17,8 +18,6 @@ from .aws import (if_allowed_songs, if_allowed_image,
 songs_routes = Blueprint('songs', __name__)
 
 # view all songs
-
-
 @songs_routes.route('/', methods=['GET'])
 def get_all_songs():
     songs = Song.query.all()
@@ -27,8 +26,6 @@ def get_all_songs():
     }
 
 # view song by song id
-
-
 @songs_routes.route('/<int:id>', methods=['GET'])
 def song_detail(id):
     # Retrieve the song details from the database
@@ -39,6 +36,7 @@ def song_detail(id):
         image = SongImage.query.filter_by(song_id=song.id).first()
         likes = SongLike.query.filter_by(song_id=song.id).count()
         comments = Comment.query.filter_by(song_id=song.id).all()
+        likesId = SongLike.query.filter_by(song_id=song.id).all()
 
         res = {
             "songId": song.id,
@@ -50,6 +48,14 @@ def song_detail(id):
             "SongImage": image.img_url,
             "audio_url": song.audio_url,
             "SongLikesCnt": likes,
+            "SongLikes": [like.user_id for like in likesId],
+            # "SongLikes": [
+            #     {
+            #         "likeId": like.id,
+            #         "userId": like.user_id
+            #     }
+            #     for like in likes
+            # ],
             "SongComments": [
                 {
                     "comment": comment.comment,
@@ -70,9 +76,29 @@ def song_detail(id):
 
         return jsonify(res), 404
 
-# create new song
 
+#view song by playlist id
+@songs_routes.route('/<int:songId>/playlist', methods=['GET'])
+def get_song_playlist(songId):
+    song = Song.query.get(songId)
+    if song is None:
+        return jsonify({
+            'error': 'Song not found',
+            'status': 404
+        }), 404
 
+    playlistSong = PlaylistSong.query.filter_by(song_id=songId).first()
+    if playlistSong is None:
+        # Return null or default playlist ID if the song is not in any playlist
+        playlistId = None
+    else:
+        playlistId = playlistSong.playlist_id
+
+    return jsonify({
+        'playlistId': playlistId
+    }), 200
+
+#create new song
 @songs_routes.route('/new', methods=['POST'])
 @login_required
 def create_song():
@@ -111,7 +137,7 @@ def create_song():
     else:
         return jsonify(form.errors), 400
 
-
+#upload to AWS
 @songs_routes.route('/upload', methods=["POST"])
 @login_required
 def upload_file():
@@ -153,7 +179,7 @@ def upload_file():
     }
 
 
-@songs_routes.route('/<int:id>', methods=['PUT'])
+@songs_routes.route('/<int:id>/edit', methods=['PUT'])
 @login_required
 def update_song(id):
     song = Song.query.get(id)
@@ -190,13 +216,12 @@ def update_song(id):
         return jsonify(res), 404
 
 # delete a song
-
-
 @songs_routes.route('/<int:id>/delete', methods=['DELETE'])
 @login_required
 def delete_song(id):
-    song = Song.query.get(id)
-    if song and current_user.id == song.user_id:
+    song = Song.query.filter_by(id=id, user_id=current_user.id).first()
+    if song:
+        SongImage.query.filter_by(song_id=id).delete()
         db.session.delete(song)
         db.session.commit()
         res = {
@@ -212,9 +237,7 @@ def delete_song(id):
         }
         return jsonify(res), 404
 
-# view comments by Song ID
-
-
+#view comments by Song ID
 @songs_routes.route('/<int:id>/comments', methods=['GET'])
 def view_song_by_comment_id(id):
     song = Song.query.get(id)
@@ -227,26 +250,28 @@ def view_song_by_comment_id(id):
     return jsonify(comment_list), 200
 
 # create new song comment
-
-
 @songs_routes.route('/<int:id>/comments/new', methods=['POST'])
 @login_required
 def new_comment(id):
     song = Song.query.get(id)
     if(song):
-        form = CommentForm()
-        form['csrf_token'].data = request.cookies['csrf_token']
-        if form.validate_on_submit():
+        # form = CommentForm()
+        # form['csrf_token'].data = request.cookies['csrf_token']
+        # if form.validate_on_submit():
+        if request.is_json:
+            data=request.get_json()
+            data = json.loads(data) if isinstance(data,str) else data
             comment = Comment(
                 user_id=current_user.id,
                 song_id=id,
-                comment=form.comment.data
+                # comment=form.comment.data
+                comment=data['comment']
             )
             db.session.add(comment)
             db.session.commit()
-            return comment.to_dict(), 200
-        else:
-            return jsonify(form.errors), 400
+            return comment.to_dict(), 201
+        # else:
+            # return jsonify(form.errors), 400
     else:
         res = {
             "message": "Song could not be found.",
@@ -255,8 +280,6 @@ def new_comment(id):
         return jsonify(res), 404
 
 # view likes by song Id
-
-
 @songs_routes.route('/<int:id>/likes', methods=['GET'])
 def view_likes_by_song_id(id):
     song = Song.query.get(id)
@@ -282,8 +305,6 @@ def create_like(id):
     return jsonify(new_like.to_dict()), 201
 
 # delete a like
-
-
 @songs_routes.route('/<int:id>/likes/<int:like_id>/delete', methods=['DELETE'])
 @login_required
 def delete_like(id, like_id):

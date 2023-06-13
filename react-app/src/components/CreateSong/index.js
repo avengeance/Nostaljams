@@ -8,6 +8,8 @@ import "./CreateSong.css";
 import { csrfFetch } from "../../store/csrf";
 import Cookies from "js-cookie";
 
+//need to add a way to also include a song image; if not, use a default image
+
 function CreateSong() {
   const user = useSelector((state) => state.session.user);
 
@@ -129,6 +131,7 @@ function CreateSong() {
       </form>
     </>
   );
+
 }
 
 export default CreateSong;

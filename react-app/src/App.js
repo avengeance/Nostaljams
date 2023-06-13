@@ -3,11 +3,7 @@ import { useDispatch } from "react-redux";
 import { Route, Switch } from "react-router-dom";
 
 import * as sessionActions from "./store/session";
-import * as commentActions from "./store/comments";
-import * as playlistActions from "./store/playlists";
 import * as songActions from "./store/songs";
-import * as likeActions from "./store/likes";
-
 
 import SignupFormPage from "./components/SignupFormPage";
 import LoginFormPage from "./components/LoginFormPage";
@@ -17,8 +13,8 @@ import SongDetail from "./components/SongDetail";
 import CreateSong from "./components/CreateSong";
 import UserSongs from "./components/UserSongs";
 import UserPlaylist from "./components/UserPlaylist";
-import DeleteModal from "./components/DeleteSong";
 import Player from "./components/player/player";
+import EditSong from "./components/EditSong";
 
 function App() {
   const dispatch = useDispatch();
@@ -46,6 +42,9 @@ function App() {
           <Route exact path='/songs/new'>
             <CreateSong />
           </Route>
+          <Route path='/songs/:songId/edit'>
+            <EditSong/>
+          </Route>
           <Route path='/songs/:songId'>
             <SongDetail />
           </Route>
@@ -54,9 +53,6 @@ function App() {
           </Route>
           <Route path='/users/:userId/playlists'>
             <UserPlaylist/>
-          </Route>
-          <Route path='/songs/:songId/delete'>
-            <DeleteModal/>
           </Route>
         </Switch>
       )}

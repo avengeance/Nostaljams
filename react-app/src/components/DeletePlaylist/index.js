@@ -5,28 +5,26 @@ import { useModal } from "../../context/Modal";
 import * as PlaylistActions from "../../store/playlists";
 import "./DeletePlaylist.css";
 
-const DeleteModal = ({ playlistId }) => {
+const DeleteModal = ({ playlistId, userId, closeModal }) => {
     const dispatch = useDispatch();
     const history = useHistory();
-    const modalRef = useRef(null);
-
-    const playlists = useSelector((state) => (state.playlists.playlists.Playlists));
-
-    const { closeModal } = useModal();
-
+    console.log('this is playlsitId', playlistId)
     const deletePlaylist = async () => {
-        if (playlists.length > 0) {
-            const currentPlaylist = playlists.find((playlist) => playlist.id === playlistId)
             await dispatch(PlaylistActions.deletePlaylistThunk(playlistId));
-            history.push('/playlists/current');
-        }
+            closeModal();
+            history.push(`/users/${userId}/playlists`);
     }
 
     function handleNoClick() {
         closeModal()
     }
+
     return (
-        <></>
+        <div className="delete-modal">
+        <h3>Are you sure you want to delete this playlist?</h3>
+        <button onClick={deletePlaylist}>Yes</button>
+        <button onClick={handleNoClick}>No</button>
+        </div>
     )
 }
 

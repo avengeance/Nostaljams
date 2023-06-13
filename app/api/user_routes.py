@@ -62,22 +62,22 @@ def get_user_songs(id):
 #view all playlists by user
 @user_routes.route('/<int:user_id>/playlists', methods=['GET'])
 def view_user_playlists(user_id):
-    
+
     user = User.query.get(user_id)
-    
+
     if (user):
-        
+
         user_playlists = Playlist.query.filter_by(user_id=user_id).all()
         playlists_list = [playlist.to_dict() for playlist in user_playlists]
         return jsonify(playlists_list), 200
-    
+
     else:
         res = {
             "message": "User couldn't be found",
             "statusCode": 404
         }
         return jsonify(res), 404
-    
+
 
 
 #create new playlist
@@ -104,7 +104,7 @@ def create_playlist(id):
     return jsonify(playlist_data), 201
 
 #update playlist
-@user_routes.route('/<int:id>/playlists/<int:playlist_id>', methods=['PUT'])
+@user_routes.route('/<int:id>/playlists/<int:playlist_id>/edit', methods=['PUT'])
 def update_playlist(id, playlist_id):
     playlist = Playlist.query.get(playlist_id)
     if playlist is None:

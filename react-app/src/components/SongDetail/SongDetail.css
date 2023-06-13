@@ -1,3 +1,69 @@
-body{
+body {
     font-family: 'roboto', sans-serif;
+}
+
+span{
+    font-weight: bold;
+    padding: 0;
+}
+
+.song-detail {
+    display: flex;
+    flex-flow: column wrap;
+    /* border: 1px solid black; */
+}
+
+.song-detail-container {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+    /* border: 2px solid orange; */
+}
+
+.song-image {
+    flex: 1;
+    /* border: 2px solid red; */
+}
+
+.song-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    width: 10%;
+    height: 10%;
+    /* border: 2px solid green; */
+}
+
+.song-actions>button {
+    /* display: flex; */
+    /* align-content: center; */
+    background-color: transparent;
+    border: none;
+    border-radius: 30px;
+    width: 30%;
+    height: 40%;
+    box-shadow: 0px 0px 0px 2px #7A7A7A;
+    /* border: 2px solid purple; */
+}
+#song-likes{
+    display: flex;
+    font-weight: bolder;
+    padding: 10px;
+}
+
+.song-info-details {
+    flex: 1;
+    width: 40%;
+    /* border: 2px solid blue; */
+}
+
+.song-description {
+    flex: 1;
+    width: 50%;
+    /* border: 2px solid red; */
+}
+
+.comment-section>h2{
+    border-bottom: 2px solid grey;
 }
