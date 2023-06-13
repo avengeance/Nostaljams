@@ -18,6 +18,8 @@ from .aws import (if_allowed_songs, if_allowed_image,
 songs_routes = Blueprint('songs', __name__)
 
 # view all songs
+
+
 @songs_routes.route('/', methods=['GET'])
 def get_all_songs():
     songs = Song.query.all()
@@ -26,6 +28,8 @@ def get_all_songs():
     }
 
 # view song by song id
+
+
 @songs_routes.route('/<int:id>', methods=['GET'])
 def song_detail(id):
     # Retrieve the song details from the database
@@ -77,7 +81,7 @@ def song_detail(id):
         return jsonify(res), 404
 
 
-#view song by playlist id
+# view song by playlist id
 @songs_routes.route('/<int:songId>/playlist', methods=['GET'])
 def get_song_playlist(songId):
     song = Song.query.get(songId)
@@ -98,18 +102,21 @@ def get_song_playlist(songId):
         'playlistId': playlistId
     }), 200
 
-#create new song
+# create new song
+
+
 @songs_routes.route('/new', methods=['POST'])
 @login_required
 def create_song():
     form = SongForm()
+    print(form)
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
         name = form.name.data
         artists = form.artists.data
         genre = form.genre.data
         description = form.description.data
-        audio_url = form.audio_url
+        audio_url = form.audio_url.data
 
         new_song = Song(
             user_id=current_user.id,
@@ -123,7 +130,7 @@ def create_song():
         db.session.add(new_song)
         db.session.commit()
 
-        image_url = form.image_url
+        image_url = form.img_url.data
         song_id = new_song.id
 
         new_image = SongImage(
@@ -137,7 +144,9 @@ def create_song():
     else:
         return jsonify(form.errors), 400
 
-#upload to AWS
+# upload to AWS
+
+
 @songs_routes.route('/upload', methods=["POST"])
 @login_required
 def upload_file():
@@ -216,6 +225,8 @@ def update_song(id):
         return jsonify(res), 404
 
 # delete a song
+
+
 @songs_routes.route('/<int:id>/delete', methods=['DELETE'])
 @login_required
 def delete_song(id):
@@ -237,7 +248,9 @@ def delete_song(id):
         }
         return jsonify(res), 404
 
-#view comments by Song ID
+# view comments by Song ID
+
+
 @songs_routes.route('/<int:id>/comments', methods=['GET'])
 def view_song_by_comment_id(id):
     song = Song.query.get(id)
@@ -250,6 +263,8 @@ def view_song_by_comment_id(id):
     return jsonify(comment_list), 200
 
 # create new song comment
+
+
 @songs_routes.route('/<int:id>/comments/new', methods=['POST'])
 @login_required
 def new_comment(id):
@@ -259,8 +274,8 @@ def new_comment(id):
         # form['csrf_token'].data = request.cookies['csrf_token']
         # if form.validate_on_submit():
         if request.is_json:
-            data=request.get_json()
-            data = json.loads(data) if isinstance(data,str) else data
+            data = request.get_json()
+            data = json.loads(data) if isinstance(data, str) else data
             comment = Comment(
                 user_id=current_user.id,
                 song_id=id,
@@ -280,6 +295,8 @@ def new_comment(id):
         return jsonify(res), 404
 
 # view likes by song Id
+
+
 @songs_routes.route('/<int:id>/likes', methods=['GET'])
 def view_likes_by_song_id(id):
     song = Song.query.get(id)
@@ -305,6 +322,8 @@ def create_like(id):
     return jsonify(new_like.to_dict()), 201
 
 # delete a like
+
+
 @songs_routes.route('/<int:id>/likes/<int:like_id>/delete', methods=['DELETE'])
 @login_required
 def delete_like(id, like_id):

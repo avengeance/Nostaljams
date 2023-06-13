@@ -36,6 +36,7 @@ function CreateSong() {
     formData.append("image", songImage);
 
     setUploading(true);
+    let upload_data;
 
     try {
       const res = await fetch("/api/songs/upload", {
@@ -44,12 +45,11 @@ function CreateSong() {
       });
 
       if (res.ok) {
-        const upload_data = res.json();
-        console.log(upload_data);
+        upload_data = await res.json();
       }
     } catch (res) {
-      //   const data = await res.json();
-      //   setErrors(res.data.errors);
+      // const data = await res.json();
+      // setErrors(res.data.errors);
     }
 
     const payload = {
@@ -57,27 +57,29 @@ function CreateSong() {
       artists,
       genre,
       description,
+      "audio_url": upload_data.audio_url,
+      "image_url": upload_data.image_url,
     };
 
-    // let newSong;
+    let newSong;
 
-    // try {
-    //   const song = await dispatch(SongActions.createSongThunk(payload));
-    //   const newSongId = song.id;
-    //   const url = `/songs/${newSongId}`;
-    //   if (song) {
-    //     newSong = song;
-    //     setName("");
-    //     setArtists("");
-    //     setGenre("");
-    //     setDescription("");
-    //     setErrors([]);
-    //     history.push(url);
-    //   }
-    // } catch (res) {
-    //   const data = await res.json();
-    //   setErrors(res.data.errors);
-    // }
+    try {
+      const song = await dispatch(SongActions.createSongThunk(payload));
+      const newSongId = song.id;
+      const url = `/songs/${newSongId}`;
+      if (song) {
+        newSong = song;
+        setName("");
+        setArtists("");
+        setGenre("");
+        setDescription("");
+        setErrors([]);
+        history.push(url);
+      }
+    } catch (res) {
+      //   const data = await res.json();
+      //   setErrors(res.data.errors);
+    }
   };
 
   return (
