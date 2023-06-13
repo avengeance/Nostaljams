@@ -42,7 +42,7 @@ const UserPlaylist = () => {
 
     const toggleCreateModal = () => {
         setShowCreateModal((prev) => !prev);
-
+        setRefresh(refresh ? false : true)
     };
 
     const openEditModal = (playlistId) => {
@@ -52,6 +52,7 @@ const UserPlaylist = () => {
 
     const closeEditModal = () => {
         setShowEditModal(false);
+        setRefresh(refresh ? false : true)
     };
 
     return (
@@ -135,7 +136,11 @@ const UserPlaylist = () => {
                 />
         )}
         {showEditModal && (
-            <EditPlaylistModal playlistId={editPlaylistId} closeModal={closeEditModal} />
+            <EditPlaylistModal
+                playlistId={editPlaylistId}
+                closeModal={closeEditModal}
+                setRefresh={setRefresh}
+                />
             )}
         </div>
     );
