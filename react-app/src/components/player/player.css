@@ -1,3 +1,17 @@
+
+.audioPlayer__cont {
+  border: solid;
+  height: 100px;
+  width: 300px;
+}
+
+.audioPlayer__button_album_art {
+  all: unset;
+}
+.audioPlayer__button_album_art:hover{
+  opacity: 1;
+}
+
 /* .audioPlayer__cont{
     border: solid;
     height: 100px;
