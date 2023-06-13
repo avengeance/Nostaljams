@@ -3,10 +3,7 @@ import { useDispatch } from "react-redux";
 import { Route, Switch } from "react-router-dom";
 
 import * as sessionActions from "./store/session";
-import * as commentActions from "./store/comments";
-import * as playlistActions from "./store/playlists";
 import * as songActions from "./store/songs";
-import * as likeActions from "./store/likes";
 
 import SignupFormPage from "./components/SignupFormPage";
 import LoginFormPage from "./components/LoginFormPage";
@@ -16,9 +13,7 @@ import SongDetail from "./components/SongDetail";
 import CreateSong from "./components/CreateSong";
 import UserSongs from "./components/UserSongs";
 import UserPlaylist from "./components/UserPlaylist";
-import DeleteModal from "./components/DeleteSong";
 import EditSong from "./components/EditSong";
-import EditPlaylist from "./components/EditPlaylist";
 
 function App() {
   const dispatch = useDispatch();
