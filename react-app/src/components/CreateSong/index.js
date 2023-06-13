@@ -30,14 +30,14 @@ function CreateSong() {
     e.preventDefault();
 
     const formData = new FormData();
-    formData.append("audio", song);
-    formData.append("image", songImage);
-    formData.append("csrf_token", Cookies.get('csrf_token'))
-    
+    formData["audio"] = song
+    formData["image"] = songImage
+
     setUploading(true);
 
-    
-    const res = await csrfFetch("/api/songs/upload", {
+    console.log(formData)
+
+    const res = await fetch("/api/songs/upload", {
       method: "POST",
       body: formData,
     });
@@ -114,7 +114,7 @@ function CreateSong() {
           <input
             type="file"
             accept="audio/*"
-            onChange={(e) => setSong(e.target.value)}
+            onChange={(e) => setSong(e.target.files[0])}
           />
         </label>
         <label>
@@ -122,7 +122,7 @@ function CreateSong() {
           <input
             type="file"
             accept="image/*"
-            onChange={(e) => setSongImage(e.target.value)}
+            onChange={(e) => setSongImage(e.target.files[0])}
           />
         </label>
         <button>Submit</button>
