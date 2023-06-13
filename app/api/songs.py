@@ -129,7 +129,7 @@ def create_song():
         db.session.add(new_song)
         db.session.commit()
 
-        image_url = form.img_url.data
+        image_url = form.image_url.data
         song_id = new_song.id
         new_image = SongImage(
             song_id=song_id,
@@ -150,19 +150,19 @@ def create_song():
 def upload_file():
     # print(request.files)
     if "audio" not in request.files:
-        return {"errors": "Song required"}, 400
+        return {"Song": "Song required"}, 400
 
     if "image" not in request.files:
-        return {"errors": "Image required"}, 400
+        return {"Image": "Image required"}, 400
 
     song = request.files["audio"]
     image = request.files["image"]
     print(song.filename)
     if not if_allowed_songs(song.filename):
-        return {"errors": "file audio type not supported"}, 400
+        return {"Song": "file audio type not supported"}, 400
 
     if not if_allowed_image(image.filename):
-        return {"errors": "file image type not supported"}, 400
+        return {"Image": "file image type not supported"}, 400
 
     song.filename = file_unique_name(song.filename)
     song_upload = upload_S3(song)

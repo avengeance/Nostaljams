@@ -8,7 +8,7 @@ class SongForm(FlaskForm):
     genre = StringField('genre')
     description = StringField('description')
     audio_url = StringField('audio_url', validators=[DataRequired()])
-    img_url = StringField('img_url')
+    image_url = StringField('img_url')
 
 class EditSongForm(FlaskForm):
     name=StringField("name")

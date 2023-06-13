@@ -28,10 +28,6 @@ function CreateSong() {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  useEffect(() => {
-    console.log("errors", errors);
-  }, [errors]);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrors({});
@@ -47,7 +43,6 @@ function CreateSong() {
     });
 
     const upload_data = await res.json();
-    console.log("upload_data", upload_data);
     if (res.ok) {
       const payload = {
         name,
@@ -59,7 +54,7 @@ function CreateSong() {
       };
       const newSong = await dispatch(SongActions.createSongThunk(payload));
 
-      if (newSong.ok) {
+      if (newSong.id) {
         const newSongId = newSong.id;
         const url = `/songs/${newSongId}`;
         setName("");
@@ -69,9 +64,11 @@ function CreateSong() {
         setErrors([]);
         history.push(url);
       } else {
+        setUploading(false);
         setErrors(newSong);
       }
     } else {
+      setUploading(false);
       setErrors(upload_data);
     }
   };
@@ -79,56 +76,97 @@ function CreateSong() {
   return (
     <>
       <form onSubmit={handleSubmit}>
-        <label>
-          Name
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </label>
-        <label>
-          Artists
-          <input
-            type="text"
-            value={artists}
-            onChange={(e) => setArtists(e.target.value)}
-          />
-        </label>
-        <label>
-          Genre
-          <input
-            type="text"
-            value={genre}
-            onChange={(e) => setGenre(e.target.value)}
-          />
-        </label>
-        <label>
-          Description
-          <input
-            type="text"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-        </label>
-        <label>
-          Song
-          <input
-            type="file"
-            accept="audio/*"
-            onChange={(e) => setSong(e.target.files[0])}
-          />
-        </label>
-        <label>
-          Album Art
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => setSongImage(e.target.files[0])}
-          />
-        </label>
+        <table>
+          <tbody>
+            <tr>
+              <td>
+                <label>Name</label>
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
+              </td>
+            </tr>
+            {errors.artists && (
+              <tr className="errors">
+                <td>{errors.artists[0]}</td>
+              </tr>
+            )}
+            <tr>
+              <td>
+                <label>Artists</label>
+                <input
+                  type="text"
+                  value={artists}
+                  onChange={(e) => setArtists(e.target.value)}
+                />
+              </td>
+            </tr>
+            {errors.name && (
+              <tr className="errors">
+                <td>{errors.name[0]}</td>
+              </tr>
+            )}
+            <tr>
+              <td>
+                <label>Genre</label>
+                <input
+                  type="text"
+                  value={genre}
+                  onChange={(e) => setGenre(e.target.value)}
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label>Description</label>
+                <input
+                  type="text"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label>Song</label>
+                <input
+                  type="file"
+                  accept="audio/*"
+                  onChange={(e) => setSong(e.target.files[0])}
+                />
+              </td>
+            </tr>
+            {errors.Song && (
+              <tr className="errors">
+                <td>{errors.Song}</td>
+              </tr>
+            )}
+            <tr>
+              <td>
+                <label>Album Art</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => setSongImage(e.target.files[0])}
+                />
+              </td>
+            </tr>
+            {errors.Image && (
+              <tr className="errors">
+                <td>{errors.Image}</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
         <button>Submit</button>
       </form>
+      {uploading && (
+        <div>
+          <h3>Please Wait while your Song is uploaded!</h3>
+        </div>
+      )}
     </>
   );
 }

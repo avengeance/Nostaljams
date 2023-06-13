@@ -5,121 +5,179 @@ import * as SongActions from "../../store/songs";
 import "./EditSong.css";
 
 function EditSong() {
-    const { id } = useParams();
-    const user = useSelector((state) => state.session.user);
+  const { id } = useParams();
+  const user = useSelector((state) => state.session.user);
 
-    const [name, setName] = useState("");
-    const [artists, setArtists] = useState("");
-    const [genre, setGenre] = useState("");
-    const [description, setDescription] = useState("");
-    const [audio_url, setAudio_Url] = useState("");
-    const [image_url, setImage_Url] = useState("");
-    const [errors, setErrors] = useState([]);
+  const [name, setName] = useState("");
+  const [artists, setArtists] = useState("");
+  const [genre, setGenre] = useState("");
+  const [description, setDescription] = useState("");
+  const [audio_url, setAudio_Url] = useState("");
+  const [image_url, setImage_Url] = useState("");
+  const [errors, setErrors] = useState([]);
 
-    const dispatch = useDispatch();
-    const history = useHistory();
+  const dispatch = useDispatch();
+  const history = useHistory();
 
-    useEffect(() => {
-        const fetchSong = async () => {
-        const response = await dispatch(SongActions.getSongThunk(id));
-        if (response) {
-            const { name, artists, genre, description, audio_url, image_url } =
-            response;
-            setName(name);
-            setArtists(artists);
-            setGenre(genre);
-            setDescription(description);
-            setAudio_Url(audio_url);
-            setImage_Url(image_url);
-        }
-        };
+  useEffect(() => {
+    const fetchSong = async () => {
+      const response = await dispatch(SongActions.getSongThunk(id));
+      if (response) {
+        const { name, artists, genre, description, audio_url, image_url } =
+          response;
+        setName(name);
+        setArtists(artists);
+        setGenre(genre);
+        setDescription(description);
+        setAudio_Url(audio_url);
+        setImage_Url(image_url);
+      }
+    };
 
-        fetchSong();
-    }, [dispatch, id]);
+    fetchSong();
+  }, [dispatch, id]);
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setErrors({});
 
-        const payload = {
+    const formData = new FormData();
+    formData.append("audio", song);
+    formData.append("image", songImage);
+
+    setUploading(true);
+    const res = await fetch("/api/songs/upload", {
+      method: "POST",
+      body: formData,
+    });
+
+    const upload_data = await res.json();
+    if (res.ok) {
+      const payload = {
         name,
         artists,
         genre,
         description,
-        audio_url,
-        image_url,
-        };
+        audio_url: upload_data.audio_url,
+        image_url: upload_data.image_url,
+      };
+      const newSong = await dispatch(SongActions.createSongThunk(payload));
 
-        try {
-        await dispatch(SongActions.updateSongThunk(id, payload));
-        history.push(`/songs/${id}`);
-        } catch (res) {
-        const data = await res.json();
-        setErrors(data.errors);
-        }
-    };
+      if (newSong.id) {
+        const newSongId = newSong.id;
+        const url = `/songs/${newSongId}`;
+        setName("");
+        setArtists("");
+        setGenre("");
+        setDescription("");
+        setErrors([]);
+        history.push(url);
+      } else {
+        setUploading(false);
+        setErrors(newSong);
+      }
+    } else {
+      setUploading(false);
+      setErrors(upload_data);
+    }
+  };
 
-    return (
-        <div className="edit-song-form-container">
-        <form className="edit-song-form" onSubmit={handleSubmit}>
-            <h2>Edit Song</h2>
-            {errors.length > 0 && (
-            <ul>
-                {errors.map((error, index) => (
-                <li key={index}>{error}</li>
-                ))}
-            </ul>
+  return (
+    <>
+      <form onSubmit={handleSubmit}>
+        <table>
+          <tbody>
+            <tr>
+              <td>
+                <label>Name</label>
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
+              </td>
+            </tr>
+            {errors.artists && (
+              <tr className="errors">
+                <td>{errors.artists[0]}</td>
+              </tr>
             )}
-            <div className="form-field">
-            <label>Name</label>
-            <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-            />
-            </div>
-            <div className="form-field">
-            <label>Artists</label>
-            <input
-                type="text"
-                value={artists}
-                onChange={(e) => setArtists(e.target.value)}
-            />
-            </div>
-            <div className="form-field">
-            <label>Genre</label>
-            <input
-                type="text"
-                value={genre}
-                onChange={(e) => setGenre(e.target.value)}
-            />
-            </div>
-            <div className="form-field">
-            <label>Description</label>
-            <textarea
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-            ></textarea>
-            </div>
-            <div className="form-field">
-            <label>Audio URL</label>
-            <input
-                type="text"
-                value={audio_url}
-                onChange={(e) => setAudio_Url(e.target.value)}
-            />
-            </div>
-            <div className="form-field">
-            <label>Image URL</label>
-            <input
-                type="text"
-                value={image_url}
-                onChange={(e) => setImage_Url(e.target.value)}
-            />
-            </div>
-            <button type="submit">Update</button>
-        </form>
+            <tr>
+              <td>
+                <label>Artists</label>
+                <input
+                  type="text"
+                  value={artists}
+                  onChange={(e) => setArtists(e.target.value)}
+                />
+              </td>
+            </tr>
+            {errors.name && (
+              <tr className="errors">
+                <td>{errors.name[0]}</td>
+              </tr>
+            )}
+            <tr>
+              <td>
+                <label>Genre</label>
+                <input
+                  type="text"
+                  value={genre}
+                  onChange={(e) => setGenre(e.target.value)}
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label>Description</label>
+                <input
+                  type="text"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label>Song</label>
+                <input
+                  type="file"
+                  accept="audio/*"
+                  onChange={(e) => setSong(e.target.files[0])}
+                />
+              </td>
+            </tr>
+            {errors.Song && (
+              <tr className="errors">
+                <td>{errors.Song}</td>
+              </tr>
+            )}
+            <tr>
+              <td>
+                <label>Album Art</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => setSongImage(e.target.files[0])}
+                />
+              </td>
+            </tr>
+            {errors.Image && (
+              <tr className="errors">
+                <td>{errors.Image}</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+        <button>Submit</button>
+      </form>
+      {uploading && (
+        <div>
+          <h3>Please Wait while your Song is uploaded!</h3>
         </div>
-    );
+      )}
+    </>
+  );
 }
 
 export default EditSong;

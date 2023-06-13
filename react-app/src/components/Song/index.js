@@ -1,4 +1,4 @@
-import React, { useEffect} from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import * as SongActions from "../../store/songs";
@@ -23,6 +23,16 @@ function Song() {
   const handlePlay = (songUrl) => {
     // setCurSong(songUrl);
   };
+  const fetchImage = (url) =>
+    fetch(`${url}`, {
+      method: "GET",
+      mode: "cors",
+      cache: "no-store",
+    })
+      .then((response) => response.blob()) // convert to blob
+      .then((blob) => {
+       return URL.createObjectURL(blob);
+      });
 
   return (
     <div className="song-container">
@@ -42,7 +52,10 @@ function Song() {
                 <p className="song-artists">{song.artists}</p>
               </div>
             </div>
-            <button className="play__button" onClick={() => handlePlay(song.url)}></button>
+            <button
+              className="play__button"
+              onClick={() => handlePlay(song.url)}
+            ></button>
           </>
         );
       })}
