@@ -53,9 +53,10 @@ const UserSongs = () => {
             </div>
             </div>
         )}
-        <div className='user-playlist'>
-            <NavLink to={`/users/${user?.id}/playlists`}>Playlists</NavLink>
-        </div>
+        <button className='user-playlist'>
+        <NavLink to={`/users/${user?.id}/playlists`}>Playlists</NavLink>
+        </button>
+
         <div className='song-list'>
             {songs &&
             songs?.UserSongs.map((song, index) => {
@@ -68,16 +69,24 @@ const UserSongs = () => {
                     className='song-info'
                     onClick={() => handleSongClick(songId)}
                     >
-                    <p>{song.name}</p>
                     <img src={imgUrl} alt={song.name} className='song-image' />
-                    <p>{song.artists}</p>
-                    <p>{song.genre}</p>
-                    <p>{song.SongLikesCnt}</p>
+                    <div className='song-info-details'>
+                        <p className='song-name'>{song.name} by</p>
+                        <p className='song-artists'>{song.artists}</p>
+                        <p className='song-genre'>{song.genre}</p>
+                        <p className='song-likes'>{song.SongLikesCnt} Likes</p>
                     </div>
-                    <div className='update-song-button'>
+                    </div>
+
+                    <div className='song-buttons'>
+                        <div className='update-song-button'>
                         <NavLink to={`/songs/${songId}/edit`}>Update Song</NavLink>
+                        </div>
+
+                        <div className='delete-song-button'>
+                            <button onClick={() => toggleDeleteModal(songId)}>Delete</button>
+                        </div>
                     </div>
-                    <button onClick={() => toggleDeleteModal(songId)}>Delete</button>
                     {deleteModalOpen && (
                         <DeleteModal
                             songId={songId}

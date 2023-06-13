@@ -80,55 +80,60 @@ function CreatePlaylistModal({ userId, closeModal }) {
     };
 
     return (
-        <form className="create-playlist-form" onSubmit={handleSubmit}>
-        <h2>Create Playlist</h2>
-        {Object.keys(errors).length > 0 && (
-            <ul className="errors">
-            {Object.values(errors).map((error, index) => (
-                <li key={index}>{error}</li>
-            ))}
-            </ul>
-        )}
-        <div className="form-group">
-            <label htmlFor="name">Name</label>
-            <input
-            type="text"
-            id="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            />
-        </div>
-        <div className="form-group">
-            <label htmlFor="description">Description</label>
-            <textarea
-            id="description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            />
-        </div>
-        <div className="form-group">
-            <label htmlFor="song">Select Song</label>
-            <select
-            id="song"
-            value={selectedSong}
-            onChange={(e) => setSelectedSong(e.target.value)}
-            >
-            <option value="">-- Select a song --</option>
-            {songs.map((song) => (
-                <option key={song.id} value={song.id}>
-                {song.name}
-                </option>
-            ))}
-            </select>
-        </div>
-        <div className="form-group">
-            <button type="submit">Create</button>
-            <button type="button" onClick={closeModal}>
-            Cancel
-            </button>
-        </div>
-        </form>
-    );
+            <div className="create-playlist-modal-overlay">
+            <div className="create-playlist-modal">
+                <form className="create-playlist-form" onSubmit={handleSubmit}>
+                <h2>Create Playlist</h2>
+                {Object.keys(errors).length > 0 && (
+                    <ul className="errors">
+                    {Object.values(errors).map((error, index) => (
+                        <li key={index}>{error}</li>
+                    ))}
+                    </ul>
+                )}
+                <div className="form-group">
+                    <label htmlFor="name">Name</label>
+                    <input
+                    type="text"
+                    id="name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="description">Description</label>
+                    <textarea
+                    id="description"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="song">Select Song</label>
+                    <select
+                    id="song"
+                    value={selectedSong}
+                    onChange={(e) => setSelectedSong(e.target.value)}
+                    >
+                    <option value="">-- Select a song --</option>
+                    {songs.map((song) => (
+                        <option key={song.id} value={song.id}>
+                        {song.name}
+                        </option>
+                    ))}
+                    </select>
+                </div>
+                <div className="form-group">
+                    <button type="submit">Create</button>
+                    <button type="button" onClick={closeModal}>
+                    Cancel
+                    </button>
+                </div>
+                </form>
+            </div>
+            </div>
+        );
+
 }
 
 export default CreatePlaylistModal;
