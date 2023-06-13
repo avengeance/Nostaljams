@@ -48,7 +48,11 @@ def add_song_to_playlist(playlistId):
 
     playlistAddSong = PlaylistSong(song_id=songId, playlist_id=playlistId)
     db.session.add(playlistAddSong)
-    db.session.commit()
+    try:
+        db.session.commit()
+    except Exception as e:
+        print(f"Error committing to the database: {str(e)}")
+
 
     return jsonify(playlistAddSong.to_dict()), 201
 

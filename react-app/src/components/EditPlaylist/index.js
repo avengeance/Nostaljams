@@ -21,6 +21,20 @@ const EditPlaylistModal = ({ playlistId, closeModal }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        const newErrors = {};
+
+        if (!name || name.trim() === "") {
+            newErrors.name = "Name cannot be empty.";
+        }
+        if (!description || description.trim() === "") {
+            newErrors.description = "Description cannot be empty.";
+        }
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+            return; // Return early if there are errors
+        }
+
         const payload = {
         id: playlistId,
         name,
@@ -66,64 +80,70 @@ const EditPlaylistModal = ({ playlistId, closeModal }) => {
         dispatch(SongActions.getAllSongsThunk());
     }, [dispatch, playlistId]);
 
-    return (
+    return(
         <div className="edit-playlist-modal">
-        <form className="edit-playlist-form" onSubmit={handleSubmit}>
-            <h2>Edit Playlist</h2>
-            <div className="form-group">
-            <label htmlFor="name">Name</label>
-            <input
-                type="text"
-                id="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-            />
-            </div>
-            <div className="form-group">
-            <label htmlFor="description">Description</label>
-            <textarea
-                id="description"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-            />
-            </div>
-            <div className="form-group">
-            <button type="submit">Update</button>
-            </div>
-            <div className="form-group">
-            <label htmlFor="songs">Select Songs</label>
-            <select
-                id="songs"
-                value={selectedSongs}
-                onChange={(e) =>
-                setSelectedSongs(
-                    Array.from(e.target.selectedOptions, (option) => option.value)
-                )
-                }
-                multiple
-            >
-                {songs.map((song) => (
-                <option key={song.id} value={song.id}>
-                    {song.name}
-                </option>
-                ))}
-            </select>
-            </div>
-        </form>
-        <div className="browse-songs">
-            <h3>Browse Songs in Playlist</h3>
-            {playlists.user[playlistId].songs.map((song) => (
-                <div key={song.id}>
-                <p>{song.name}</p>
-                <button onClick={() => handleDeleteSong(song.id)}>
-                    Delete Song
-                </button>
+            <form className="edit-playlist-form" onSubmit={handleSubmit}>
+                <h2>Edit Playlist</h2>
+                {Object.keys(errors).length > 0 && (
+                <ul className="errors">
+                    {Object.values(errors).map((error, index) => (
+                    <li key={index}>{error}</li>
+                    ))}
+                </ul>
+                )}
+                <div className="form-group">
+                <label htmlFor="name">Name</label>
+                <input
+                    type="text"
+                    id="name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                />
                 </div>
-            ))}
+                <div className="form-group">
+                <label htmlFor="description">Description</label>
+                <textarea
+                    id="description"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                />
+                </div>
+                <div className="form-group">
+                <button type="submit">Update</button>
+                </div>
+                <div className="form-group">
+                <label htmlFor="songs">Select Songs</label>
+                <select
+                    id="songs"
+                    value={selectedSongs}
+                    onChange={(e) =>
+                    setSelectedSongs(
+                        Array.from(e.target.selectedOptions, (option) => option.value)
+                    )
+                    }
+                    multiple
+                >
+                    {songs.map((song) => (
+                    <option key={song.id} value={song.id}>
+                        {song.name}
+                    </option>
+                    ))}
+                </select>
+                </div>
+            </form>
+            <div className="browse-songs">
+                <h3>Browse Songs in Playlist</h3>
+                {playlists.user[playlistId].songs.map((song) => (
+                <div key={song.id}>
+                    <p>{song.name}</p>
+                    <button onClick={() => handleDeleteSong(song.id)}>
+                    Delete Song
+                    </button>
+                </div>
+                ))}
             </div>
-        </div>
-    );
+            </div>
+        );
 };
 
 export default EditPlaylistModal;
