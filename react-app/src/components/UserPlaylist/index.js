@@ -42,6 +42,7 @@ const UserPlaylist = () => {
 
     const toggleCreateModal = () => {
         setShowCreateModal((prev) => !prev);
+
     };
 
     const openEditModal = (playlistId) => {
@@ -126,8 +127,6 @@ const UserPlaylist = () => {
                 </div>
                 )}
             </div>
-
-      {/* Render the CreatePlaylistModal */}
         {showCreateModal && (
             <CreatePlaylistModal
                 userId={user.id}

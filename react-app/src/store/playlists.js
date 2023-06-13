@@ -157,11 +157,22 @@ const playlistReducer = (state = initialState, action) => {
             });
             return newState;
         case CREATE_PLAYLIST:
-                newState.playlists.user[action.playlist.id] = action.playlist;
-                return newState;
-        case UPDATE_PLAYLIST:
-            newState.playlists.user[action.playlists.id] = action.playlists
+            newState.playlists.user[action.playlist.id] = action.playlist;
             return newState;
+        case UPDATE_PLAYLIST:
+            return {
+                ...newState,
+                playlists: {
+                    ...newState.playlists,
+                    user: {
+                    ...newState.playlists.user,
+                    [action.playlists.id]: action.playlists,
+                    },
+                },
+            };
+        // case UPDATE_PLAYLIST:
+        //     newState.playlists.user[action.playlists.id] = action.playlists
+        //     return newState;
         case DELETE_PLAYLIST:
             const { [action.playlists.id]: deletedPlaylist, ...updatedPlaylists } = newState.playlists;
             newState.playlists = updatedPlaylists;
