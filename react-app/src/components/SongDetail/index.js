@@ -38,7 +38,7 @@ const SongDetail = () => {
     }
 
     dispatch(SongActions.getSongThunk(songId));
-    console.log(currentSong)
+    console.log(currentSong);
   }, [dispatch, songId]);
 
   useEffect(() => {
@@ -78,7 +78,7 @@ const SongDetail = () => {
           <div className="song-detail-container">
             <div className="song-info">
               <button
-              className="audioPlayer__button_album_art"
+                className="audioPlayer__button_album_art"
                 onClick={() => {
                   setCurSong(currentSong.audio_url);
                 }}

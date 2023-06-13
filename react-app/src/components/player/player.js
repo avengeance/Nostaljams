@@ -14,6 +14,11 @@ function Player() {
         autoPlay
         src={curSong}
         onPlay={(e) => console.log("onPlay")}
+        layout={'horizontal-reverse' }
+        showJumpControls={false} 
+        style={{
+          "box-shadow": "unset"
+        }}
       />
       </div>
     </div>
