@@ -28,9 +28,8 @@ const EditPlaylistModal = ({ playlistId, closeModal }) => {
         songs: selectedSongs,
         };
 
-        const data = await dispatch(
-        PlaylistActions.updatePlaylistThunk(user.id, payload)
-        );
+        const data = await dispatch(PlaylistActions.updatePlaylistThunk(user.id, payload));
+
         if (data) {
         const playlistId = data.id;
         if (playlistId && selectedSongs.length > 0) {
@@ -46,13 +45,13 @@ const EditPlaylistModal = ({ playlistId, closeModal }) => {
 
         closeModal();
         }
+    };const handleDeleteSong = async (songId) => {
+        await dispatch(PlaylistActions.deleteSongFromPlaylistThunk(playlistId, songId));
+
+        const updatedSelectedSongs = selectedSongs.filter((id) => id !== songId);
+        setSelectedSongs(updatedSelectedSongs);
     };
 
-    const handleDeleteSong = async (songId) => {
-        await dispatch(
-        PlaylistActions.deleteSongFromPlaylistThunk(playlistId, songId)
-        );
-    };
 
     useEffect(() => {
         const fetchPlaylist = async () => {

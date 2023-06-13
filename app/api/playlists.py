@@ -52,26 +52,28 @@ def add_song_to_playlist(playlistId):
 
     return jsonify(playlistAddSong.to_dict()), 201
 
-@playlist_routes.route('/<int:playlistId>/songs/<int:songId>', methods=['DELETE'])
+#delete song from playlist
+@playlist_routes.route('/<int:playlistId>/songs/<int:songId>/delete', methods=['DELETE'])
 def remove_song_from_playlist(playlistId, songId):
     playlist = Playlist.query.get(playlistId)
+
     if playlist is None:
         return jsonify({
             'Error': 'Playlist not found',
             'status': 404
         }), 404
-
-    playlistDeleteSong = PlaylistSong.query.get(songId)
-    if playlistDeleteSong is None:
+    # playlistDeleteSong = PlaylistSong.query.get(songId)
+    playlistSong = PlaylistSong.query.filter(PlaylistSong.song_id==songId, PlaylistSong.playlist_id==playlistId).first()
+    if playlistSong is None:
         return jsonify({
-            'Error': 'Song not found',
+            'Error': 'Song not found in the playlist',
             'status': 404
         }), 404
 
-    db.session.delete(playlistDeleteSong)
+    db.session.delete(playlistSong)
     db.session.commit()
 
-    return jsonify(playlistDeleteSong.to_dict()), 201
+    return jsonify(playlistSong.to_dict()), 201
 
 
 #create new playlist like
