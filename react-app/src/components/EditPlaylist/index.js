@@ -59,15 +59,19 @@ const EditPlaylistModal = ({ playlistId, closeModal, setRefresh }) => {
         closeModal();
         history.push(url)
     }
-
-    };const handleDeleteSong = async (songId) => {
+    };
+    const handleDeleteSong = async (songId) => {
         await dispatch(PlaylistActions.deleteSongFromPlaylistThunk(playlistId, songId));
 
         const updatedSelectedSongs = selectedSongs.filter((id) => id !== songId);
         setSelectedSongs(updatedSelectedSongs);
         setRefresh((refresh) => !refresh);
+        closeModal();
     };
 
+    const handleCancel = () => {
+        closeModal();
+    };
 
     useEffect(() => {
         const fetchPlaylist = async () => {
@@ -112,6 +116,9 @@ const EditPlaylistModal = ({ playlistId, closeModal, setRefresh }) => {
                 </div>
                 <div className="form-group">
                 <button type="submit">Update</button>
+                <button type="button" onClick={handleCancel}>
+                    Cancel
+                </button>
                 </div>
                 <div className="form-group">
                 <label htmlFor="songs">Select Songs</label>

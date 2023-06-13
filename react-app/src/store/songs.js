@@ -132,7 +132,7 @@ export const getSongsByPlaylistThunk = (playlistId) => async (dispatch) => {
 
 // Reducer
 const initialState = {
-    songs: { user: {} }
+    songs: {}
 };
 
 const songsReducer = (state = initialState, action) => {
@@ -157,7 +157,7 @@ const songsReducer = (state = initialState, action) => {
             newState.songs = updatedSongs;
             return newState;
         case GET_SONGS_BY_USER:
-            // console.log(action.songs.UserSongs);
+            if (!newState.songs.user) newState.songs.user = {}
             action.songs.UserSongs.forEach((song) => {
                 newState.songs.user[song.id] = song
             })
