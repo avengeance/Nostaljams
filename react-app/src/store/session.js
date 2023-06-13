@@ -1,6 +1,7 @@
 // constants
 const SET_USER = "session/SET_USER";
 const REMOVE_USER = "session/REMOVE_USER";
+const CHECK_USERNAME = "session/CHECK_USERNAME";
 
 const setUser = (user) => ({
 	type: SET_USER,
@@ -9,6 +10,11 @@ const setUser = (user) => ({
 
 const removeUser = () => ({
 	type: REMOVE_USER,
+});
+
+const checkUsernameSuccess = (exists) => ({
+	type: CHECK_USERNAME,
+	payload: exists,
 });
 
 const initialState = { user: null };
@@ -67,6 +73,19 @@ export const logout = () => async (dispatch) => {
 	}
 };
 
+export const checkUsername = (username) => async (dispatch) => {
+	try {
+		const response = await fetch(`/api/users/${username}`);
+		if (response.ok) {
+			const data = await response.json();
+			return data.exists;
+		} else {
+			throw new Error("Unable to check username");
+		}
+	} catch (error) {
+		console.error(error);
+	}
+};
 export const signUp = (username, email, firstName, lastName, bio, userImage, password) => async (dispatch) => {
 	const response = await fetch("/api/auth/signup", {
 		method: "POST",
@@ -104,6 +123,8 @@ export default function reducer(state = initialState, action) {
 			return { user: action.payload };
 		case REMOVE_USER:
 			return { user: null };
+		case CHECK_USERNAME:
+			return { ...state, usernameExists: action.payload };
 		default:
 			return state;
 	}

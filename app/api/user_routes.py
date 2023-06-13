@@ -8,7 +8,7 @@ from ..models.comment import Comment
 from ..models.likes import SongLike
 from ..models.user import User
 from ..models.playlist import Playlist
-
+from sqlalchemy import func
 user_routes = Blueprint('users', __name__)
 
 
@@ -21,6 +21,11 @@ def users():
     users = User.query.all()
     return {'users': [user.to_dict() for user in users]}
 
+@user_routes.route('/<username>')
+def check_username(username):
+    user = User.query.filter(func.lower(User.username) == username.lower()).first()
+    exists = True if user else False
+    return {'exists': exists}
 
 @user_routes.route('/<int:id>')
 @login_required
