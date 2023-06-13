@@ -13,7 +13,7 @@ const EditPlaylistModal = ({ playlistId, closeModal }) => {
     const [selectedSongs, setSelectedSongs] = useState([]);
     const [errors, setErrors] = useState({});
 
-    console.log(playlists.user[playlistId].songs);
+    // console.log(playlists.user[playlistId].songs);
 
     useEffect(() => {
         dispatch(SongActions.getAllSongsThunk());
@@ -51,9 +51,9 @@ const EditPlaylistModal = ({ playlistId, closeModal }) => {
             const songPayload = {
                 songId,
             };
-            await dispatch(
-                PlaylistActions.addSongToPlaylistThunk(playlistId, songPayload)
-            );
+            await dispatch(PlaylistActions.addSongToPlaylistThunk(playlistId, songPayload));
+            console.log('this happens')
+            console.log('this happens too')
             }
         }
 
