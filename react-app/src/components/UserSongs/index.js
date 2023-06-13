@@ -14,7 +14,7 @@ const UserSongs = () => {
     const [deleteSongModals, setDeleteSongModals] = useState({});
     const [refresh, setRefresh] = useState(false)
     const history = useHistory();
-    console.log('this is songs', songs)
+    // console.log('this is songs', songs)
     useEffect(() => {
         const getUserSongs = async () => {
         const response = await dispatch(SongActions.getSongsByUserThunk(user.id));
