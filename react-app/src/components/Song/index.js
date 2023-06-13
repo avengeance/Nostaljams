@@ -26,7 +26,9 @@ function Song() {
 
   return (
     <div className="song-container">
+
       {songs.map((song) => {
+        if (!song.imgUrl) { return null }
         const imgUrl =
           song.imgUrl && song.imgUrl.length > 0 ? song.imgUrl[0].imgUrl : null;
         return (
