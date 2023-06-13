@@ -2,7 +2,37 @@ body{
     font-family: 'roboto', sans-serif;
 }
 
-.song-comments{
+/* .song-detail{
     display: flex;
-    border: 2px solid black;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    border: 1px solid black;
 }
+
+.song-detail-container{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    border: 2px solid orange;
+}
+
+.song-image{
+    display: flex;
+    width: 25%;
+    height: 25%;
+    border: 2px solid red;
+}
+
+.song-actions{
+    display: flex;
+    width: 25%;
+    border: 2px solid green;
+}
+
+.song-info-details{
+    display: flex;
+    width: 25%;
+    border: 2px solid blue;
+} */
