@@ -52,15 +52,6 @@ const SongDetail = () => {
       });
 
   }, [dispatch, songId, userId]);
-  // useEffect(() => {
-  //     if (!songId) {
-  //         console.error("No songId");
-  //         return;
-  //     }
-
-  //     dispatch(SongActions.getSongThunk(songId))
-
-  // }, [dispatch, songId]);
 
 
   useEffect(() => {
@@ -97,11 +88,6 @@ const SongDetail = () => {
 
     //   const { curSong, setCurSong } = usePlayer();
 
-
-                setLiked(!!userLike);  // !! turns the value into a boolean
-            });
-
-    }, [dispatch, songId, userId]);
 
     useEffect(() => {
         dispatch(CommentActions.getAllCommentsBySongThunk(songId)).then(
@@ -215,7 +201,7 @@ const SongDetail = () => {
         </div>
     );
 };
-
+}
 
 
 export default SongDetail;
