@@ -44,7 +44,7 @@ function App() {
             <Route exact path="/songs/new">
               <CreateSong />
             </Route>
-            <Route path="/songs/:songId/edit">
+            <Route path="/songs/:id/edit" component={EditSong}>
               <EditSong />
             </Route>
             <Route path="/songs/:songId">
