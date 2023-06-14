@@ -6,7 +6,7 @@ import "./EditSong.css";
 
 function EditSong() {
   const idParam = useParams();
-  const id =idParam.songId
+  const id = idParam.id;
   const user = useSelector((state) => state.session.user);
   const [song, setSong] = useState();
 
@@ -25,13 +25,12 @@ function EditSong() {
 
   const dispatch = useDispatch();
   const history = useHistory();
-  console.log('this is id', id)
+  console.log("this is id", id);
   useEffect(() => {
     const fetchSong = async () => {
       const response = await dispatch(SongActions.getSongThunk(id));
       if (response) {
-        const { name, artists, genre, description } =
-          response;
+        const { name, artists, genre, description } = response;
         setSong(response);
         setNameCur(name);
         setArtistsCur(artists);
@@ -48,28 +47,27 @@ function EditSong() {
     e.preventDefault();
     setErrors({});
 
+    const payload = {
+      id,
+      name,
+      artists,
+      genre,
+      description,
+    };
+    const editSong = await dispatch(SongActions.updateSongThunk(payload));
 
-      const payload = {
-        id,
-        name,
-        artists,
-        genre,
-        description,
-      };
-      const editSong = await dispatch(SongActions.updateSongThunk(payload));
-
-      if (editSong.id) {
-        const editSongId = editSong.id;
-        const url = `/songs/${editSongId}`;
-        setName("");
-        setArtists("");
-        setGenre("");
-        setDescription("");
-        setErrors([]);
-        history.push(url);
-      } else {
-        setErrors(editSong);
-      }
+    if (editSong.id) {
+      const editSongId = editSong.id;
+      const url = `/songs/${editSongId}`;
+      setName("");
+      setArtists("");
+      setGenre("");
+      setDescription("");
+      setErrors([]);
+      history.push(url);
+    } else {
+      setErrors(editSong);
+    }
   };
 
   return (
@@ -137,7 +135,6 @@ function EditSong() {
           <button>Submit</button>
         </form>
       )}
-
     </>
   );
 }
