@@ -7,10 +7,7 @@ import "./EditSong.css";
 function EditSong() {
   const { id } = useParams();
   const user = useSelector((state) => state.session.user);
-
   const [song, setSong] = useState();
-  const [songImage, setSongImage] = useState();
-  const [uploading, setUploading] = useState(false);
 
   const [name, setName] = useState("");
   const [artists, setArtists] = useState("");
@@ -27,12 +24,12 @@ function EditSong() {
 
   const dispatch = useDispatch();
   const history = useHistory();
-
+  console.log('this is id', id)
   useEffect(() => {
     const fetchSong = async () => {
       const response = await dispatch(SongActions.getSongThunk(id));
       if (response) {
-        const { name, artists, genre, description, audio_url, image_url } =
+        const { name, artists, genre, description } =
           response;
         setSong(response);
         setNameCur(name);
@@ -50,31 +47,18 @@ function EditSong() {
     e.preventDefault();
     setErrors({});
 
-    const formData = new FormData();
-    formData.append("audio", song);
-    formData.append("image", songImage);
-
-    setUploading(true);
-    const res = await fetch("/api/songs/upload", {
-      method: "POST",
-      body: formData,
-    });
-
-    const upload_data = await res.json();
-    if (res.ok) {
       const payload = {
+        id,
         name,
         artists,
         genre,
         description,
-        audio_url: upload_data.audio_url,
-        image_url: upload_data.image_url,
       };
-      const newSong = await dispatch(SongActions.createSongThunk(payload));
+      const editSong = await dispatch(SongActions.updateSongThunk(payload));
 
-      if (newSong.id) {
-        const newSongId = newSong.id;
-        const url = `/songs/${newSongId}`;
+      if (editSong.id) {
+        const editSongId = editSong.id;
+        const url = `/songs/${editSongId}`;
         setName("");
         setArtists("");
         setGenre("");
@@ -82,13 +66,8 @@ function EditSong() {
         setErrors([]);
         history.push(url);
       } else {
-        setUploading(false);
-        setErrors(newSong);
+        setErrors(editSong);
       }
-    } else {
-      setUploading(false);
-      setErrors(upload_data);
-    }
   };
 
   return (
@@ -149,45 +128,19 @@ function EditSong() {
                 </td>
               </tr>
               <tr>
-                <td>
-                  <label>Song</label>
-                  <input
-                    type="file"
-                    accept="audio/*"
-                    onChange={(e) => setSong(e.target.files[0])}
-                  />
-                </td>
               </tr>
-              {errors.Song && (
-                <tr className="errors">
-                  <td>{errors.Song}</td>
-                </tr>
-              )}
               <tr>
-                <td>
-                  <label>Album Art</label>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => setSongImage(e.target.files[0])}
-                  />
-                </td>
               </tr>
-              {errors.Image && (
-                <tr className="errors">
-                  <td>{errors.Image}</td>
-                </tr>
-              )}
             </tbody>
           </table>
           <button>Submit</button>
         </form>
       )}
-      {uploading && (
+      {/* {uploading && (
         <div>
           <h3>Please Wait while your Song is uploaded!</h3>
         </div>
-      )}
+      )} */}
     </>
   );
 }

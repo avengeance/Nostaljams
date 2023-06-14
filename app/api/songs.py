@@ -199,15 +199,6 @@ def update_song(id):
             song.artists = form.artists.data
             song.genre = form.genre.data
             song.description = form.description.data
-            song.audio_url = form.audio_url.data
-
-            if form.img_url.data:
-                img = SongImage.query.filter_by(song_id=song.id).first()
-                if img:
-                    img.img_url = form.img_url.data
-                else:
-                    img = SongImage(song_id=song.id, img_url=form.img_url.data)
-                    db.session.add(img)
 
             db.session.commit()
 
@@ -223,8 +214,6 @@ def update_song(id):
         return jsonify(res), 404
 
 # delete a song
-
-
 @songs_routes.route('/<int:id>/delete', methods=['DELETE'])
 @login_required
 def delete_song(id):
