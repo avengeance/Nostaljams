@@ -3,6 +3,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    /* height: 100vh; */
   }
 
   .user-info-header {
@@ -41,6 +42,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding-bottom: 100px;
   }
 
   .no-playlist-message {
