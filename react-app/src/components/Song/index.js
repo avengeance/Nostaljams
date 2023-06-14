@@ -19,17 +19,6 @@ function Song() {
     history.push(`/songs/${songId}`);
   };
 
-  const fetchImage = (url) =>
-    fetch(`${url}`, {
-      method: "GET",
-      mode: "cors",
-      cache: "no-store",
-    })
-      .then((response) => response.blob()) // convert to blob
-      .then((blob) => {
-        return URL.createObjectURL(blob);
-      });
-
   return (
     <div className="song-container">
       {songs.map((song) => {
