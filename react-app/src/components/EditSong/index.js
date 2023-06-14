@@ -5,7 +5,8 @@ import * as SongActions from "../../store/songs";
 import "./EditSong.css";
 
 function EditSong() {
-  const { id } = useParams();
+  const idParam = useParams();
+  const id =idParam.songId
   const user = useSelector((state) => state.session.user);
   const [song, setSong] = useState();
 
@@ -46,6 +47,7 @@ function EditSong() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrors({});
+
 
       const payload = {
         id,
@@ -97,6 +99,7 @@ function EditSong() {
                   <label>Artists</label>
                   <input
                     type="text"
+                    placeholder={artistsCur}
                     value={artists}
                     onChange={(e) => setArtists(e.target.value)}
                   />
@@ -112,6 +115,7 @@ function EditSong() {
                   <label>Genre</label>
                   <input
                     type="text"
+                    placeholder={genreCur}
                     value={genre}
                     onChange={(e) => setGenre(e.target.value)}
                   />
@@ -120,27 +124,20 @@ function EditSong() {
               <tr>
                 <td>
                   <label>Description</label>
-                  <input
-                    type="text"
+                  <textarea
+                    type="textarea"
+                    placeholder={descriptionCur}
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                   />
                 </td>
-              </tr>
-              <tr>
-              </tr>
-              <tr>
               </tr>
             </tbody>
           </table>
           <button>Submit</button>
         </form>
       )}
-      {/* {uploading && (
-        <div>
-          <h3>Please Wait while your Song is uploaded!</h3>
-        </div>
-      )} */}
+
     </>
   );
 }
