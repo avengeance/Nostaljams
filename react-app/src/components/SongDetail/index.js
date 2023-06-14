@@ -16,8 +16,8 @@ import * as CommentActions from "../../store/comments";
 import "./SongDetail.css";
 
 const SongDetail = () => {
-  const { songId } = useParams();
-  const { closeModal } = useModal();
+    const { songId } = useParams();
+    const { closeModal } = useModal();
 
     const { curSong, setCurSong } = usePlayer();
 
@@ -25,11 +25,9 @@ const SongDetail = () => {
     const userId = useSelector((state) => state.session.user?.id);
     const likesBySong = useSelector((state) => state.likes.likesBySong);
 
-
-  const [comments, setComments] = useState([]);
-  const [refreshKey, setRefreshKey] = useState(0);
-  const [liked, setLiked] = useState(false);
-
+    const [comments, setComments] = useState([]);
+    const [refreshKey, setRefreshKey] = useState(0);
+    const [liked, setLiked] = useState(false);
 
         const dispatch = useDispatch();
 
@@ -37,57 +35,20 @@ const SongDetail = () => {
         if (!songId) {
         console.error("No songId");
         return;
-
     }
 
-    dispatch(SongActions.getSongThunk(songId));
-
-    dispatch(LikesActions.getLikesBySongThunk(songId))
-      .then(likes => {
-        const userLike = likes.find(
-          like => like.userId === userId
-        );
-
-        setLiked(!!userLike);
-      });
-
-  }, [dispatch, songId, userId]);
-
-
-  useEffect(() => {
-    dispatch(CommentActions.getAllCommentsBySongThunk(songId))
-      .then((comments) => setComments(comments));
-  }, [dispatch, songId, refreshKey]);
-
-  const handleLike = () => {
-    dispatch(LikesActions.createSongLikeThunk(songId))
-      .then(() => {
-        setLiked(true);
         dispatch(SongActions.getSongThunk(songId));
-        setRefreshKey(refreshKey + 1);
-      });
-  };
 
-  const handleUnlike = () => {
-    const likesObj = Object.values(likesBySong).find(
-      like => like.userId === userId && like.songId === parseInt(songId));
-    if (!likesObj) {
-      console.error('No like found for the current user and song')
-      return
-    }
-    const likeId = likesObj.id
-    dispatch(LikesActions.deleteLikeBySongThunk(songId, likeId))
-      .then(() => {
-        setLiked(false);
-        dispatch(SongActions.getSongThunk(songId));
-        setRefreshKey(refreshKey + 1);
-      })
+        dispatch(LikesActions.getLikesBySongThunk(songId))
+            .then(likes => {
+                const userLike = likes.find(
+                    like => like.userId === userId
+                );
 
-    //   const { songId } = useParams();
-    //   const { closeModal } = useModal();
+                setLiked(!!userLike);  // !! turns the value into a boolean
+            });
 
-    //   const { curSong, setCurSong } = usePlayer();
-
+    }, [dispatch, songId, userId]);
 
     useEffect(() => {
         dispatch(CommentActions.getAllCommentsBySongThunk(songId)).then(
@@ -169,6 +130,10 @@ const SongDetail = () => {
                     buttonText={<i class="fas fa-comment">Add comment</i>}
                     modalComponent={
                         <CreateCommentModal
+                        songId={songId}
+                        onCommentSubmit={() => setRefreshKey(refreshKey + 1)}
+                        refreshKey={refreshKey}
+                        setRefreshKey={setRefreshKey}
                         />
                     }
                     />
@@ -201,7 +166,5 @@ const SongDetail = () => {
         </div>
     );
 };
-}
-
 
 export default SongDetail;
