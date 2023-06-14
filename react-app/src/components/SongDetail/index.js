@@ -16,60 +16,131 @@ import * as CommentActions from "../../store/comments";
 import "./SongDetail.css";
 
 const SongDetail = () => {
-  const { songId } = useParams();
-  const { closeModal } = useModal();
+    const { songId } = useParams();
+    const { closeModal } = useModal();
 
-  const { curSong, setCurSong } = usePlayer();
+    const currentSong = useSelector((state) => state.songs.songs[songId]);
+    const userId = useSelector((state) => state.session.user?.id);
+    const likesBySong = useSelector((state) => state.likes.likesBySong);
 
-  const currentSong = useSelector((state) => state.songs.songs[songId]);
-  const userId = useSelector((state) => state.session.user?.id);
-  const likesBySong = useSelector((state) => state.likes.likesBySong);
+    const [comments, setComments] = useState([]);
+    const [refreshKey, setRefreshKey] = useState(0);
+    const [liked, setLiked] = useState(false);
 
-  const [comments, setComments] = useState([]);
-  const [refreshKey, setRefreshKey] = useState(0);
-  const [liked, setLiked] = useState(false);
+    const dispatch = useDispatch();
+    useEffect(() => {
+        if (!songId) {
+            console.error("No songId");
+            return;
+        }
 
-  const dispatch = useDispatch();
+        dispatch(SongActions.getSongThunk(songId));
 
-  useEffect(() => {
-    if (!songId) {
-      console.error("No songId");
-      return;
-    }
+        dispatch(LikesActions.getLikesBySongThunk(songId))
+            .then(likes => {
+                const userLike = likes.find(
+                    like => like.userId === userId
+                );
 
-    dispatch(SongActions.getSongThunk(songId));
-    console.log(currentSong);
-  }, [dispatch, songId]);
+                setLiked(!!userLike);  
+            });
 
-  useEffect(() => {
-    dispatch(CommentActions.getAllCommentsBySongThunk(songId)).then(
-      (comments) => setComments(comments)
-    );
-  }, [dispatch, songId, refreshKey]);
+    }, [dispatch, songId, userId]);
+    // useEffect(() => {
+    //     if (!songId) {
+    //         console.error("No songId");
+    //         return;
+    //     }
 
-  const handleLike = () => {
-    dispatch(LikesActions.createSongLikeThunk(songId)).then(() => {
-      setLiked(true);
-      dispatch(SongActions.getSongThunk(songId));
-      setRefreshKey(refreshKey + 1);
-    });
-  };
+    //     dispatch(SongActions.getSongThunk(songId))
 
-  const handleUnlike = () => {
-    const likesObj = Object.values(likesBySong).find(
-      (like) => like.userId === userId && like.songId === parseInt(songId)
-    );
-    if (!likesObj) {
-      console.error("No like found for the current user and song");
-      return;
-    }
-    const likeId = likesObj.id;
-    dispatch(LikesActions.deleteLikeBySongThunk(songId, likeId)).then(() => {
-      setLiked(false);
-      dispatch(SongActions.getSongThunk(songId));
-      setRefreshKey(refreshKey + 1);
-    });
-  };
+    // }, [dispatch, songId]);
+
+
+    useEffect(() => {
+        dispatch(CommentActions.getAllCommentsBySongThunk(songId))
+            .then((comments) => setComments(comments));
+    }, [dispatch, songId, refreshKey]);
+
+    const handleLike = () => {
+        dispatch(LikesActions.createSongLikeThunk(songId))
+            .then(() => {
+                setLiked(true);
+                dispatch(SongActions.getSongThunk(songId));
+                setRefreshKey(refreshKey + 1);
+            });
+    };
+
+    const handleUnlike = () => {
+        const likesObj = Object.values(likesBySong).find(
+            like => like.userId === userId && like.songId === parseInt(songId));
+        if (!likesObj) {
+            console.error('No like found for the current user and song')
+            return
+        }
+        const likeId = likesObj.id
+        dispatch(LikesActions.deleteLikeBySongThunk(songId, likeId))
+            .then(() => {
+                setLiked(false);
+                dispatch(SongActions.getSongThunk(songId));
+                setRefreshKey(refreshKey + 1);
+            })
+
+//   const { songId } = useParams();
+//   const { closeModal } = useModal();
+
+//   const { curSong, setCurSong } = usePlayer();
+
+//   const currentSong = useSelector((state) => state.songs.songs[songId]);
+//   const userId = useSelector((state) => state.session.user?.id);
+//   const likesBySong = useSelector((state) => state.likes.likesBySong);
+
+//   const [comments, setComments] = useState([]);
+//   const [refreshKey, setRefreshKey] = useState(0);
+//   const [liked, setLiked] = useState(false);
+
+//   const dispatch = useDispatch();
+
+//   useEffect(() => {
+//     if (!songId) {
+//       console.error("No songId");
+//       return;
+
+//     }
+
+//     dispatch(SongActions.getSongThunk(songId));
+//     console.log(currentSong);
+//   }, [dispatch, songId]);
+
+//   useEffect(() => {
+//     dispatch(CommentActions.getAllCommentsBySongThunk(songId)).then(
+//       (comments) => setComments(comments)
+//     );
+//   }, [dispatch, songId, refreshKey]);
+
+//   const handleLike = () => {
+//     dispatch(LikesActions.createSongLikeThunk(songId)).then(() => {
+//       setLiked(true);
+//       dispatch(SongActions.getSongThunk(songId));
+//       setRefreshKey(refreshKey + 1);
+//     });
+//   };
+
+//   const handleUnlike = () => {
+//     const likesObj = Object.values(likesBySong).find(
+//       (like) => like.userId === userId && like.songId === parseInt(songId)
+//     );
+//     if (!likesObj) {
+//       console.error("No like found for the current user and song");
+//       return;
+//     }
+//     const likeId = likesObj.id;
+//     dispatch(LikesActions.deleteLikeBySongThunk(songId, likeId)).then(() => {
+//       setLiked(false);
+//       dispatch(SongActions.getSongThunk(songId));
+//       setRefreshKey(refreshKey + 1);
+//     });
+//   };
 
   return (
     <div className="song-detail">
