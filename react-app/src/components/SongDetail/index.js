@@ -26,16 +26,33 @@ const SongDetail = () => {
     const [liked, setLiked] = useState(false);
 
     const dispatch = useDispatch();
-
     useEffect(() => {
         if (!songId) {
             console.error("No songId");
             return;
         }
 
-        dispatch(SongActions.getSongThunk(songId))
+        dispatch(SongActions.getSongThunk(songId));
 
-    }, [dispatch, songId]);
+        dispatch(LikesActions.getLikesBySongThunk(songId))
+            .then(likes => {
+                const userLike = likes.find(
+                    like => like.userId === userId
+                );
+
+                setLiked(!!userLike);  // !! turns the value into a boolean
+            });
+
+    }, [dispatch, songId, userId]);
+    // useEffect(() => {
+    //     if (!songId) {
+    //         console.error("No songId");
+    //         return;
+    //     }
+
+    //     dispatch(SongActions.getSongThunk(songId))
+
+    // }, [dispatch, songId]);
 
 
     useEffect(() => {
