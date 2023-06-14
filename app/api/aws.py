@@ -14,6 +14,15 @@ s3 = boto3.client(
     aws_secret_access_key=os.environ.get("S3_SECRET")
 )
 
+# Create IAM client
+iam = boto3.client('iam')
+
+# Get a policy
+response = iam.get_policy(
+    PolicyArn='arn:aws:iam::aws:policy/AWSLambdaExecute'
+)
+print(response['Policy'])
+
 
 def if_allowed_songs(filename):
     return "." in filename and \
