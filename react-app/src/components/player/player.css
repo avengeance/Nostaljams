@@ -1,73 +1,99 @@
+.audioPlayer__cont {
+  border: solid;
+  height: 100px;
+  width: 300px;
+}
+
+.audioPlayer__button_album_art {
+  all: unset;
+}
+.audioPlayer__button_album_art:hover {
+  opacity: 1;
+}
+.rhap_main {
+  width: 800px;
+}
+.rhap_progress-section {
+  width: 700px;
+}
+.rhap_controls-section {
+  width: 100px;
+}
 /* .audioPlayer__cont{
     border: solid;
     height: 100px;
     width: 300px;
-} *//* player.css */
+} */ /* player.css */
 
 .audioPlayer__cont {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
-    background-color: white;
-    color: #fff;
-    padding: 10px;
-    z-index: 9999;
-  }
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 60px;
+  background-color: white;
+  color: #fff;
+  padding: 10px;
+  z-index: 9999;
+}
 
-  .audioPlayer__cont .rhap_container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
+.audioPlayer__cont .rhap_container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 
-  .audioPlayer__cont .rhap_container .rhap_controls {
-    display: flex;
-    align-items: center;
-  }
+.audioPlayer__cont .rhap_container .rhap_controls {
+  display: flex;
+  align-items: center;
+}
 
-  .audioPlayer__cont .rhap_container .rhap_progress-section {
-    flex: 1;
-    margin: 0 10px;
-  }
+.audioPlayer__cont .rhap_container .rhap_progress-section {
+  flex: 1;
+  margin: 0 10px;
+}
 
-  .audioPlayer__cont .rhap_container .rhap_progress-section .rhap_progress-bar {
-    position: relative;
-    height: 4px;
-    background-color: #666;
-  }
+.audioPlayer__cont .rhap_container .rhap_progress-section .rhap_progress-bar {
+  position: relative;
+  height: 4px;
+  background-color: #666;
+}
 
-  .audioPlayer__cont .rhap_container .rhap_progress-section .rhap_progress-bar .rhap_progress-indicator {
-    position: absolute;
-    top: -6px;
-    left: 0;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background-color: #fff;
-    transition: left 0.1s linear;
-  }
+.audioPlayer__cont
+  .rhap_container
+  .rhap_progress-section
+  .rhap_progress-bar
+  .rhap_progress-indicator {
+  position: absolute;
+  top: -6px;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #fff;
+  transition: left 0.1s linear;
+}
 
-  .audioPlayer__cont .rhap_container .rhap_time {
-    font-size: 14px;
-  }
+.audioPlayer__cont .rhap_container .rhap_time {
+  font-size: 14px;
+}
 
-  .audioPlayer__cont .rhap_container .rhap_controls button {
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    margin: 0 5px;
-    color: #fff;
-    outline: none;
-    transition: color 0.1s linear;
-  }
+.audioPlayer__cont .rhap_container .rhap_controls button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  margin: 0 5px;
+  color: #fff;
+  outline: none;
+  transition: color 0.1s linear;
+}
 
-  .audioPlayer__cont .rhap_container .rhap_controls button:hover {
-    color: #ccc;
-  }
+.audioPlayer__cont .rhap_container .rhap_controls button:hover {
+  color: #ccc;
+}
 
-  .audioPlayer-content {
-    display: flex;
-    width: 100%;
-  }
+.audioPlayer-content {
+  display: flex;
+  width: 100%;
+}
