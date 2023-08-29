@@ -55,7 +55,6 @@ export const getAllSongsThunk = () => async (dispatch) => {
     data.Songs.forEach(song => {
         songs[song.id] = song
     })
-    console.log(data)
     dispatch(getAllSongs(data));
     return data
 }
@@ -83,7 +82,6 @@ export const createSongThunk = (song) => async (dispatch) => {
 }
 
 export const updateSongThunk = (song) => async (dispatch) => {
-    console.log('this is from thunk', song.id)
     const res = await csrfFetch(`/api/songs/${song.id}/edit`, {
         method: 'PUT',
         body: JSON.stringify(song),
