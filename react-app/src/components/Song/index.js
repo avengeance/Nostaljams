@@ -19,17 +19,6 @@ function Song() {
     history.push(`/songs/${songId}`);
   };
 
-  const fetchImage = (url) =>
-    fetch(`${url}`, {
-      method: "GET",
-      mode: "cors",
-      cache: "no-store",
-    })
-      .then((response) => response.blob()) // convert to blob
-      .then((blob) => {
-        return URL.createObjectURL(blob);
-      });
-
   return (
     <div className="song-container">
       {songs.map((song) => {
@@ -40,23 +29,33 @@ function Song() {
           song.imgUrl && song.imgUrl.length > 0 ? song.imgUrl[0].imgUrl : null;
         return (
           <>
-            <div
-              key={song.id}
-              className="song-card"
-              onClick={() => handleSongClick(song.id)}
-            >
-              <img src={imgUrl} alt={song.name} className="song-image" />
+            <div key={song.id} className="song-card">
+              <img
+                src={imgUrl}
+                alt={song.name}
+                className="song-image"
+                onClick={() => handleSongClick(song.id)}
+              />
               <div className="song-details">
-                <h3 className="song-name">{song.name}</h3>
-                <p className="song-artists">{song.artists}</p>
+                <div
+                  className="song__details__button"
+                  onClick={() => handleSongClick(song.id)}
+                >
+                  <h3 className="song-name">{song.name}</h3>
+                  <p className="song-artists">{song.artists}</p>
+                </div>
+                <div>
+                  <button
+                    className="play__button"
+                    onClick={() => {
+                      setCurSong(song.audioUrl);
+                    }}
+                  >
+                    <i className="fas fa-play"></i>
+                  </button>
+                </div>
               </div>
             </div>
-            <button
-              className="play__button"
-              onClick={() => {
-                setCurSong(song.audioUrl);
-              }}
-            ></button>
           </>
         );
       })}

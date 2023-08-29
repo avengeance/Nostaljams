@@ -13,7 +13,7 @@ import json
 
 # AWS Helpers
 from .aws import (if_allowed_songs, if_allowed_image,
-                  file_unique_name, upload_S3)
+                  file_unique_name, upload_S3, create_presigned_url)
 
 songs_routes = Blueprint('songs', __name__)
 
@@ -23,6 +23,18 @@ songs_routes = Blueprint('songs', __name__)
 @songs_routes.route('/', methods=['GET'])
 def get_all_songs():
     songs = Song.query.all()
+
+    for song in songs:
+        if song.audio_url:
+            parsed_audio_url = song.audio_url.rsplit("/", 1)[-1]
+            presigned_audio_url = create_presigned_url(parsed_audio_url)
+            song.audio_url = presigned_audio_url
+
+        if song.song_images[0].img_url:
+            parsed_image_url = song.song_images[0].img_url.rsplit("/", 1)[-1]
+            presigned_image_url = create_presigned_url(parsed_image_url)
+            song.song_images[0].img_url = presigned_image_url
+
     return {
         "Songs": [song.to_dict() for song in songs]
     }
@@ -32,6 +44,7 @@ def get_all_songs():
 
 @songs_routes.route('/<int:id>', methods=['GET'])
 def song_detail(id):
+
     # Retrieve the song details from the database
     song = Song.query.get(id)
     # Check if the song exists in the database
@@ -42,6 +55,12 @@ def song_detail(id):
         comments = Comment.query.filter_by(song_id=song.id).all()
         likesId = SongLike.query.filter_by(song_id=song.id).all()
 
+        parsed_image_url = image.img_url.rsplit("/", 1)[-1]
+        presigned_image_url = create_presigned_url(parsed_image_url)
+
+        parsed_audio_url = song.audio_url.rsplit("/", 1)[-1]
+        presigned_audio_url = create_presigned_url(parsed_audio_url)
+
         res = {
             "songId": song.id,
             "userId": song.user_id,
@@ -49,17 +68,10 @@ def song_detail(id):
             "artists": song.artists,
             "genre": song.genre,
             "description": song.description,
-            "SongImage": image.img_url,
-            "audio_url": song.audio_url,
+            "SongImage": presigned_image_url,
+            "audio_url": presigned_audio_url,
             "SongLikesCnt": likes,
             "SongLikes": [like.user_id for like in likesId],
-            # "SongLikes": [
-            #     {
-            #         "likeId": like.id,
-            #         "userId": like.user_id
-            #     }
-            #     for like in likes
-            # ],
             "SongComments": [
                 {
                     "comment": comment.comment,
@@ -148,7 +160,8 @@ def create_song():
 @songs_routes.route('/upload', methods=["POST"])
 @login_required
 def upload_file():
-    # print(request.files)
+    print("Request")
+    print(request.files)
     if "audio" not in request.files:
         return {"Song": "Song required"}, 400
 
@@ -199,15 +212,6 @@ def update_song(id):
             song.artists = form.artists.data
             song.genre = form.genre.data
             song.description = form.description.data
-            song.audio_url = form.audio_url.data
-
-            if form.img_url.data:
-                img = SongImage.query.filter_by(song_id=song.id).first()
-                if img:
-                    img.img_url = form.img_url.data
-                else:
-                    img = SongImage(song_id=song.id, img_url=form.img_url.data)
-                    db.session.add(img)
 
             db.session.commit()
 

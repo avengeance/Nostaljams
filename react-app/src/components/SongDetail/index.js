@@ -144,7 +144,6 @@ const SongDetail = () => {
                         <p>{comment.comment}</p>
                         {userId === comment.userId && (
                         <OpenModalButton
-                            className="delete-comment"
                             buttonText={<i class="fas fa-trash">Delete Comment</i>}
                             modalComponent={
                             <DeleteComment

@@ -11,6 +11,8 @@ from ..models.playlist import Playlist
 from sqlalchemy import func
 user_routes = Blueprint('users', __name__)
 
+# AWS Helpers
+from .aws import (create_presigned_url)
 
 @user_routes.route('/')
 @login_required
