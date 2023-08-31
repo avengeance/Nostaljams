@@ -28,8 +28,8 @@ function Song() {
         const imgUrl =
           song.imgUrl && song.imgUrl.length > 0 ? song.imgUrl[0].imgUrl : null;
         return (
-          <>
-            <div key={song.id} className="song-card">
+          <div key={song.id}>
+            <div  className="song-card">
               <img
                 src={imgUrl}
                 alt={song.name}
@@ -56,7 +56,7 @@ function Song() {
                 </div>
               </div>
             </div>
-          </>
+          </div>
         );
       })}
     </div>

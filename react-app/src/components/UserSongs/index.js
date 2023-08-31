@@ -14,18 +14,15 @@ const UserSongs = () => {
   const [songs, setSongs] = useState(null);
   const [deleteSongModals, setDeleteSongModals] = useState({});
   const [refresh, setRefresh] = useState(false);
-  const [showMenu, setShowMenu] = useState(false);
+  const [setShowMenu] = useState(false);
   const closeMenu = () => setShowMenu(false);
   const history = useHistory();
-  // console.log('this is songs', songs)
-  useEffect(() => {
-    const getUserSongs = async () => {
-      const response = await dispatch(SongActions.getSongsByUserThunk(user.id));
-      setSongs(response);
-    };
 
+  useEffect(() => {
     if (user) {
-      getUserSongs();
+      dispatch(SongActions.getSongsByUserThunk(user.id)).then((res) =>
+        setSongs(res)
+      );
     }
   }, [dispatch, user, refresh]);
 
@@ -90,7 +87,7 @@ const UserSongs = () => {
                       className="logo-link"
                       buttonText="Edit Song"
                       onItemClick={closeMenu}
-                      modalComponent={<EditSongModal />}
+                      modalComponent={<EditSongModal song={song} />}
                     />
                   </div>
 

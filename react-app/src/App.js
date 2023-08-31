@@ -14,7 +14,6 @@ import UserSongs from "./components/UserSongs";
 import UserPlaylist from "./components/UserPlaylist";
 import Player from "./components/player/player";
 import { PlayerProvider } from "../src/context/playerContext";
-import EditSong from "./components/EditSong";
 
 function App() {
   const dispatch = useDispatch();
