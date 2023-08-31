@@ -67,3 +67,7 @@ span{
 .comment-section>h2{
     border-bottom: 2px solid grey;
 }
+
+.delete-comment{
+    background-color: white;
+}

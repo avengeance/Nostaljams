@@ -16,7 +16,6 @@ function CreatePlaylistModal({ userId, closeModal }) {
     const history = useHistory();
     const user = useSelector((state) => state.session.user);
     const songs = useSelector((state) => Object.values(state.songs.songs));
-    console.log('this is userId and user.id', userId, user.id);
     useEffect(() => {
         dispatch(SongActions.getAllSongsThunk());
     }, [dispatch]);

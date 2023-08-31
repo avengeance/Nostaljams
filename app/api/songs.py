@@ -160,6 +160,8 @@ def create_song():
 @songs_routes.route('/upload', methods=["POST"])
 @login_required
 def upload_file():
+    print("Request")
+    print(request.files)
     if "audio" not in request.files:
         return {"Song": "Song required"}, 400
 

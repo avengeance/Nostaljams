@@ -24,7 +24,6 @@ li {
   justify-content: space-evenly;
 }
 
-
 .home-button {
   position: relative;
   display: flex;
@@ -104,8 +103,13 @@ li {
   cursor: pointer;
   outline: none;
 }
+#song-button > a {
+  color: #ffff;
+  text-decoration: none;
+}
 
-#home-button {
+#home-button,
+#song-button {
   padding: 5px 10px;
   background-color: #000000;
   color: white;
@@ -116,6 +120,7 @@ li {
   outline: none;
 }
 
-#home-button:hover{
+#home-button:hover,
+#song-button:hover {
   background-color: #ff5500;
 }

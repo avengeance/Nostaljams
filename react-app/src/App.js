@@ -10,12 +10,10 @@ import LoginFormPage from "./components/LoginFormPage";
 import Navigation from "./components/Navigation";
 import Song from "./components/Song";
 import SongDetail from "./components/SongDetail";
-import CreateSong from "./components/CreateSong";
 import UserSongs from "./components/UserSongs";
 import UserPlaylist from "./components/UserPlaylist";
 import Player from "./components/player/player";
 import { PlayerProvider } from "../src/context/playerContext";
-import EditSong from "./components/EditSong";
 
 function App() {
   const dispatch = useDispatch();
@@ -40,12 +38,6 @@ function App() {
             </Route>
             <Route exact path="/">
               <Song />
-            </Route>
-            <Route exact path="/songs/new">
-              <CreateSong />
-            </Route>
-            <Route path="/songs/:id/edit" component={EditSong}>
-              <EditSong />
             </Route>
             <Route path="/songs/:songId">
               <SongDetail />
