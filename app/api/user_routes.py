@@ -8,9 +8,11 @@ from ..models.comment import Comment
 from ..models.likes import SongLike
 from ..models.user import User
 from ..models.playlist import Playlist
-
+from sqlalchemy import func
 user_routes = Blueprint('users', __name__)
 
+# AWS Helpers
+from .aws import (create_presigned_url)
 
 @user_routes.route('/')
 @login_required
@@ -21,6 +23,11 @@ def users():
     users = User.query.all()
     return {'users': [user.to_dict() for user in users]}
 
+@user_routes.route('/<username>')
+def check_username(username):
+    user = User.query.filter(func.lower(User.username) == username.lower()).first()
+    exists = True if user else False
+    return {'exists': exists}
 
 @user_routes.route('/<int:id>')
 @login_required
@@ -67,14 +74,11 @@ def get_user_songs(id):
 #view all playlists by user
 @user_routes.route('/<int:user_id>/playlists', methods=['GET'])
 def view_user_playlists(user_id):
-    
+
     user = User.query.get(user_id)
-    
+
     if (user):
-<<<<<<< Updated upstream
-        
-=======
->>>>>>> Stashed changes
+
         user_playlists = Playlist.query.filter_by(user_id=user_id).all()
         
         for playlist in user_playlists:
@@ -86,14 +90,14 @@ def view_user_playlists(user_id):
 
         playlists_list = [playlist.to_dict() for playlist in user_playlists]
         return jsonify(playlists_list), 200
-    
+
     else:
         res = {
             "message": "User couldn't be found",
             "statusCode": 404
         }
         return jsonify(res), 404
-    
+
 
 
 #create new playlist
@@ -120,7 +124,7 @@ def create_playlist(id):
     return jsonify(playlist_data), 201
 
 #update playlist
-@user_routes.route('/<int:id>/playlists/<int:playlist_id>', methods=['PUT'])
+@user_routes.route('/<int:id>/playlists/<int:playlist_id>/edit', methods=['PUT'])
 def update_playlist(id, playlist_id):
     playlist = Playlist.query.get(playlist_id)
     if playlist is None:

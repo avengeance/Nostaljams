@@ -1,4 +1,3 @@
-import { bindActionCreators } from 'redux';
 import { csrfFetch } from '../store/csrf';
 
 // Constants
@@ -8,6 +7,7 @@ const CREATE_SONG = 'songs/CREATE_SONG';
 const UPDATE_SONG = 'songs/UPDATE_SONG';
 const DELETE_SONG = 'songs/DELETE_SONG';
 const GET_SONGS_BY_USER = 'songs/GET_SONGS_BY_USER';
+const GET_SONGS_BY_PLAYLIST = 'songs/GET_SONGS_BY_PLAYLIST';
 
 // Actions
 const getAllSongs = (songs) => ({
@@ -40,13 +40,17 @@ const getSongsByUser = (songs) => ({
     songs,
 })
 
+const getSongsByPlaylist = (songs) => ({
+    type: GET_SONGS_BY_PLAYLIST,
+    songs,
+});
+
 // Thunks
 export const getAllSongsThunk = () => async (dispatch) => {
     const res = await csrfFetch('/api/songs', {
         method: 'GET'
     });
     const data = await res.json();
-    // console.log('this is data', data)
     let songs = {}
     data.Songs.forEach(song => {
         songs[song.id] = song
@@ -65,7 +69,7 @@ export const getSongThunk = (songId) => async (dispatch) => {
 }
 
 export const createSongThunk = (song) => async (dispatch) => {
-    const res = await csrfFetch('/api/songs/new', {
+    const res = await fetch('/api/songs/new', {
         method: 'POST',
         body: JSON.stringify(song),
         headers: {
@@ -78,7 +82,7 @@ export const createSongThunk = (song) => async (dispatch) => {
 }
 
 export const updateSongThunk = (song) => async (dispatch) => {
-    const res = await csrfFetch(`/api/songs/${song.id}`, {
+    const res = await csrfFetch(`/api/songs/${song.id}/edit`, {
         method: 'PUT',
         body: JSON.stringify(song),
         headers: {
@@ -107,12 +111,29 @@ export const getSongsByUserThunk = (userId) => async (dispatch) => {
         method: 'GET'
     });
     const data = await res.json();
+    // console.log(data);
     dispatch(getSongsByUser(data));
     return data
 }
 
+export const getSongsByPlaylistThunk = (playlistId) => async (dispatch) => {
+    const res = await csrfFetch(`/api/songs/${playlistId}/playlist`, {
+        method: 'GET',
+    });
+    if (!res.ok) {
+        // Handle error if necessary
+        return;
+    }
+    const data = await res.json();
+    // Dispatch an action to update the state with the fetched songs
+    dispatch(getSongsByPlaylist(data));
+    return data;
+};
+
 // Reducer
-const initialState = { songs: {  } };
+const initialState = {
+    songs: {}
+};
 
 const songsReducer = (state = initialState, action) => {
     let newState = { ...state };
@@ -132,13 +153,19 @@ const songsReducer = (state = initialState, action) => {
             newState.songs[action.songs.id] = action.songs
             return newState;
         case DELETE_SONG:
-            const { [action.song.id]: deletedSong, ...updatedSongs } = newState.songs;
+            const { [action.songs.id]: deletedSong, ...updatedSongs } = newState.songs;
             newState.songs = updatedSongs;
             return newState;
         case GET_SONGS_BY_USER:
+            if (!newState.songs.user) newState.songs.user = {}
             action.songs.UserSongs.forEach((song) => {
                 newState.songs.user[song.id] = song
             })
+            return newState;
+        case GET_SONGS_BY_PLAYLIST:
+            action.songs.forEach((song) => {
+                newState.songs[song.id] = song;
+            });
             return newState;
         default:
             return state;

@@ -3,11 +3,7 @@ import { useDispatch } from "react-redux";
 import { Route, Switch } from "react-router-dom";
 
 import * as sessionActions from "./store/session";
-import * as commentActions from "./store/comments";
-import * as playlistActions from "./store/playlists";
 import * as songActions from "./store/songs";
-import * as likeActions from "./store/likes";
-
 
 import SignupFormPage from "./components/SignupFormPage";
 import LoginFormPage from "./components/LoginFormPage";
@@ -18,6 +14,7 @@ import UserSongs from "./components/UserSongs";
 import UserPlaylist from "./components/UserPlaylist";
 import Player from "./components/player/player";
 import { PlayerProvider } from "../src/context/playerContext";
+import EditSong from "./components/EditSong";
 
 function App() {
   const dispatch = useDispatch();

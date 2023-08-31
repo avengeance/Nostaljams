@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector} from "react-redux";
 import { useModal } from "../../context/Modal";
-import { signUp } from "../../store/session";
+import { signUp, checkUsername } from "../../store/session";
 import "./SignupForm.css";
 
 function SignupFormModal() {
@@ -18,6 +18,7 @@ function SignupFormModal() {
 	const { closeModal } = useModal();
 
 	const [usernameValid, setUsernameValid] = useState(false);
+	const usernameExists = useSelector((state) => state.session.usernameExists);
 
 	const MIN_FIRSTNAME_LENGTH = 2;
 	const MIN_LASTNAME_LENGTH = 2;
@@ -32,12 +33,19 @@ function SignupFormModal() {
 	const validUsername = username.length >= MIN_USERNAME_LENGTH;
 	const validPassword = password.length >= MIN_PASSWORD_LENGTH;
 	const validConfirmPassword = confirmPassword.length >= MIN_CONFIRM_PASSWORD_LENGTH;
+	useEffect(() => {
+		if (username) {
+			dispatch(checkUsername(username)).then((exists) => {
+				setUsernameValid(!exists);
+			});
+			}
+		}, [dispatch, username]);
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		if (password === confirmPassword) {
 			const data = await dispatch(
-				signUp(username, email, firstName, lastName, bio, userImage, password) // Include the password parameter
+				signUp(username.toLowerCase(), email, firstName, lastName, bio, userImage, password) // Include the password parameter
 			);
 			if (data) {
 				setErrors(data);
@@ -50,18 +58,6 @@ function SignupFormModal() {
 			]);
 		}
 	};
-
-
-	async function checkUsername(username) {
-		const response = await fetch(`/api/users/${username}`);
-		const data = await response.json();
-		if (response.status === 200) {
-			setUsernameValid(data.valid);
-		}
-		else {
-			setUsernameValid(false);
-		}
-	}
 
 	return (
 		<div className="signup-modal">
@@ -87,14 +83,26 @@ function SignupFormModal() {
 					<label className="label">
 						Username
 						<input
+						className={`input ${usernameExists ? "invalid" : ""}`}
+						type="text"
+						value={username}
+						onChange={(e) => setUsername(e.target.value)}
+						required
+						/>
+						{usernameExists && (
+						<p className="error-message">Username already exists.</p>
+						)}
+					</label>
+					{/* <label className="label">
+						Username
+						<input
 							className="input"
 							type="text"
 							value={username}
 							onChange={(e) => setUsername(e.target.value)}
 							required
-
 						/>
-					</label>
+					</label> */}
 					<label className="label">
 						First Name
 						<input
@@ -125,20 +133,6 @@ function SignupFormModal() {
 
 						/>
 					</label>
-					{/* <label className="label">
-						User Image
-						<div className="file-input">
-							<input
-								id="user-image"
-								type='file'
-								value={userImage}
-								onChange={(e) => setUserImage(e.target.value)}
-							/>
-							<button type="button" className="choose-file-button">
-								Choose File
-							</button>
-						</div>
-					</label> */}
 					<label className="label">
 						User Image
 					</label>

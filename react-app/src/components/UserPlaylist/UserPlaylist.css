@@ -1,0 +1,151 @@
+.user-playlists-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* height: 100vh; */
+}
+
+.user-info-header {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.user-img {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.user-firstname {
+  margin: 10px 0;
+}
+
+.user-username {
+  color: gray;
+}
+.playlist-item {
+  display: flex;
+  flex-direction: column;
+  background-color: beige;
+  border: solid 3px darkgray;
+  border-radius: 4px;
+  padding: 20px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+.playlist-container {
+  display: flex;
+}
+.playlist-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 100px;
+}
+
+.no-playlist-message {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.create-playlist-button {
+  padding: 5px 10px;
+  background-color: #ff5500;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.playlist-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.playlist-item {
+  margin: 20px;
+}
+
+.playlist-item h3 {
+  margin-bottom: 10px;
+}
+
+.playlist-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.featured-song {
+  display: flex;
+  align-items: center;
+}
+
+.playlist-img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  margin-right: 20px;
+}
+
+.playlist-buttons {
+  display: flex;
+}
+.update-playlist,
+.delete-playlist {
+  margin: 10px;
+  background-color: #ff5500;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+}
+.update-playlist button,
+.delete-playlist button {
+  display: flex;
+  margin: 10px;
+  background-color: transparent;
+  text-decoration: none;
+  color: inherit;
+  border: none;
+}
+.song-list {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin-bottom: 150px;
+}
+
+.song-list li {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.song-list li img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+.song-list li h4,
+.song-list li p {
+  margin: 0;
+}
+
+.form-group {
+  flex-direction: column;
+  margin-bottom: 20px;
+  max-width: 370px;
+}
+
+.form-group button {
+  align-items: center;
+  margin-left: 70px;
+}
+/* Add styles for DeleteModal and EditPlaylistModal components if necessary */

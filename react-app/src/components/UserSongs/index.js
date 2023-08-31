@@ -8,10 +8,6 @@ import DeleteModal from "../DeleteSong";
 import "./UserSongs.css";
 import { NavLink } from "react-router-dom";
 
-// this component also needs:
-    // a modal to delete a song
-    // a link for updating a song
-
 const UserSongs = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.session.user);
@@ -119,4 +115,4 @@ const UserSongs = () => {
   );
 };
 
-export default UserSongs
+export default UserSongs;
