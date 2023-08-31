@@ -1,0 +1,35 @@
+.song__modal {
+  width: 600px;
+  padding: 30px 10px;
+}
+
+.song__modal form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.song__modal form table tbody tr td {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 2px 0px;
+}
+
+.song__modal form table tbody tr td h2 {
+  padding: 10px 0px 0px;
+  margin: 5px;
+}
+
+.song__modal form table tbody tr td label,
+.song__modal form table tbody tr td input {
+  margin: 2px;
+}
+
+.song__modal form button {
+  margin: 25px;
+}
+
+.song__modal__uploading {
+  text-align: center;
+}
