@@ -14,10 +14,14 @@ import LoginFormPage from "./components/LoginFormPage";
 import Navigation from "./components/Navigation";
 import Song from "./components/Song";
 import SongDetail from "./components/SongDetail";
-import CreateSong from "./components/CreateSong";
 import UserSongs from "./components/UserSongs";
 import UserPlaylist from "./components/UserPlaylist";
+<<<<<<< Updated upstream
 import DeleteModal from "./components/DeleteSong";
+=======
+import Player from "./components/player/player";
+import { PlayerProvider } from "../src/context/playerContext";
+>>>>>>> Stashed changes
 
 function App() {
   const dispatch = useDispatch();
@@ -32,6 +36,7 @@ function App() {
     <>
       <Navigation isLoaded={isLoaded} />
       {isLoaded && (
+<<<<<<< Updated upstream
         <Switch>
           <Route path="/login" >
             <LoginFormPage />
@@ -58,6 +63,31 @@ function App() {
             <DeleteModal/>
           </Route>
         </Switch>
+=======
+        <PlayerProvider>
+          <Switch>
+            <Route path="/login">
+              <LoginFormPage />
+            </Route>
+            <Route path="/signup">
+              <SignupFormPage />
+            </Route>
+            <Route exact path="/">
+              <Song />
+            </Route>
+            <Route path="/songs/:songId">
+              <SongDetail />
+            </Route>
+            <Route exact path="/users/:userId/songs">
+              <UserSongs />
+            </Route>
+            <Route path="/users/:userId/playlists">
+              <UserPlaylist />
+            </Route>
+          </Switch>
+          <Player />
+        </PlayerProvider>
+>>>>>>> Stashed changes
       )}
     </>
   );

@@ -5,6 +5,9 @@ from ..models.playlist import Playlist, PlaylistSong
 from flask import Blueprint, redirect, url_for, render_template, jsonify
 from flask_login import login_required, current_user, logout_user
 
+# AWS Helpers
+from .aws import (create_presigned_url)
+
 playlist_routes = Blueprint('playlists', __name__)
 
 #view likes by playlist Id
