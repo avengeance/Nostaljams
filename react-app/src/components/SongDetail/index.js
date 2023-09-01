@@ -12,7 +12,7 @@ import { usePlayer } from "../../context/playerContext";
 import * as SongActions from "../../store/songs";
 import * as LikesActions from "../../store/likes";
 import * as CommentActions from "../../store/comments";
-
+import * as SessionActions from "../../store/session";
 import "./SongDetail.css";
 
 const SongDetail = () => {
@@ -24,7 +24,10 @@ const SongDetail = () => {
     const currentSong = useSelector((state) => state.songs.songs[songId]);
     const userId = useSelector((state) => state.session.user?.id);
     const likesBySong = useSelector((state) => state.likes.likesBySong);
+    const allUsers = useSelector((state) => state.session.allUsers);
+    console.log('allUsers', allUsers);
 
+    const [users, setUsers] = useState({});
     const [comments, setComments] = useState([]);
     const [refreshKey, setRefreshKey] = useState(0);
     const [liked, setLiked] = useState(false);
@@ -35,8 +38,8 @@ const SongDetail = () => {
         if (!songId) {
         console.error("No songId");
         return;
-    }
-
+        }
+        dispatch(SessionActions.fetchAllUsers());
         dispatch(SongActions.getSongThunk(songId));
 
         dispatch(LikesActions.getLikesBySongThunk(songId))
@@ -45,7 +48,7 @@ const SongDetail = () => {
                     like => like.userId === userId
                 );
 
-                setLiked(!!userLike);  // !! turns the value into a boolean
+                setLiked(!!userLike);
             });
 
     }, [dispatch, songId, userId]);
@@ -85,19 +88,21 @@ const SongDetail = () => {
         {currentSong && (
             <div>
             <div className="song-detail-container">
-                <div className="song-info">
-                <button
-                    className="audioPlayer__button_album_art"
-                    onClick={() => {
-                    setCurSong(currentSong.audio_url);
-                    }}
-                >
-                    <img
-                    src={currentSong?.SongImage}
-                    className="song-image"
-                    alt={currentSong?.name || "song-image"}
-                    ></img>
-                </button>
+                <div className="song-info-box">
+                    <div className='song-pic-box'>
+                        <button
+                            className="audioPlayer__button_album_art"
+                            onClick={() => {
+                            setCurSong(currentSong.audio_url);
+                            }}
+                        >
+                        <img
+                        src={currentSong?.SongImage}
+                        className="song-image"
+                        alt={currentSong?.name || "song-image"}
+                        ></img>
+                    </button>
+                </div>
                 <div className="song-actions">
                     <p id="song-likes">{currentSong.SongLikesCnt}</p>
                     {!liked && (
@@ -138,28 +143,37 @@ const SongDetail = () => {
                     }
                     />
                 )}
+                </div>
                 <div className="song-comments">
                     {comments.map((comment, index) => (
-                    <div key={index}>
-                        <p>{comment.comment}</p>
+                    <div key={index} className="song-comments-contents">
+                        <div className='comment-user-img'>
+                            <img src={allUsers?.[comment.userId]?.userImg?.[0]?.imgUrl} alt={allUsers?.[comment.userId]?.username || 'Anonymous'} />
+                        </div>
+                        <p>
+                            <strong>{allUsers?.[comment.userId]?.username || "Anonymous"}</strong> {comment.comment}
+                        </p>
                         {userId === comment.userId && (
-                        <OpenModalButton
-                            buttonText={<i class="fas fa-trash">Delete Comment</i>}
-                            modalComponent={
-                            <DeleteComment
-                                songId={songId}
-                                commentId={comment.id}
-                                closeModal={closeModal}
-                                refreshKey={refreshKey}
-                                setRefreshKey={setRefreshKey}
+                        <div className='delete-comment'>
+                            <OpenModalButton
+                                className='delete-comment-button'
+                                buttonText={<i class="fas fa-trash">Delete Comment</i>}
+                                modalComponent={
+                                <DeleteComment
+                                    songId={songId}
+                                    commentId={comment.id}
+                                    closeModal={closeModal}
+                                    refreshKey={refreshKey}
+                                    setRefreshKey={setRefreshKey}
+                                />
+                                }
                             />
-                            }
-                        />
+                        </div>
                         )}
                     </div>
                     ))}
                 </div>
-                </div>
+
             </div>
             </div>
         )}
