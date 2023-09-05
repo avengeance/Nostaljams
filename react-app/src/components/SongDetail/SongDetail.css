@@ -89,11 +89,17 @@ span{
 .song-comments-contents {
     display: flex;
     align-items: flex-start;
+    flex-direction: row;
     margin-bottom: 20px;
     width: 100%;
     padding: 10px;
     background-color: #f8f8f8;
     border-radius: 5px;
+}
+
+.comments-user-box {
+    display: flex;
+    flex-direction: column;
 }
 
 .comment-button button,

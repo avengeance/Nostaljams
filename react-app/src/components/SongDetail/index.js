@@ -147,12 +147,18 @@ const SongDetail = () => {
                 <div className="song-comments">
                     {comments.map((comment, index) => (
                     <div key={index} className="song-comments-contents">
-                        <div className='comment-user-img'>
-                            <img src={allUsers?.[comment.userId]?.userImg?.[0]?.imgUrl} alt={allUsers?.[comment.userId]?.username || 'Anonymous'} />
-                        </div>
-                        <p>
-                            <strong>{allUsers?.[comment.userId]?.username || "Anonymous"}</strong> {comment.comment}
-                        </p>
+
+                            <div className='comment-user-img'>
+                                <img src={allUsers?.[comment.userId]?.userImg?.[0]?.imgUrl} alt={allUsers?.[comment.userId]?.username || 'Anonymous'} />
+                            </div>
+                            <div className='comments-user-box'>
+                                <p className='user-comment-name'>
+                                    <strong>{allUsers?.[comment.userId]?.username || "Anonymous"}</strong>
+                                </p>
+                                <p className='user-comment-p'>
+                                {comment.comment}
+                                </p>
+                            </div>
                         {userId === comment.userId && (
                         <div className='delete-comment'>
                             <OpenModalButton

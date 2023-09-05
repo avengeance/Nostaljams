@@ -32,25 +32,29 @@ function CreateCommentModal({ songId, onCommentSubmit }) {
     }
 
     return (
-        <>
-            <div className="create-comment-modal">
-                <h1 id='login-text'>Comment</h1>
-                <form onSubmit={handleSubmit}>
-                    <div className="create-comment-form">
-                        <label id='username-email'>
-                            <textarea
-                                value={comment}
-                                onChange={(e) => setComment(e.target.value)}
-                                rows={2}
-                                required
-                                placeholder="Comment"
-                            ></textarea>
-                            <button type='submit'>Submit</button>
-                        </label>
-                    </div>
-                </form>
+        <div className='create-comment-modal'>
+            <div className="create-comment-bg">
+                <div className='create-comment-contents'>
+                    <h1 id='login-text'>Comment</h1>
+                    <form onSubmit={handleSubmit}>
+                        <div className="create-comment-form">
+                            <label className='comment-label'>
+                                <div className='comment-input'>
+                                    <textarea
+                                        value={comment}
+                                        onChange={(e) => setComment(e.target.value)}
+                                        rows={2}
+                                        required
+                                        placeholder="Type a comment..."
+                                    ></textarea>
+                                </div>
+                                <button type='submit' className='submit-comment-button'>Submit</button>
+                            </label>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </>
+        </div>
     )
 }
 
