@@ -20,7 +20,7 @@ soundcloudClone is a fullstack app that utilizes AWS to upload/store user songs 
 | CSS             | Cascading Style Sheets            |
 | Python          | Programming Language              |
 | Flask           | Python backend framework          |
-| AWS             | Amazon Web Storage                |
+| AWS             | Amazon Web Services               |
 | React           | User Interface                    |
 | Redux           | Managing application state        |
 | PostgreSQL      | Relational Database Management    |
@@ -50,6 +50,7 @@ soundcloudClone is a fullstack app that utilizes AWS to upload/store user songs 
    cd react-app
    npm start
    ```
+
 
 
 
