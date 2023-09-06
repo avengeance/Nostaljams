@@ -30,6 +30,7 @@ body {
     display: flex;
     justify-content: center;
     flex-direction: row;
+
 }
 
 
@@ -47,6 +48,7 @@ body {
 .delete-button {
     background-color: #f44336;
     color: white;
+    margin-left: 10px;
 }
 
 .cancel-button {

@@ -105,17 +105,19 @@ const UserPlaylist = () => {
                         )}
                         <ul className="song-list">
                             {/* Render the remaining songs */}
-                            {playlist.songs.slice(1, 3).map((song) => (
-                            <li key={song.id}>
-                                <Link to={`/songs/${song?.id}`}>
-                                <img src={song.imgUrl[0]?.imgUrl} alt="Song Cover" />
-                                </Link>
-                                <div>
-                                <h4>{song.name}</h4>
-                                <p>{song.artists}</p>
-                                </div>
-                            </li>
-                            ))}
+                            <div className='rest-of-songs'>
+                                {playlist.songs.slice(1, 5).map((song) => (
+                                <li key={song.id}>
+                                    <Link to={`/songs/${song?.id}`}>
+                                    <img src={song.imgUrl[0]?.imgUrl} alt="Song Cover" />
+                                    </Link>
+                                    <div>
+                                    <h4>{song.name}</h4>
+                                    <p>{song.artists}</p>
+                                    </div>
+                                </li>
+                                ))}
+                            </div>
                             <div className="playlist-buttons">
                             <div className="update-playlist">
                                 <button className="update-button" onClick={() => openEditModal(playlist.id)}>
@@ -123,7 +125,7 @@ const UserPlaylist = () => {
                                 </button>
                             </div>
                             <div className="delete-playlist">
-                                <button onClick={() => toggleDeleteModal(playlist.id)}>Delete</button>
+                                <button className='delete-playlist-button'onClick={() => toggleDeleteModal(playlist.id)}>Delete</button>
                             </div>
                             </div>
                             {deletePlaylistModals[playlist.id] && (

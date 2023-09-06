@@ -21,7 +21,12 @@
     border-radius: 5px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
-
+.create-comment-contents #login-text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 60px;
+}
 .submit-comment-button {
     border: solid 1px black;
     border-radius: 5px;
@@ -31,7 +36,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-left: 20px;
+    margin-left: 100px;
     cursor: pointer;
     outline: none;
     border-radius: 5px;
@@ -55,4 +60,8 @@
 .create-label {
     display: flex;
     flex-direction: column;
+}
+
+.error-message {
+    color: red;
 }
