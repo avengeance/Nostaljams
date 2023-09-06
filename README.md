@@ -1,3 +1,84 @@
+# soundcloudClone
+
+### Live Link below:
+- [soundCloudClone](https://soundcloudclone.onrender.com)
+
+### What is soundcloudClone?
+soundcloudClone is a fullstack app that utilizes AWS to upload/store user songs and playlists and allows for users to listen to songs real-time through an audio player.
+
+### Table Of Contents:
+
+- [API Docs](https://github.com/avengeance/soundcloudClone/wiki/API-Docs)
+- [Database Schema](https://github.com/avengeance/soundcloudClone/wiki/DB-Schema)
+- [MVP List](https://github.com/avengeance/soundcloudClone/wiki/MVP-List)
+- [User Stories](https://github.com/avengeance/soundcloudClone/wiki/User-Stories)
+
+### Technologies Utilized:
+| Technology      | Description                       |
+|:---------------:|:---------------------------------:|
+| HTML            | HyperText Markup Language         |
+| CSS             | Cascading Style Sheets            |
+| Python          | Programming Language              |
+| Flask           | Python backend framework          |
+| AWS             | Amazon Web Storage                |
+| React           | User Interface                    |
+| Redux           | Managing application state        |
+| PostgreSQL      | Relational Database Management    |
+| SQLAlchemy      | ORM                               |
+| Git             | Version Control System            |
+| Render          | Deployment                        |
+
+### Getting Started
+   In order to run this app locally, there are a couple of steps to take:
+   
+   1. Clone the app repository on your local machine:
+   ```bash
+   git clone git@github.com:avengeance/soundcloudClone.git
+   ```
+   2. Navigate to the root directory of the app and install dependencies:
+   ```bash
+   cd soundcloudClone
+   pip install -r requirements.txt
+   ```
+   3. Activate the virtual environment and start the backend server
+   ```bash
+   pipenv shell
+   flask run
+   ```
+   5. Open another terminal and navigate to the react app to start the frontend app
+   ```bash
+   cd react-app
+   npm start
+   ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
 # Flask React Project
 
 This is the starter for the Flask React project.
@@ -146,3 +227,4 @@ your site just below the name of the Web Service at the top of the page.
 
 [Render.com]: https://render.com/
 [Dashboard]: https://dashboard.render.com/# soundcloudClone
+--!>
