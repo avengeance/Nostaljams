@@ -15,7 +15,6 @@ user_routes = Blueprint('users', __name__)
 from .aws import (create_presigned_url)
 
 @user_routes.route('/')
-@login_required
 def users():
     """
     Query for all users and returns them in a list of user dictionaries
@@ -80,7 +79,7 @@ def view_user_playlists(user_id):
     if (user):
 
         user_playlists = Playlist.query.filter_by(user_id=user_id).all()
-        
+
         for playlist in user_playlists:
             for song in playlist.songs:
                 if(song):

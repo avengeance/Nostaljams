@@ -21,9 +21,13 @@ const DeleteComment = ({ songId, commentId, refreshKey, setRefreshKey }) => {
     }
     return (
         <div className="delete-modal">
-            <h3>Are you sure you want to delete this comment?</h3>
-            <button onClick={deleteComment}>Yes</button>
-            <button onClick={handleNoClick}>No</button>
+            <div className='delete-modal-contents'>
+                <h3 className='delete-modal-h3'>Are you sure you want to delete this comment?</h3>
+                <div className='delete-modal-buttons'>
+                    <button className='delete-button' onClick={deleteComment}>Yes</button>
+                    <button className='cancel-button' onClick={handleNoClick}>No</button>
+                </div>
+            </div>
         </div>
     )
 }

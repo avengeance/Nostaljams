@@ -28,9 +28,9 @@
 .playlist-item {
   display: flex;
   flex-direction: column;
-  background-color: beige;
+  background-color: #FAFAFA(250, 121, 0);
   border: solid 3px darkgray;
-  border-radius: 4px;
+  border-radius: 10px;
   padding: 20px;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -67,6 +67,10 @@
 
 .playlist-item {
   margin: 20px;
+  min-width: 700px;
+  max-height: 400px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.2);
+
 }
 
 .playlist-item h3 {
@@ -77,11 +81,40 @@
   display: flex;
   align-items: center;
   margin-bottom: 20px;
+  max-height: 300px;
+  justify-content: space-between;
 }
 
 .featured-song {
   display: flex;
   align-items: center;
+  margin: 5px;
+  border: solid 1px black;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  width: 45%;
+  display: flex;
+  justify-content: flex-start;
+  padding: 5px;
+}
+
+.rest-of-songs {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  margin-right: 20px;
+}
+
+.rest-of-songs li {
+  margin: 5px;
+  border: solid 1px black;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  width: 95%;
+  display: flex;
+  justify-content: flex-start;
+  padding: 5px;
 }
 
 .playlist-img {
@@ -93,6 +126,7 @@
 
 .playlist-buttons {
   display: flex;
+  flex-direction: column;
 }
 .update-playlist,
 .delete-playlist {
@@ -103,6 +137,8 @@
   border-radius: 4px;
   font-size: 14px;
   cursor: pointer;
+  align-items: center;
+  justify-content: center;
 }
 .update-playlist button,
 .delete-playlist button {
@@ -112,12 +148,22 @@
   text-decoration: none;
   color: inherit;
   border: none;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+}
+.delete-playlist {
+  display: flex;
+}
+.delete-playlist-button {
+  height: 20px;
+  justify-content: center;
 }
 .song-list {
   display: flex;
   list-style: none;
   padding: 0;
-  margin-bottom: 150px;
+  margin-bottom: 50px;
 }
 
 .song-list li {
@@ -148,4 +194,3 @@
   align-items: center;
   margin-left: 70px;
 }
-/* Add styles for DeleteModal and EditPlaylistModal components if necessary */
