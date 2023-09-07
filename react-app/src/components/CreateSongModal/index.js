@@ -98,7 +98,7 @@ function CreateSongModal() {
             )}
             <tr>
               <td>
-                <label>Artists</label>
+                <label>Artist</label>
                 <input
                   type="text"
                   placeholder="Who made your Song?"
@@ -136,12 +136,11 @@ function CreateSongModal() {
             </tr>
             <tr>
               <td>
-                <h2>Upload your Audio file below!</h2>
+                <h2>Upload your Audio file!</h2>
               </td>
             </tr>
             <tr>
               <td>
-                <label>Song</label>
                 <input
                   type="file"
                   accept="audio/*"
@@ -156,12 +155,11 @@ function CreateSongModal() {
             )}
             <tr>
               <td>
-                <h2>Upload your Ablum Art below!</h2>
+                <h2>Upload your Album Art!</h2>
               </td>
             </tr>
             <tr>
               <td>
-                <label>Album Art</label>
                 <input
                   type="file"
                   accept="image/*"
