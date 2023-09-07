@@ -32,6 +32,10 @@ li {
   width: 100%;
 }
 
+#home-button {
+  background-color: white;
+}
+
 .navigation-header {
   display: flex;
   flex-direction: column;
@@ -111,7 +115,7 @@ li {
 #home-button,
 #song-button {
   padding: 5px 10px;
-  background-color: #000000;
+  /* background-color: #000000; */
   color: white;
   border: none;
   border-radius: 4px;
@@ -120,7 +124,11 @@ li {
   outline: none;
 }
 
-#home-button:hover,
-#song-button:hover {
-  background-color: #ff5500;
+#home-button:hover {
+  background-color: #ff550077;
 }
+
+
+/* #song-button:hover {
+  background-color: #ff550077;
+} */
