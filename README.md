@@ -20,7 +20,7 @@ soundcloudClone is a fullstack app that utilizes AWS to upload/store user songs 
 | CSS             | Cascading Style Sheets            |
 | Python          | Programming Language              |
 | Flask           | Python backend framework          |
-| AWS             | Amazon Web Storage                |
+| AWS             | Amazon Web Services               |
 | React           | User Interface                    |
 | Redux           | Managing application state        |
 | PostgreSQL      | Relational Database Management    |
@@ -100,6 +100,7 @@ soundcloudClone is a fullstack app that utilizes AWS to upload/store user songs 
    - In the comments section, press a Delete Comment for a specific comment
    - Press the Yes button to delete the comment
    - Press the No button to go back to the song page
+
 
 
 
