@@ -51,8 +51,55 @@ soundcloudClone is a fullstack app that utilizes AWS to upload/store user songs 
    npm start
    ```
 
+## Navigating Through the Site
 
+### Creating a Song
+   - Press the Create Song button to open the song creation popup
+   - Provide a name, artist, genre, and description for your song
+   - Upload your audio file and album art using the choose file buttons
+   - Press the Upload button to create your song
 
+### View Song Details
+   - Press the Name or Album Image for a song to navigate to the Song Details
+
+### Editing a Song
+   - Navigate to the user page and press the Edit Song button
+   - Provide an updated name, artist, genre, and description for your song
+   - Press the Submit button to save your updated changes
+
+### Deleting a Song
+   - Navigate to the user page and press the Delete button
+   - Press the Yes button to delete the song
+   - Press the No button to go back to the user page
+
+### Creating a Playlist
+   - Press the Playlists button to navigate to the User Playlists page
+   - Press the Make a Playlist button to open the playlist creation popup
+   - Provide a name and a description for your playlist
+   - Under the Select Song dropdown, pick a song to start off your playlist
+   - Press the Create button to create your playlist
+
+### Editing a Playlist (Add/Remove Songs from Playlist)
+   - Press the Update Playlist button inside the playlist
+   - Provide an updated name or description for your playlist
+   - Select any songs to add to your playlist through the Select Songs dropdown
+   - Under the Browse Songs section, you may remove songs from the playlist by pressing the Delete Song button
+   - Press the Update button to save your changes
+
+### Deleting a Playlist
+   - Press the Delete button inside the playlist
+   - Press the Yes button to delete the playlist
+   - Press the No button to go back to the user playlist page
+
+### Creating a Comment
+   - In the song details section, press the Add Comment button
+   - Type your comment under the text section
+   - Press Submit to create a song comment
+
+### Delete a Comment
+   - In the comments section, press a Delete Comment for a specific comment
+   - Press the Yes button to delete the comment
+   - Press the No button to go back to the song page
 
 
 
