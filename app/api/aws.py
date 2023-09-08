@@ -3,6 +3,11 @@ import botocore
 import os
 import uuid
 
+import logging
+
+from botocore.exceptions import ClientError
+
+
 BUCKET_NAME = os.environ.get("S3_BUCKET")
 S3_LOCATION = f"https://{BUCKET_NAME}.s3.amazonaws.com/"
 ALLOWED_EXTENSIONS_SONGS = {'mp3'}
@@ -46,3 +51,17 @@ def upload_S3(file, acl="private"):
         return {"errors": str(e)}
 
     return {"url": f"{S3_LOCATION}{file.filename}"}
+
+
+def create_presigned_url(object_name, bucket_name=BUCKET_NAME, expiration=3600):
+    try:
+        response = s3.generate_presigned_url('get_object',
+                                             Params={
+                                                 'Bucket': bucket_name,
+                                                 'Key': object_name},
+                                             ExpiresIn=expiration)
+    except ClientError as e:
+        logging.error(e)
+        return None
+
+    return response

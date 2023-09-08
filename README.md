@@ -1,3 +1,132 @@
+# soundcloudClone
+
+### Live Link below:
+- [soundCloudClone](https://soundcloudclone.onrender.com)
+
+### What is soundcloudClone?
+soundcloudClone is a fullstack app that utilizes AWS to upload/store user songs and playlists and allows for users to listen to songs real-time through an audio player.
+
+### Table Of Contents:
+
+- [API Docs](https://github.com/avengeance/soundcloudClone/wiki/API-Docs)
+- [Database Schema](https://github.com/avengeance/soundcloudClone/wiki/DB-Schema)
+- [MVP List](https://github.com/avengeance/soundcloudClone/wiki/MVP-List)
+- [User Stories](https://github.com/avengeance/soundcloudClone/wiki/User-Stories)
+
+### Technologies Utilized:
+| Technology      | Description                       |
+|:---------------:|:---------------------------------:|
+| HTML            | HyperText Markup Language         |
+| CSS             | Cascading Style Sheets            |
+| Python          | Programming Language              |
+| Flask           | Python backend framework          |
+| AWS             | Amazon Web Services               |
+| React           | User Interface                    |
+| Redux           | Managing application state        |
+| PostgreSQL      | Relational Database Management    |
+| SQLAlchemy      | ORM                               |
+| Git             | Version Control System            |
+| Render          | Deployment                        |
+
+### Getting Started
+   In order to run this app locally, there are a couple of steps to take:
+   
+   1. Clone the app repository on your local machine:
+   ```bash
+   git clone git@github.com:avengeance/soundcloudClone.git
+   ```
+   2. Navigate to the root directory of the app and install dependencies:
+   ```bash
+   cd soundcloudClone
+   pip install -r requirements.txt
+   ```
+   3. Activate the virtual environment and start the backend server
+   ```bash
+   pipenv shell
+   flask run
+   ```
+   5. Open another terminal and navigate to the react app to start the frontend app
+   ```bash
+   cd react-app
+   npm start
+   ```
+
+## Navigating Through the Site
+
+### Creating a Song
+   - Press the Create Song button to open the song creation popup
+   - Provide a name, artist, genre, and description for your song
+   - Upload your audio file and album art using the choose file buttons
+   - Press the Upload button to create your song
+
+### View Song Details
+   - Press the Name or Album Image for a song to navigate to the Song Details
+
+### Editing a Song
+   - Navigate to the user page and press the Edit Song button
+   - Provide an updated name, artist, genre, and description for your song
+   - Press the Submit button to save your updated changes
+
+### Deleting a Song
+   - Navigate to the user page and press the Delete button
+   - Press the Yes button to delete the song
+   - Press the No button to go back to the user page
+
+### Creating a Playlist
+   - Press the Playlists button to navigate to the User Playlists page
+   - Press the Make a Playlist button to open the playlist creation popup
+   - Provide a name and a description for your playlist
+   - Under the Select Song dropdown, pick a song to start off your playlist
+   - Press the Create button to create your playlist
+
+### Editing a Playlist (Add/Remove Songs from Playlist)
+   - Press the Update Playlist button inside the playlist
+   - Provide an updated name or description for your playlist
+   - Select any songs to add to your playlist through the Select Songs dropdown
+   - Under the Browse Songs section, you may remove songs from the playlist by pressing the Delete Song button
+   - Press the Update button to save your changes
+
+### Deleting a Playlist
+   - Press the Delete button inside the playlist
+   - Press the Yes button to delete the playlist
+   - Press the No button to go back to the user playlist page
+
+### Creating a Comment
+   - In the song details section, press the Add Comment button
+   - Type your comment under the text section
+   - Press Submit to create a song comment
+
+### Delete a Comment
+   - In the comments section, press a Delete Comment for a specific comment
+   - Press the Yes button to delete the comment
+   - Press the No button to go back to the song page
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
 # Flask React Project
 
 This is the starter for the Flask React project.
@@ -146,3 +275,4 @@ your site just below the name of the Web Service at the top of the page.
 
 [Render.com]: https://render.com/
 [Dashboard]: https://dashboard.render.com/# soundcloudClone
+--!>

@@ -11,9 +11,10 @@ from ..models.playlist import Playlist
 from sqlalchemy import func
 user_routes = Blueprint('users', __name__)
 
+# AWS Helpers
+from .aws import (create_presigned_url)
 
 @user_routes.route('/')
-@login_required
 def users():
     """
     Query for all users and returns them in a list of user dictionaries
@@ -44,6 +45,11 @@ def get_user_songs(id):
     if (user):
         songs_list = []
         for song in user.songs:
+            if song.song_images[0].img_url:
+                parsed_image_url = song.song_images[0].img_url.rsplit("/", 1)[-1]
+                presigned_image_url = create_presigned_url(parsed_image_url)
+                song.song_images[0].img_url = presigned_image_url
+
             song_dict = song.to_dict()
             song_dict["SongImage"] = {
                 "song_id": song.song_images[0].id if song.song_images else None,
@@ -73,6 +79,14 @@ def view_user_playlists(user_id):
     if (user):
 
         user_playlists = Playlist.query.filter_by(user_id=user_id).all()
+
+        for playlist in user_playlists:
+            for song in playlist.songs:
+                if(song):
+                    parsed_image_url = song.song_images[0].img_url.rsplit("/", 1)[-1]
+                    presigned_image_url = create_presigned_url(parsed_image_url)
+                    song.song_images[0].img_url = presigned_image_url
+
         playlists_list = [playlist.to_dict() for playlist in user_playlists]
         return jsonify(playlists_list), 200
 

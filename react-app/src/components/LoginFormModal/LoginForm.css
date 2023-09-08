@@ -1,15 +1,3 @@
-/* .login-modal { */
-/* font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif; */
-/* display: flex; */
-/* position: relative; */
-/* flex-direction: column; */
-/* justify-content: center; */
-/* align-items: center; */
-/* height: 250px; */
-/* border-radius: 25px; */
-/* border: 2px solid red; */
-/* } */
-
 .login-modal {
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
   display: flex;
@@ -20,25 +8,6 @@
 .login-form {
   display: flex;
   flex-direction: column;
-  /* border: 2px solid orange; */
-}
-
-#login-text {
-  /* display: flex;
-  position: relative;
-  justify-content: center;
-  width: 200px;
-  height: 50px;
-  border-radius: 30px; */
-  /* border: 2px solid orange; */
-}
-
-.login-form {
-  /* border: 2px solid blue; */
-  /* display: flex;
-  position: relative;
-  flex-direction: column; */
-  /* padding-left: 10px; */
 }
 
 #username-email {
@@ -60,14 +29,37 @@
 
 #login-button {
   width: 50%;
-  background-color: white;
-  border: 2px solid grey;
-  color: grey;
+  background-color: #ff5500;
+  border: 2px solid #ff5500;
+  font-weight: bold;
+  color: white;
   margin-top: 10px;
   padding: 5px;
   border-radius: 15px;
-  box-shadow: 3px 5px 10px 0px grey;
+  box-shadow: 2px 2px 0px 0px #ff5500;
   /* border: 2px solid red; */
+}
+button,
+#login-button-drop {
+  padding: 5px 10px;
+  background-color: #ff5500;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  outline: none;
+}
+button,
+#signup-button-drop {
+  padding: 5px 10px;
+  background-color: #ff5500;
+  color: white;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  outline: none;
+  /* outline-color: white; */
 }
 
 #login-submit {
