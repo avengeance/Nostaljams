@@ -54,12 +54,12 @@ function ProfileButton({ user }) {
       <ul className={ulClassName} ref={ulRef}>
         {user ? (
           <div className="user-dropdown">
-            <li>{user.username}</li>
-            <li>{user.email}</li>
-            <li>
+            <li id="username-drop">Welcome, {user.username.toUpperCase()}</li>
+            <li id="email-drop">EMAIL: {user.email.toUpperCase()}</li>
+            <li id="logout-drop">
               <button onClick={handleLogout}>Log Out</button>
             </li>
-            <li className="user-page">
+            <li className="user-page" id="user-page-drop">
               <NavLink to={`/users/${user.id}/songs`}>User Page</NavLink>
             </li>
           </div>
