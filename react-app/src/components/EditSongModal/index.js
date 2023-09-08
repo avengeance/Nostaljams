@@ -69,7 +69,7 @@ function EditSongModal({ song }) {
             )}
             <tr>
               <td>
-                <label>Artists</label>
+                <label>Artist</label>
                 <input
                   type="text"
                   value={artists}

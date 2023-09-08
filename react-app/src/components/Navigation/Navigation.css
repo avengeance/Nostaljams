@@ -66,12 +66,13 @@ li {
 
 .profile-dropdown {
   border-radius: 10px;
-  box-shadow: 0px 0px 10px #888;
-  right: 0px;
-  top: 50px;
+  border: 2px solid #ff5500;
+  right: 20px;
+  top: 70px;
   width: 200px;
   text-align: start;
   background-color: white;
+  padding-right: 15px;
 }
 
 #profile-button:hover {
@@ -127,7 +128,6 @@ li {
 #home-button:hover {
   background-color: #ff550077;
 }
-
 
 /* #song-button:hover {
   background-color: #ff550077;

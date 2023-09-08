@@ -1,5 +1,14 @@
 .profile-button-logo {
-    display: flex;
-    margin-right: 20px;
-    cursor: pointer;
+  display: flex;
+  margin-right: 20px;
+  cursor: pointer;
+}
+
+#username-drop,
+#email-drop,
+#logout-drop,
+#user-page-drop {
+  margin: 10px;
+  padding-right: 10px;
+  /* border: 1px solid green; */
 }

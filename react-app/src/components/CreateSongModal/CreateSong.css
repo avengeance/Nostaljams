@@ -1,6 +1,7 @@
 .song__modal {
   width: 600px;
   padding: 30px 10px;
+  border-radius: 10px;
 }
 
 .song__modal form {
@@ -14,6 +15,7 @@
   flex-direction: column;
   align-items: center;
   margin: 2px 0px;
+  width: 450px;
 }
 
 .song__modal form table tbody tr td h2 {
@@ -22,8 +24,15 @@
 }
 
 .song__modal form table tbody tr td label,
-.song__modal form table tbody tr td input {
+.song__modal form table tbody tr td input,
+.song__modal form table tbody tr td textarea {
   margin: 2px;
+  width: 300px;
+}
+
+.song__modal form table tbody tr td label,
+.song__modal form table tbody tr td input {
+  text-align: center;
 }
 
 .song__modal form button {
