@@ -9,7 +9,7 @@ function Song() {
   const dispatch = useDispatch();
   const songs = useSelector((state) => Object.values(state.songs.songs));
   const history = useHistory();
-  const { curSong, setCurSong } = usePlayer();
+  const { curSong, setCurSong, setQueue } = usePlayer();
 
   useEffect(() => {
     dispatch(SongActions.getAllSongsThunk());
@@ -18,7 +18,9 @@ function Song() {
   const handleSongClick = (songId) => {
     history.push(`/songs/${songId}`);
   };
-
+  const addSongToQueue = (songUrl) => {
+    setQueue(prevQueue => [...prevQueue, songUrl]);
+  };
   return (
     <div className="song-container">
       {songs.map((song) => {
@@ -52,6 +54,14 @@ function Song() {
                     }}
                   >
                     <i className="fas fa-play"></i>
+                  </button>
+                  <button
+                    className="queue__button"
+                    onClick={() => {
+                      addSongToQueue(song.audioUrl);
+                    }}
+                  >
+                    <i className="fas fa-plus"></i>
                   </button>
                 </div>
               </div>
