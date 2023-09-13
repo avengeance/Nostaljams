@@ -35,6 +35,7 @@ function Player() {
       setCurSong(nextSong);
       setQueue((prevQueue) => prevQueue.slice(1));
     } else {
+      setCurSong('')
       console.log("Queue is empty, no song to play next.");
     }
   };
@@ -54,7 +55,7 @@ function Player() {
 
         <AudioPlayer
           autoPlay
-          src={curSong.audioUrl}
+          src={curSong?.audioUrl}
           onEnded={handleSongEnd}
           layout={"horizontal-reverse"}
           showJumpControls={true}
