@@ -1,44 +1,18 @@
-.song__modal {
-  width: 600px;
+.queue__modal {
+  width: 400px;
   padding: 30px 10px;
   border-radius: 10px;
 }
 
-.song__modal form {
+.queue__modal__content {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.song__modal form table tbody tr td {
+.queue__modal__buttons {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 2px 0px;
-  width: 450px;
-}
-
-.song__modal form table tbody tr td h2 {
-  padding: 10px 0px 0px;
-  margin: 5px;
-}
-
-.song__modal form table tbody tr td label,
-.song__modal form table tbody tr td input,
-.song__modal form table tbody tr td textarea {
-  margin: 2px;
+  flex-direction: row;
   width: 300px;
-}
-
-.song__modal form table tbody tr td label,
-.song__modal form table tbody tr td input {
-  text-align: center;
-}
-
-.song__modal form button {
-  margin: 25px;
-}
-
-.song__modal__uploading {
-  text-align: center;
+  justify-content: space-around;
 }

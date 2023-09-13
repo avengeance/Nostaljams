@@ -20,7 +20,6 @@ const UserPlaylist = () => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [editPlaylistId, setEditPlaylistId] = useState(null);
 
-
   useEffect(() => {
     const getUserPlaylists = async () => {
       const response = await dispatch(
@@ -146,12 +145,6 @@ const UserPlaylist = () => {
                     </div>
                     <div className="playlist-buttons">
                       <div className="update-playlist">
-                        <OpenModalButton
-                          buttonText={<i className="fas fa-play"></i>}
-                          modalComponent={<SetQueueModal playlist={playlist} />}
-                        />
-                      </div>
-                      <div className="update-playlist">
                         <button
                           className="update-button"
                           onClick={() => openEditModal(playlist.id)}
@@ -168,6 +161,7 @@ const UserPlaylist = () => {
                         </button>
                       </div>
                     </div>
+
                     {deletePlaylistModals[playlist.id] && (
                       <DeleteModal
                         playlistId={playlist.id}
@@ -177,6 +171,10 @@ const UserPlaylist = () => {
                     )}
                   </ul>
                 </div>
+                <OpenModalButton
+                  buttonText={<i className="fas fa-play"></i>}
+                  modalComponent={<SetQueueModal playlist={playlist} />}
+                />
               </div>
             ))}
           </div>

@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import * as audioPlayerActions from "../../store/player";
+import React from "react";
 import { useModal } from "../../context/Modal";
 import { usePlayer } from "../../context/playerContext";
 
@@ -8,17 +6,13 @@ import "./QueueModal.css";
 
 function SetQueueModal({ playlist }) {
   const { closeModal } = useModal();
-  const dispatch = useDispatch();
-  const { curSong, setCurSong, setQueue } = usePlayer();
+  // const { curSong, setCurSong, queue, setQueue } = usePlayer();
+
   console.log(playlist);
 
-  const handleReplace = (playlist) => {
-    dispatch(audioPlayerActions.setQueueThunk(playlist.songs));
-  };
+  const handleReplace = (playlist) => {};
 
-  const handleAdd = (playlist) => {
-    dispatch(audioPlayerActions.addQueueThunk(playlist.songs));
-  };
+  const handleAdd = (playlist) => {};
 
   const handleOk = () => {
     closeModal();
@@ -27,19 +21,23 @@ function SetQueueModal({ playlist }) {
   return (
     <div className="queue__modal">
       {playlist.songs.length ? (
-        <>
-          <h2>Replace current queue?</h2>
-          <h3>{playlist.name}</h3>
-          <button onClick={() => handleReplace(playlist)}>Replace Queue</button>
-          <button onClick={() => handleAdd(playlist)}>Add to Queue</button>
-          <button onClick={() => handleOk()}>Cancel</button>
-        </>
+        <div className="queue__modal__content">
+          <h2>Playlist: {playlist.name}</h2>
+          <p>Replace current queue?</p>
+          <div className="queue__modal__buttons">
+            <button onClick={() => handleReplace(playlist)}>
+              Replace Queue
+            </button>
+            <button onClick={() => handleAdd(playlist)}>Add to Queue</button>
+            <button onClick={() => handleOk()}>Cancel</button>
+          </div>
+        </div>
       ) : (
-        <>
-          <h2>Playlist contains no songs</h2>
-          <h3>{playlist.name}</h3>
+        <div className="queue__modal__content">
+          <h2>Playlist: {playlist.name}</h2>
+          <p>Playlist contains no songs</p>
           <button onClick={() => handleOk()}>Ok</button>
-        </>
+        </div>
       )}
     </div>
   );

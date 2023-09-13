@@ -2,8 +2,6 @@ import { createContext, useContext, useState } from "react";
 
 export const PlayerContext = createContext();
 
-
-
 export function PlayerProvider(props) {
   const [curSong, setCurSong] = useState("");
   const [queue, setQueue] = useState([]);
@@ -15,8 +13,9 @@ export function PlayerProvider(props) {
   );
 }
 
-export const usePlayer = () => {
-  return useContext(PlayerContext);
-};
+// export const usePlayer = () => {
+//   return useContext(PlayerContext);
+// };
 
-// export const usePlayer = () => useContext(PlayerContext);
+export const usePlayer = () =>
+  useContext(PlayerContext);
