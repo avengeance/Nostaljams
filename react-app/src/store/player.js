@@ -15,9 +15,9 @@ const clear_queue_action = (queue) => ({
   queue,
 });
 
-const add_queue_action = (song) => ({
+const add_queue_action = (queue) => ({
   type: ADD_QUEUE,
-  song,
+  queue,
 });
 
 const remove_queue_action = (song) => ({
@@ -35,8 +35,8 @@ export const clearQueueThunk = (queue) => async (dispatch) => {
   return;
 };
 
-export const addQueueThunk = (song) => async (dispatch) => {
-  dispatch(add_queue_action(song));
+export const addQueueThunk = (queue) => async (dispatch) => {
+  dispatch(add_queue_action(queue));
   return;
 };
 
@@ -48,9 +48,11 @@ export const removeQueueThunk = (song) => async (dispatch) => {
 const queueReducer = (state = [], action) => {
   switch (action.type) {
     case ADD_QUEUE:
-        console.log(`addThunk ${action.song}`)
-        state.push(action.song)
-        return state
+      console.log(`addThunk ${action.queue}`);
+      action.queue.map((song) => {
+        state.push(song);
+      });
+      return state;
     default:
       return state;
   }

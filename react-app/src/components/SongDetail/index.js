@@ -26,7 +26,7 @@ const SongDetail = () => {
   const userId = useSelector((state) => state.session.user?.id);
   const likesBySong = useSelector((state) => state.likes.likesBySong);
   const allUsers = useSelector((state) => state.session.allUsers);
-  console.log("allUsers", allUsers);
+  const queue = useSelector((state) => state.queue);
 
   const [users, setUsers] = useState({});
   const [comments, setComments] = useState([]);
@@ -81,10 +81,8 @@ const SongDetail = () => {
   };
 
   const handlePlayButton = (song) => {
-    console.log(song)
-    dispatch(audioPlayerActions.addQueueThunk(song.songId)).then(() =>
-      setCurSong(song.audio_url)
-    );
+    console.log(song);
+    
   };
 
   return (

@@ -9,7 +9,7 @@ function Song() {
   const dispatch = useDispatch();
   const songs = useSelector((state) => Object.values(state.songs.songs));
   const history = useHistory();
-  const { curSong, setCurSong, setQueue } = usePlayer();
+  const { curSong, setCurSong, queue, setQueue } = usePlayer();
 
   useEffect(() => {
     dispatch(SongActions.getAllSongsThunk());
@@ -18,9 +18,21 @@ function Song() {
   const handleSongClick = (songId) => {
     history.push(`/songs/${songId}`);
   };
-  const addSongToQueue = (songUrl) => {
-    setQueue(prevQueue => [...prevQueue, songUrl]);
+
+  const playCurrSong = (song) => {
+    setQueue([song]);
+    setCurSong(song);
   };
+
+  const addSongToQueue = (song) => {
+    if (!queue.length) {
+      setQueue([song]);
+      setCurSong(song);
+    } else {
+      setQueue((prevQueue) => [...prevQueue, song]);
+    }
+  };
+
   return (
     <div className="song-container">
       {songs.map((song) => {
@@ -31,7 +43,7 @@ function Song() {
           song.imgUrl && song.imgUrl.length > 0 ? song.imgUrl[0].imgUrl : null;
         return (
           <div key={song.id}>
-            <div  className="song-card">
+            <div className="song-card">
               <img
                 src={imgUrl}
                 alt={song.name}
@@ -50,7 +62,7 @@ function Song() {
                   <button
                     className="play__button"
                     onClick={() => {
-                      setCurSong(song.audioUrl);
+                      playCurrSong(song);
                     }}
                   >
                     <i className="fas fa-play"></i>
@@ -58,7 +70,7 @@ function Song() {
                   <button
                     className="queue__button"
                     onClick={() => {
-                      addSongToQueue(song.audioUrl);
+                      addSongToQueue(song);
                     }}
                   >
                     <i className="fas fa-plus"></i>
