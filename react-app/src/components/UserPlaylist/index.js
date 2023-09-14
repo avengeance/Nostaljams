@@ -146,10 +146,13 @@ const UserPlaylist = () => {
                     </div>
                     <div className="playlist-buttons">
                       <div className="update-playlist">
-                        <OpenModalButton
-                          buttonText={<i className="fas fa-play"></i>}
-                          modalComponent={<SetQueueModal playlist={playlist} />}
-                        />
+                        <div className="play-button" onClick={() => console.log("Playlist before modal:", playlist)}>
+                          <OpenModalButton
+                            buttonText={<i className="fas fa-play"></i>}
+                            modalComponent={<SetQueueModal playlist={playlist} />}
+                          />
+                        </div>
+
                       </div>
                       <div className="update-playlist">
                         <button

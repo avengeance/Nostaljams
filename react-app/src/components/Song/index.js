@@ -28,9 +28,9 @@ function Song() {
     if (!queue.length) {
       setQueue([song]);
       setCurSong(song);
-    } else {
-      setQueue((prevQueue) => [...prevQueue, song]);
-    }
+  } else {
+      setQueue(prevQueue => [...prevQueue, song]);
+  }
   };
 
   return (

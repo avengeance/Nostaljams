@@ -26,6 +26,7 @@ const remove_queue_action = (song) => ({
 });
 
 export const setQueueThunk = (queue) => async (dispatch) => {
+  console.log(`setQueueThunk ${queue}`);
   dispatch(set_queue_action(queue));
   return;
 };
@@ -36,6 +37,8 @@ export const clearQueueThunk = (queue) => async (dispatch) => {
 };
 
 export const addQueueThunk = (queue) => async (dispatch) => {
+  console.log("Songs to be added in action:", queue);
+
   dispatch(add_queue_action(queue));
   return;
 };
@@ -47,12 +50,21 @@ export const removeQueueThunk = (song) => async (dispatch) => {
 
 const queueReducer = (state = [], action) => {
   switch (action.type) {
+    case SET_QUEUE:
+      return action.queue;
     case ADD_QUEUE:
-      console.log(`addThunk ${action.queue}`);
-      action.queue.map((song) => {
-        state.push(song);
-      });
-      return state;
+      console.log("Current state before adding:", state);
+      console.log("Songs to be added in reducer:", action.queue);
+      return [...state, ...action.queue];
+      // console.log(`addThunk ${action.queue}`);
+      // action.queue.map((song) => {
+      //   state.push(song);
+      // });
+      // return state;
+    case CLEAR_QUEUE:
+      return [];
+    case REMOVE_QUEUE:
+      return state.filter(song => song.id !== action.song.id);
     default:
       return state;
   }

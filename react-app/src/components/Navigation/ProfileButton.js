@@ -59,8 +59,10 @@ function ProfileButton({ user }) {
             <li id="logout-drop">
               <button onClick={handleLogout}>Log Out</button>
             </li>
-            <li className="user-page" id="user-page-drop">
-              <NavLink to={`/users/${user.id}/songs`}>User Page</NavLink>
+            <li className="user-page" id="user-page-drop" onClick={closeMenu}>
+              <NavLink to={`/users/${user.id}/songs`}
+                className="user-page-link"
+              >User Page</NavLink>
             </li>
           </div>
         ) : (

@@ -9,8 +9,8 @@ import "./QueueModal.css";
 function SetQueueModal({ playlist }) {
   const { closeModal } = useModal();
   const dispatch = useDispatch();
-  const { curSong, setCurSong, setQueue } = usePlayer();
-  console.log(playlist);
+  // const { curSong, setCurSong, queue, setQueue } = usePlayer();
+  console.log('this is playlist', playlist);
 
   const handleReplace = (playlist) => {
     dispatch(audioPlayerActions.setQueueThunk(playlist.songs));
@@ -27,19 +27,21 @@ function SetQueueModal({ playlist }) {
   return (
     <div className="queue__modal">
       {playlist.songs.length ? (
-        <>
+        <div className='queue-modal-contents'>
           <h2>Replace current queue?</h2>
           <h3>{playlist.name}</h3>
-          <button onClick={() => handleReplace(playlist)}>Replace Queue</button>
-          <button onClick={() => handleAdd(playlist)}>Add to Queue</button>
-          <button onClick={() => handleOk()}>Cancel</button>
-        </>
+          <div className='queue-modal-buttons'>
+            <button onClick={() => handleReplace(playlist)}>Replace Queue</button>
+            <button onClick={() => handleAdd(playlist)}>Add to Queue</button>
+            <button onClick={() => handleOk()}>Cancel</button>
+          </div>
+        </div>
       ) : (
-        <>
+        <div className='queue-modal-no-song'>
           <h2>Playlist contains no songs</h2>
           <h3>{playlist.name}</h3>
           <button onClick={() => handleOk()}>Ok</button>
-        </>
+        </div>
       )}
     </div>
   );

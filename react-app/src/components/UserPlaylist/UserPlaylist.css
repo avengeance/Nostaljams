@@ -194,3 +194,8 @@
   align-items: center;
   margin-left: 70px;
 }
+
+.play-button {
+  display: flex;
+  justify-content: center;
+}

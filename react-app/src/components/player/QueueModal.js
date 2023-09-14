@@ -8,7 +8,7 @@ function QueueModal({ isOpen, onPlay }) {
   return (
     <div className={`modal__queue ${isOpen ? "open" : "close"}`}>
       <ul>
-        {queue.length ? (
+        {Array.isArray(queue) && queue.length ? (
           queue.map((song, idx) => (
             <li key={idx} onClick={() => onPlay(song.audioUrl)}>
               <p>

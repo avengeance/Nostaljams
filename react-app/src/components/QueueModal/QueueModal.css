@@ -42,3 +42,16 @@
 .song__modal__uploading {
   text-align: center;
 }
+
+.queue-modal-contents {
+  padding: 20px;
+}
+
+.queue-modal-contents h3, h2{
+  display: flex;
+  justify-content: center;
+}
+
+.queue-modal-buttons button{
+  margin: 10px;
+}
