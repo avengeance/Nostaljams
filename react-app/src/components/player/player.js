@@ -11,7 +11,7 @@ function Player() {
   const { curSong, setCurSong, queue, setQueue } = usePlayer();
   const queueState = useSelector((state) => state.queue);
   const [isModalOpen, setModalOpen] = useState(false);
-  
+
   useEffect(() => {
     setCurSong(queueState[0]);
     setQueue(queueState);
@@ -42,17 +42,30 @@ function Player() {
       console.log("Queue is empty, no song to play next.");
     }
   };
-
+  // console.log(`curSong: ${curSong.imgUrl[0].imgUrl}`)
   return (
     <div className="audioPlayer__cont">
       <div className="audioPlayer-content">
-        <button
-          onClick={() => {
-            setModalOpen(!isModalOpen);
-          }}
-        >
-          Queue
-        </button>
+        <div className="audioPlayer-content__buttons">
+          <button
+            onClick={() => {
+              setModalOpen(!isModalOpen);
+            }}
+          >
+            Queue
+          </button>
+          <button
+            onClick={() => {
+              setQueue("");
+              setCurSong("");
+            }}
+          >
+            Clear Queue
+          </button>
+          {curSong && (
+            <img src={curSong.imgUrl[0].imgUrl} />
+          )}
+        </div>
         <QueueModal isOpen={isModalOpen} onPlay={handlePlayFromQueue} />
 
         <AudioPlayer

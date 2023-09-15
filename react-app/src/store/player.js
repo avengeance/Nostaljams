@@ -61,7 +61,7 @@ export const addQueueThunk = (playlist) => async (dispatch) => {
 };
 
 export const removeQueueThunk = (song) => async (dispatch) => {
-  
+
   dispatch(remove_queue_action(song));
   return;
 };
@@ -72,11 +72,6 @@ const queueReducer = (state = [], action) => {
       return action.queue;
     case ADD_QUEUE:
       return [...state, ...action.queue];
-    // console.log(`addThunk ${action.queue}`);
-    // action.queue.map((song) => {
-    //   state.push(song);
-    // });
-    // return state;
     case CLEAR_QUEUE:
       return [];
     case REMOVE_QUEUE:

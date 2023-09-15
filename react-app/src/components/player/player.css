@@ -98,6 +98,21 @@
   width: 100%;
 }
 
+.audioPlayer-content__buttons {
+  display: grid;
+  grid-template-columns: repeat(3, 33%);
+  width: 280px;
+}
+.audioPlayer-content__buttons button {
+  height: 60px;
+  width: 70px;
+}
+
+.audioPlayer-content__buttons img {
+  width: 60px;
+  height: 60px;
+}
+
 .modal__queue {
   position: fixed;
   background-color: #ff5500;
