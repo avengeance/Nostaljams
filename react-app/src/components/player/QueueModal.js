@@ -11,13 +11,13 @@ function QueueModal({ isOpen, onPlay }) {
       <ul>
         {queue[0]?.audioUrl ? (
           queue.map((song, idx) => (
-           
-            <li key={idx} onClick={() => onPlay(song.audioUrl)}>
-              <p>
-                {song.name} - {song.artists}
-              </p>
-            </li>
-            :""
+            song.audioUrl ? (
+              <li key={idx} onClick={() => onPlay(song.audioUrl)}>
+                <p>
+                  {song.name} - {song.artists}
+                </p>
+              </li>
+            ) : null
           ))
         ) : (
           <li>Queue is Empty</li>
