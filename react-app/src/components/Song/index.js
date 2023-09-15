@@ -2,14 +2,13 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import * as SongActions from "../../store/songs";
+import * as PlayerActions from "../../store/player";
 import "./Song.css";
-import { usePlayer } from "../../context/playerContext";
 
 function Song() {
   const dispatch = useDispatch();
   const songs = useSelector((state) => Object.values(state.songs.songs));
   const history = useHistory();
-  const { curSong, setCurSong, queue, setQueue } = usePlayer();
 
   useEffect(() => {
     dispatch(SongActions.getAllSongsThunk());
@@ -20,17 +19,11 @@ function Song() {
   };
 
   const playCurrSong = (song) => {
-    setQueue([song]);
-    setCurSong(song);
+    dispatch(PlayerActions.setQueueThunk(song));
   };
 
   const addSongToQueue = (song) => {
-    if (!queue.length) {
-      setQueue([song]);
-      setCurSong(song);
-    } else {
-      setQueue((prevQueue) => [...prevQueue, song]);
-    }
+    dispatch(PlayerActions.addQueueThunk(song));
   };
 
   return (

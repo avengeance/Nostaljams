@@ -194,6 +194,7 @@
   margin-left: 70px;
 }
 
-.fa-play{
-  height: 17px;
+.play-button {
+  display: flex;
+  justify-content: center;
 }

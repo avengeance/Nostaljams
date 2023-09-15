@@ -1,5 +1,6 @@
 import { createContext, useContext, useState } from "react";
-
+import { useSelector, useDispatch } from 'react-redux';
+import { setQueueThunk } from "../store/player";
 export const PlayerContext = createContext();
 
 export function PlayerProvider(props) {
@@ -13,9 +14,7 @@ export function PlayerProvider(props) {
   );
 }
 
-// export const usePlayer = () => {
-//   return useContext(PlayerContext);
-// };
-
-export const usePlayer = () =>
-  useContext(PlayerContext);
+export const usePlayer = () => {
+  const contextValues = useContext(PlayerContext);
+  return contextValues;
+};

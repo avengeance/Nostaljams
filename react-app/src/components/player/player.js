@@ -5,11 +5,18 @@ import { usePlayer } from "../../context/playerContext";
 import "./player.css";
 import QueueModal from "./QueueModal";
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 
 function Player() {
   const { curSong, setCurSong, queue, setQueue } = usePlayer();
+  const queueState = useSelector((state) => state.queue);
   const [isModalOpen, setModalOpen] = useState(false);
-  console.log(curSong);
+  
+  useEffect(() => {
+    setCurSong(queueState[0]);
+    setQueue(queueState);
+  }, [queueState]);
+
   const handlePlayFromQueue = (song) => {
     setCurSong(song);
     setModalOpen(false);
@@ -25,17 +32,13 @@ function Player() {
     }
   };
 
-  useEffect(() => {
-    console.log("Modal state: ", isModalOpen);
-  }, [isModalOpen]);
-
   const handleClickNext = () => {
-    if (queue.length > 0) {
+    if (queue.length > 1) {
       const nextSong = queue[1];
       setCurSong(nextSong);
       setQueue((prevQueue) => prevQueue.slice(1));
     } else {
-      setCurSong('')
+      alert("Queue is empty, no song to play next.");
       console.log("Queue is empty, no song to play next.");
     }
   };
@@ -45,7 +48,6 @@ function Player() {
       <div className="audioPlayer-content">
         <button
           onClick={() => {
-            console.log("Toggling Queue");
             setModalOpen(!isModalOpen);
           }}
         >

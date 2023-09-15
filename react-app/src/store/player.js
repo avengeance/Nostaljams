@@ -25,7 +25,17 @@ const remove_queue_action = (song) => ({
   song,
 });
 
-export const setQueueThunk = (queue) => async (dispatch) => {
+export const setQueueThunk = (playlist) => async (dispatch) => {
+  let queue = [];
+
+  if (playlist.length) {
+    playlist.map((song) => {
+      queue.push(song);
+    });
+  } else {
+    queue.push(playlist);
+  }
+
   dispatch(set_queue_action(queue));
   return;
 };
@@ -35,24 +45,42 @@ export const clearQueueThunk = (queue) => async (dispatch) => {
   return;
 };
 
-export const addQueueThunk = (queue) => async (dispatch) => {
+export const addQueueThunk = (playlist) => async (dispatch) => {
+  let queue = [];
+
+  if (playlist.length) {
+    playlist.map((song) => {
+      queue.push(song);
+    });
+  } else {
+    queue.push(playlist);
+  }
+
   dispatch(add_queue_action(queue));
   return;
 };
 
 export const removeQueueThunk = (song) => async (dispatch) => {
+  
   dispatch(remove_queue_action(song));
   return;
 };
 
 const queueReducer = (state = [], action) => {
   switch (action.type) {
+    case SET_QUEUE:
+      return action.queue;
     case ADD_QUEUE:
-      console.log(`addThunk ${action.queue}`);
-      action.queue.map((song) => {
-        state.push(song);
-      });
-      return state;
+      return [...state, ...action.queue];
+    // console.log(`addThunk ${action.queue}`);
+    // action.queue.map((song) => {
+    //   state.push(song);
+    // });
+    // return state;
+    case CLEAR_QUEUE:
+      return [];
+    case REMOVE_QUEUE:
+      return state.filter((song) => song.id !== action.song.id);
     default:
       return state;
   }

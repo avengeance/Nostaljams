@@ -1,18 +1,23 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
-import { usePlayer } from "../../context/playerContext";
+import * as PlayerActions from "../../store/player";
+
 
 import "./QueueModal.css";
 
 function SetQueueModal({ playlist }) {
   const { closeModal } = useModal();
-  // const { curSong, setCurSong, queue, setQueue } = usePlayer();
+  const dispatch = useDispatch();
+  console.log("this is playlist", playlist);
 
-  console.log(playlist);
+  const handleReplace = (playlist) => {
+    dispatch(PlayerActions.setQueueThunk(playlist.songs))
+  };
 
-  const handleReplace = (playlist) => {};
-
-  const handleAdd = (playlist) => {};
+  const handleAdd = (playlist) => {
+    dispatch(PlayerActions.addQueueThunk(playlist.songs))
+  };
 
   const handleOk = () => {
     closeModal();
@@ -21,10 +26,10 @@ function SetQueueModal({ playlist }) {
   return (
     <div className="queue__modal">
       {playlist.songs.length ? (
-        <div className="queue__modal__content">
-          <h2>Playlist: {playlist.name}</h2>
+        <div className="queue-modal-contents">
+          <h2>{playlist.name}</h2>
           <p>Replace current queue?</p>
-          <div className="queue__modal__buttons">
+          <div className="queue-modal-buttons">
             <button onClick={() => handleReplace(playlist)}>
               Replace Queue
             </button>
@@ -33,10 +38,12 @@ function SetQueueModal({ playlist }) {
           </div>
         </div>
       ) : (
-        <div className="queue__modal__content">
-          <h2>Playlist: {playlist.name}</h2>
+        <div className="queue-modal-contents">
+          <h2>{playlist.name}</h2>
           <p>Playlist contains no songs</p>
-          <button onClick={() => handleOk()}>Ok</button>
+          <div className="queue-modal-buttons">
+            <button onClick={() => handleOk()}>Ok</button>
+          </div>
         </div>
       )}
     </div>

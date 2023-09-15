@@ -16,3 +16,16 @@
   width: 300px;
   justify-content: space-around;
 }
+
+.queue-modal-contents {
+  padding: 20px;
+}
+
+.queue-modal-contents h2, p{
+  display: flex;
+  justify-content: center;
+}
+
+.queue-modal-buttons button{
+  margin: 10px;
+}
