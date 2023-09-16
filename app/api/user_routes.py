@@ -82,6 +82,11 @@ def view_user_playlists(user_id):
 
         for playlist in user_playlists:
             for song in playlist.songs:
+                if song.audio_url:
+                    parsed_audio_url = song.audio_url.rsplit("/", 1)[-1]
+                    presigned_audio_url = create_presigned_url(parsed_audio_url)
+                    song.audio_url = presigned_audio_url
+                    
                 if(song):
                     parsed_image_url = song.song_images[0].img_url.rsplit("/", 1)[-1]
                     presigned_image_url = create_presigned_url(parsed_image_url)

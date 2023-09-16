@@ -97,3 +97,37 @@
   display: flex;
   width: 100%;
 }
+
+.modal__queue {
+  position: fixed;
+  background-color: #ff5500;
+  bottom: 80px;
+  width: 450px;
+  max-height: 500px;
+  border: solid;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.modal__queue ul {
+  display: unset;
+  list-style: none;
+}
+
+.modal__queue ul li {
+  padding: 5px;
+  border: #66666673 1px solid;
+}
+
+.modal__queue ul li p {
+  text-align: left;
+}
+
+.open {
+  visibility: visible;
+  border: solid;
+}
+
+.close {
+  visibility: hidden;
+}

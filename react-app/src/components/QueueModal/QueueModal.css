@@ -1,0 +1,31 @@
+.queue__modal {
+  width: 400px;
+  padding: 30px 10px;
+  border-radius: 10px;
+}
+
+.queue__modal__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.queue__modal__buttons {
+  display: flex;
+  flex-direction: row;
+  width: 300px;
+  justify-content: space-around;
+}
+
+.queue-modal-contents {
+  padding: 20px;
+}
+
+.queue-modal-contents h2, p{
+  display: flex;
+  justify-content: center;
+}
+
+.queue-modal-buttons button{
+  margin: 10px;
+}
