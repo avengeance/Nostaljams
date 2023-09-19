@@ -5,13 +5,15 @@ import { usePlayer } from "../../context/playerContext";
 import "./player.css";
 import QueueModal from "./QueueModal";
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import * as PlayerActions from "../../store/player";
 
 function Player() {
   const { curSong, setCurSong, queue, setQueue } = usePlayer();
   const queueState = useSelector((state) => state.queue);
+  const dispatch = useDispatch();
   const [isModalOpen, setModalOpen] = useState(false);
-  
+
   useEffect(() => {
     setCurSong(queueState[0]);
     setQueue(queueState);
@@ -24,6 +26,7 @@ function Player() {
 
   const handleSongEnd = () => {
     if (queue.length > 0) {
+      dispatch(PlayerActions.removeQueueThunk(curSong))
       const nextSong = queue[0];
       setCurSong(nextSong);
       setQueue((prevQueue) => prevQueue.slice(1));
@@ -34,6 +37,7 @@ function Player() {
 
   const handleClickNext = () => {
     if (queue.length > 1) {
+      dispatch(PlayerActions.removeQueueThunk(curSong))
       const nextSong = queue[1];
       setCurSong(nextSong);
       setQueue((prevQueue) => prevQueue.slice(1));
@@ -43,16 +47,32 @@ function Player() {
     }
   };
 
+  const handleClear = () => {
+    setQueue("");
+    setCurSong("");
+    dispatch(PlayerActions.clearQueueThunk());
+  };
+
   return (
     <div className="audioPlayer__cont">
       <div className="audioPlayer-content">
-        <button
-          onClick={() => {
-            setModalOpen(!isModalOpen);
-          }}
-        >
-          Queue
-        </button>
+        <div className="audioPlayer-content__buttons">
+          <button
+            onClick={() => {
+              setModalOpen(!isModalOpen);
+            }}
+          >
+            Queue
+          </button>
+          <button
+            onClick={() => {
+              handleClear();
+            }}
+          >
+            Clear Queue
+          </button>
+          {curSong && <img src={curSong.imgUrl[0].imgUrl} />}
+        </div>
         <QueueModal isOpen={isModalOpen} onPlay={handlePlayFromQueue} />
 
         <AudioPlayer
