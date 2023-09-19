@@ -5,11 +5,13 @@ import { usePlayer } from "../../context/playerContext";
 import "./player.css";
 import QueueModal from "./QueueModal";
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import * as PlayerActions from "../../store/player";
 
 function Player() {
   const { curSong, setCurSong, queue, setQueue } = usePlayer();
   const queueState = useSelector((state) => state.queue);
+  const dispatch = useDispatch();
   const [isModalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
@@ -42,7 +44,13 @@ function Player() {
       console.log("Queue is empty, no song to play next.");
     }
   };
-  // console.log(`curSong: ${curSong.imgUrl[0].imgUrl}`)
+
+  const handleClear = () => {
+    setQueue("");
+    setCurSong("");
+    dispatch(PlayerActions.clearQueueThunk());
+  };
+
   return (
     <div className="audioPlayer__cont">
       <div className="audioPlayer-content">
@@ -56,15 +64,12 @@ function Player() {
           </button>
           <button
             onClick={() => {
-              setQueue("");
-              setCurSong("");
+              handleClear();
             }}
           >
             Clear Queue
           </button>
-          {curSong && (
-            <img src={curSong.imgUrl[0].imgUrl} />
-          )}
+          {curSong && <img src={curSong.imgUrl[0].imgUrl} />}
         </div>
         <QueueModal isOpen={isModalOpen} onPlay={handlePlayFromQueue} />
 

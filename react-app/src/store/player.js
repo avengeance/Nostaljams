@@ -10,9 +10,8 @@ const set_queue_action = (queue) => ({
   queue,
 });
 
-const clear_queue_action = (queue) => ({
+const clear_queue_action = () => ({
   type: CLEAR_QUEUE,
-  queue,
 });
 
 const add_queue_action = (queue) => ({
@@ -61,7 +60,6 @@ export const addQueueThunk = (playlist) => async (dispatch) => {
 };
 
 export const removeQueueThunk = (song) => async (dispatch) => {
-
   dispatch(remove_queue_action(song));
   return;
 };
