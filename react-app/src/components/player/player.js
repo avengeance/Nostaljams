@@ -26,6 +26,7 @@ function Player() {
 
   const handleSongEnd = () => {
     if (queue.length > 0) {
+      dispatch(PlayerActions.removeQueueThunk(curSong))
       const nextSong = queue[0];
       setCurSong(nextSong);
       setQueue((prevQueue) => prevQueue.slice(1));
@@ -36,6 +37,7 @@ function Player() {
 
   const handleClickNext = () => {
     if (queue.length > 1) {
+      dispatch(PlayerActions.removeQueueThunk(curSong))
       const nextSong = queue[1];
       setCurSong(nextSong);
       setQueue((prevQueue) => prevQueue.slice(1));
