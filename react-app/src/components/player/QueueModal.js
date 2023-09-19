@@ -21,7 +21,7 @@ function QueueModal({ isOpen, onPlay }) {
                   className="modal__queue__img"
                   src={song.imgUrl[0].imgUrl}
                 />
-                <p>
+                <p className="">
                   {song.name} - {song.artists}
                 </p>
                 <i
