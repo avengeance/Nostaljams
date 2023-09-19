@@ -1,5 +1,5 @@
 .audioPlayer__cont {
-  border: solid;
+  border: solid 1px lightgray;
   height: 100px;
   width: 300px;
 }

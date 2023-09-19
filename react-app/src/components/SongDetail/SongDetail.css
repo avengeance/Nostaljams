@@ -142,3 +142,8 @@ span{
     height: 50px;
     object-fit: cover;
 }
+
+.like-button {
+    background-color: #ff5500;
+    border-radius: 50%;
+}

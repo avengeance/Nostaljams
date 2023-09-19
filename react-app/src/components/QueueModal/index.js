@@ -17,6 +17,7 @@ function SetQueueModal({ playlist }) {
 
   const handleAdd = (playlist) => {
     dispatch(PlayerActions.addQueueThunk(playlist.songs))
+    closeModal();
   };
 
   const handleOk = () => {
