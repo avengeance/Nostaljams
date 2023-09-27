@@ -82,7 +82,7 @@ const SongDetail = () => {
 
   const handlePlayButton = (song) => {
     console.log(song);
-    
+
   };
 
   return (
@@ -107,16 +107,18 @@ const SongDetail = () => {
               </div>
               <div className="song-actions">
                 <p id="song-likes">{currentSong.SongLikesCnt}</p>
-                {!liked && (
-                  <button onClick={handleLike}>
-                    <i class="fas fa-thumbs-up"></i>
-                  </button>
-                )}
-                {liked && (
-                  <button onClick={handleUnlike}>
-                    <i class="fas fa-thumbs-down"></i>
-                  </button>
-                )}
+                <div className='like-button'>
+                  {!liked && (
+                    <button onClick={handleLike}>
+                      <i class="fas fa-thumbs-up"></i>
+                    </button>
+                  )}
+                  {liked && (
+                    <button onClick={handleUnlike} className='unlike'>
+                      <i class="fas fa-thumbs-down"></i>
+                    </button>
+                  )}
+                </div>
               </div>
               <div className="song-info-details">
                 <h2>{currentSong.name}</h2>

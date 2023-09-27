@@ -9,7 +9,6 @@ import "./QueueModal.css";
 function SetQueueModal({ playlist }) {
   const { closeModal } = useModal();
   const dispatch = useDispatch();
-  console.log("this is playlist", playlist);
 
   const handleReplace = (playlist) => {
     dispatch(PlayerActions.setQueueThunk(playlist.songs))
@@ -17,6 +16,7 @@ function SetQueueModal({ playlist }) {
 
   const handleAdd = (playlist) => {
     dispatch(PlayerActions.addQueueThunk(playlist.songs))
+    closeModal();
   };
 
   const handleOk = () => {

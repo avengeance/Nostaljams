@@ -40,7 +40,6 @@ function CreateCommentModal({ songId, onCommentSubmit }) {
 
     useEffect(() => {
         const handleClickOutside = (e) => {
-            console.log("Global mouse down detected");
             if (modalRef.current && !modalRef.current.contains(e.target)) {
                 closeModal();
             }
