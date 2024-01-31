@@ -1,7 +1,7 @@
 # Nostaljams
 
 ### Live Link below:
-- [soundCloudClone](https://soundcloudclone.onrender.com)
+- [NostalJams](https://soundcloudclone.onrender.com)
 
 ### What is Nostaljams?
 Nostaljams is a fullstack app that utilizes AWS to upload/store user songs and playlists and allows for users to listen to songs real-time through an audio player.
@@ -33,7 +33,7 @@ Nostaljams is a fullstack app that utilizes AWS to upload/store user songs and p
    
    1. Clone the app repository on your local machine:
    ```bash
-   git clone git@github.com:avengeance/soundcloudClone.git
+   git clone git@github.com:avengeance/Nostaljams.git
    ```
    2. Navigate to the root directory of the app and install dependencies:
    ```bash
