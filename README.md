@@ -1,9 +1,9 @@
-# soundcloudClone
+# NostalJams
 
 ### Live Link below:
-- [soundCloudClone](https://soundcloudclone.onrender.com)
+- [NostalJams](https://soundcloudclone.onrender.com)
 
-### What is soundcloudClone?
+### What is NostalJams?
 soundcloudClone is a fullstack app that utilizes AWS to upload/store user songs and playlists and allows for users to listen to songs real-time through an audio player.
 
 ### Table Of Contents:
