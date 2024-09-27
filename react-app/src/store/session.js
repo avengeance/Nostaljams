@@ -2,6 +2,7 @@
 const SET_USER = "session/SET_USER";
 const REMOVE_USER = "session/REMOVE_USER";
 const CHECK_USERNAME = "session/CHECK_USERNAME";
+const GET_ALL_USERS = "session/GET_ALL_USERS";
 
 const setUser = (user) => ({
 	type: SET_USER,
@@ -17,7 +18,10 @@ const checkUsernameSuccess = (exists) => ({
 	payload: exists,
 });
 
-const initialState = { user: null };
+const getAllUsers = (users) => ({
+	type: GET_ALL_USERS,
+	payload: users,
+})
 
 export const authenticate = () => async (dispatch) => {
 	const response = await fetch("/api/auth/", {
@@ -117,6 +121,20 @@ export const signUp = (username, email, firstName, lastName, bio, userImage, pas
 	}
 };
 
+export const fetchAllUsers = () => async (dispatch) => {
+    try {
+        const response = await fetch("/api/users/");
+        if (response.ok) {
+            const { users } = await response.json();
+            dispatch(getAllUsers(users));
+        } else {
+            console.error("Failed to fetch users");
+        }
+    } catch (error) {
+        console.error(error);
+    }
+};
+const initialState = { user: null, allUsers: {} };
 export default function reducer(state = initialState, action) {
 	switch (action.type) {
 		case SET_USER:
@@ -125,6 +143,12 @@ export default function reducer(state = initialState, action) {
 			return { user: null };
 		case CHECK_USERNAME:
 			return { ...state, usernameExists: action.payload };
+		case GET_ALL_USERS:
+            const usersObj = {};
+            action.payload.forEach(user => {
+                usersObj[user.id] = user;
+            });
+            return { ...state, allUsers: usersObj };
 		default:
 			return state;
 	}

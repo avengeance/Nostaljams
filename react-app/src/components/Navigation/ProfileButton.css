@@ -1,4 +1,28 @@
 .profile-button-logo {
-    display: flex;
-    margin-right: 20px;
+  display: flex;
+  margin-right: 20px;
+  cursor: pointer;
+}
+
+#username-drop,
+#email-drop,
+#logout-drop,
+#user-page-drop {
+  margin: 10px;
+  padding-right: 10px;
+  /* border: 1px solid green; */
+}
+
+.user-page-link {
+  padding: 5px 10px;
+  /* width: 50px; */
+  background-color: #ff5500;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  outline: none;
+  text-decoration: none;
+  text-align: center;
 }

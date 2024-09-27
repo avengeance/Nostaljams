@@ -16,14 +16,20 @@ function Navigation({ isLoaded }) {
       <div className="header">
         <ul>
           <div className="home-button">
-            <NavLink exact to="/" className="logo-link">
-              <li id="home-button">
-                <img
-                  className="home__button__icon"
-                  src="/icons/android-chrome-512x512.png"
-                />
-              </li>
-            </NavLink>
+            <div>
+              <NavLink exact to="/" className="logo-link">
+                <li id="home-button">
+                  <img
+                    className="home__button__icon"
+                    src="/icons/android-chrome-512x512.png"
+                  />
+                </li>
+              </NavLink>
+              <NavLink exact to="/about-us" className="about-us-link">
+                <li id="about-us-button"/>
+                <p>About Us</p>
+              </NavLink>
+            </div>
             <div className="create-song">
               {sessionUser && (
                 <li id="song-button">

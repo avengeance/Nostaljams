@@ -6,6 +6,7 @@ import songsReducer from './songs';
 import playlistsReducer from './playlists';
 // import reducer from './session';
 import commentsReducer from './comments';
+import queueReducer from './player';
 
 
 const rootReducer = combineReducers({
@@ -14,7 +15,8 @@ const rootReducer = combineReducers({
   likes: likesReducer,
   songs: songsReducer,
   playlists: playlistsReducer,
-  comments: commentsReducer
+  comments: commentsReducer,
+  queue: queueReducer
 });
 
 

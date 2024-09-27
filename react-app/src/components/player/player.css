@@ -1,5 +1,5 @@
 .audioPlayer__cont {
-  border: solid;
+  border: solid 1px lightgray;
   height: 100px;
   width: 300px;
 }
@@ -35,7 +35,7 @@
   background-color: white;
   color: #fff;
   padding: 10px;
-  z-index: 9999;
+  z-index: 1;
 }
 
 .audioPlayer__cont .rhap_container {
@@ -96,4 +96,73 @@
 .audioPlayer-content {
   display: flex;
   width: 100%;
+}
+
+.audioPlayer-content__buttons {
+  display: grid;
+  grid-template-columns: repeat(3, 33%);
+  width: 280px;
+}
+.audioPlayer-content__buttons button {
+  height: 60px;
+  width: 70px;
+}
+
+.audioPlayer-content__buttons img {
+  width: 60px;
+  height: 60px;
+}
+
+.modal__queue {
+  position: fixed;
+  background-color: #ff5500;
+  bottom: 80px;
+  width: 450px;
+  max-height: 500px;
+  border: solid;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  display: grid;
+  grid-template-columns: 100%;
+}
+
+.modal__queue ul {
+  margin: 0px;
+  padding: 0px;
+  display: unset;
+  list-style: none;
+}
+
+.modal__queue ul li {
+  display: grid;
+  grid-template-columns: 60px 1fr 30px;
+  padding: 2px 0px;
+  border: #66666673 0.5px solid;
+}
+
+.modal__queue ul li:hover {
+  cursor: pointer;
+}
+
+.modal__queue__img {
+  margin: 0px 10px;
+  width: 60px;
+  height: 60px;
+}
+
+.modal__queue ul li i {
+  margin: auto;
+}
+
+.modal__queue ul li i:hover {
+  cursor: pointer;
+}
+
+.open {
+  visibility: visible;
+  border: solid;
+}
+
+.close {
+  visibility: hidden;
 }

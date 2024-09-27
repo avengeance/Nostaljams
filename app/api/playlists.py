@@ -33,8 +33,9 @@ def view_playlist(playlist_id):
             'Error': 'Playlist not found',
             'status': 404
         }), 404
-
+    
     playlist_data = playlist.to_dict()
+
     return jsonify(playlist_data), 200
 
 @playlist_routes.route('/<int:playlistId>/songs', methods=['POST'])

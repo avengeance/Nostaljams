@@ -6,6 +6,7 @@ import * as sessionActions from "./store/session";
 import * as songActions from "./store/songs";
 
 import SignupFormPage from "./components/SignupFormPage";
+import AboutUs from "./components/AboutUsPage";
 import LoginFormPage from "./components/LoginFormPage";
 import Navigation from "./components/Navigation";
 import Song from "./components/Song";
@@ -47,6 +48,9 @@ function App() {
             </Route>
             <Route path="/users/:userId/playlists">
               <UserPlaylist />
+            </Route>
+            <Route path="/about-us">
+              <AboutUs />
             </Route>
           </Switch>
           <Player />

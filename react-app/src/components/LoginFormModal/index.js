@@ -22,26 +22,26 @@ function LoginFormModal() {
     e.preventDefault();
     setErrors([]);
     const data = await dispatch(sessionActions.login(email, password));
-      if (data && data.errors ) {
-        setErrors(data.errors);
-      } else {
-        setErrors(["The provided credentials are invalid"]);
-      }
-      if(data.ok){
-        closeModal()
-      }
+    if (data && data.errors) {
+      setErrors(data.errors);
+    } else {
+      setErrors(["The provided credentials are invalid"]);
+    }
+    if (data.ok) {
+      closeModal();
+    }
   };
 
   const handleDemoLogin = async (e) => {
     e.preventDefault();
     setErrors([]);
     await dispatch(login("demo@aa.io", "password"));
-    closeModal()
-  }
+    closeModal();
+  };
 
   return (
-    <div className='login-modal'>
-      <h1 id='login-text'>Log In</h1>
+    <div className="login-modal">
+      <h1 id="login-text">Log In</h1>
       <form onSubmit={handleSubmit}>
         <ul className="error-list">
           {errors.map((error, idx) => (
@@ -49,37 +49,46 @@ function LoginFormModal() {
           ))}
         </ul>
         <div className="login-form">
-          <label id='username-email'>
+          <label id="username-email">
             <input
               type="text"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
               placeholder="Email"
+              style={{
+                outline: "none",
+                borderRadius: "5px",
+              }}
             />
           </label>
-          <label id='password'>
+          <label id="password">
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
               placeholder="Password"
+              style={{
+                outline: "none",
+                borderRadius: "5px",
+              }}
             />
           </label>
         </div>
-        <div id='div-login-submit'>
-          <button type="submit"
-            id='login-button'
-
+        <div id="div-login-submit">
+          <button
+            type="submit"
+            id="login-button"
             disabled={!validCredential || !validPassword}
-
-          >Log In</button>
+          >
+            Log In
+          </button>
         </div>
         <div className="demo-login">
-          <a href="javascript:void(0)"
-            onClick={handleDemoLogin}
-          >Demo User</a>
+          <a href="javascript:void(0)" onClick={handleDemoLogin}>
+            Demo User
+          </a>
         </div>
       </form>
     </div>

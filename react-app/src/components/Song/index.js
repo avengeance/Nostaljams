@@ -2,14 +2,13 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import * as SongActions from "../../store/songs";
+import * as PlayerActions from "../../store/player";
 import "./Song.css";
-import { usePlayer } from "../../context/playerContext";
 
 function Song() {
   const dispatch = useDispatch();
   const songs = useSelector((state) => Object.values(state.songs.songs));
   const history = useHistory();
-  const { curSong, setCurSong } = usePlayer();
 
   useEffect(() => {
     dispatch(SongActions.getAllSongsThunk());
@@ -17,6 +16,14 @@ function Song() {
 
   const handleSongClick = (songId) => {
     history.push(`/songs/${songId}`);
+  };
+
+  const playCurrSong = (song) => {
+    dispatch(PlayerActions.setQueueThunk(song));
+  };
+
+  const addSongToQueue = (song) => {
+    dispatch(PlayerActions.addQueueThunk(song));
   };
 
   return (
@@ -29,7 +36,7 @@ function Song() {
           song.imgUrl && song.imgUrl.length > 0 ? song.imgUrl[0].imgUrl : null;
         return (
           <div key={song.id}>
-            <div  className="song-card">
+            <div className="song-card">
               <img
                 src={imgUrl}
                 alt={song.name}
@@ -48,10 +55,18 @@ function Song() {
                   <button
                     className="play__button"
                     onClick={() => {
-                      setCurSong(song.audioUrl);
+                      playCurrSong(song);
                     }}
                   >
                     <i className="fas fa-play"></i>
+                  </button>
+                  <button
+                    className="queue__button"
+                    onClick={() => {
+                      addSongToQueue(song);
+                    }}
+                  >
+                    <i className="fas fa-plus"></i>
                   </button>
                 </div>
               </div>

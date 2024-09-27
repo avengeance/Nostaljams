@@ -2,7 +2,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import * as SongActions from "../../store/songs";
-import "./DeleteSong.css";
+import './DeleteSong.css'
 
 const DeleteModal = ({ songId, userId, closeModal }) => {
   const dispatch = useDispatch();
@@ -19,10 +19,16 @@ const DeleteModal = ({ songId, userId, closeModal }) => {
   };
 
   return (
-    <div className="delete-modal">
-      <h3>Are you sure you want to delete this song?</h3>
-      <button onClick={deleteSong}>Yes</button>
-      <button onClick={handleNoClick}>No</button>
+    <div className='delete-modal-overlay'>
+      <div className="delete-modal">
+        <div className='delete-modal-contents'>
+          <h3>Are you sure you want to delete this song?</h3>
+          <div className='delete-modal-buttons'>
+            <button className='delete-button' onClick={deleteSong}>Yes</button>
+            <button className='cancel-button' onClick={handleNoClick}>No</button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
